@@ -1,0 +1,8 @@
+# Directories
+vendor/*
+Portals/x64/*
+x64/*
+
+# Files
+.vs/*
+
