@@ -17,19 +17,27 @@ out vec3 outColor;
 
 void main()
 {
-	vec3 e1 = observer_orientation * body_orientation[0];
-	vec3 e2 = observer_orientation * body_orientation[1];
-	vec3 e3 = observer_orientation * body_orientation[2];
+	vec3 position_tmp = body_translation-observer_translation + body_scale*(aPos[0] * body_orientation[0] + aPos[1] * body_orientation[1] + aPos[2] * body_orientation[2] );
+	position_tmp = vec3(
+		dot(position_tmp, observer_orientation[0]),
+		dot(position_tmp, observer_orientation[1]),
+		dot(position_tmp, observer_orientation[2])
+	);
 
-	vec3 position_tmp = (body_translation-observer_translation) + body_scale*(aPos[0] * e1 + aPos[1] * e2 + aPos[2] * e3);
 	float r = length(position_tmp);
 	float phi = atan(position_tmp.x, position_tmp.y);
 	float theta = acos(position_tmp.z / r);
 
 	float new_r = zoom_level * theta;
-	gl_Position = vec4(vec3(new_r*cos(phi), new_r*sin(phi), max(0, atan(r) / 1.570787f)), 1.0f);
+	gl_Position = vec4(
+		new_r*cos(phi),
+		new_r*sin(phi),
+		max(0, atan(r) / 1.570787f),
+		1.0f
+	);
 
 	outColor = aColor;
+
 }
 
 

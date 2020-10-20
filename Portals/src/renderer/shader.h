@@ -10,6 +10,8 @@
 //#include <glad/glad.h>
 #include "vendor/glm/glm/glm.hpp"
 
+typedef int GLint;
+
 struct UniformSet
 {
 	std::unordered_map<std::string, GLint> uniformLocations;

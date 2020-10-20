@@ -16,6 +16,14 @@ Scene::~Scene()
 	m_IndexBuffer.~OpenGLIndexBuffer();
 }
 
+void Scene::SetObserver(Shader& shader)
+{
+	shader.Bind();
+	shader.UploadUniformFloat3("observer_translation", m_Observer.translation.Glm());
+	shader.UploadUniformMat3("observer_orientation", m_Observer.orientation.Glm());
+	shader.UploadUniformFloat("zoom_level", m_Observer.zoom_level);
+}
+
 void Scene::Draw()
 {
 //	glBindVertexArray(m_VertexArray);

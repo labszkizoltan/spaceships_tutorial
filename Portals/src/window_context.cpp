@@ -108,6 +108,12 @@ std::pair<float, float> MyWindow::GetMousePosition()
 // }
 // 
 
+void MyWindow::HandleUserInputs()
+{
+
+
+}
+
 
 
 

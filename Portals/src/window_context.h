@@ -24,6 +24,8 @@ public:
 //	float GetMouseX();
 //	float GetMouseY();
 
+	void HandleUserInputs();
+
 	GLFWwindow* GetWindow() { return m_Window; }
 
 private:
