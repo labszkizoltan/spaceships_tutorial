@@ -6,8 +6,8 @@
 // ----- Observer ----- //
 // -------------------- //
 
-
-Observer::Observer() : translation(Vec3D()), orientation(Identity(1.0f)), zoom_level(1.0f) {}
+// the zoom level should be around 2.5 to fill the entire screen with the skybox
+Observer::Observer() : translation(Vec3D()), orientation(Identity(1.0f)), zoom_level(2.5f) {}
 
 Observer::Observer(Vec3D v, Mat_3D m, float zoom) : translation(v), orientation(m), zoom_level(zoom) {}
 

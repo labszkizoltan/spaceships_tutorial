@@ -1,20 +1,21 @@
 
-
 #version 330 core
 
+layout(location = 0) out vec4 color;
+
+in vec4 v_Color;
 in vec2 v_TexCoord;
+in float v_TexIndex;
+in float v_TilingFactor;
 
-uniform sampler2D u_Texture;
-
-out vec4 FragColor;
+uniform sampler2D u_Textures[32];
 
 void main()
 {
-	vec4 texColor = texture(u_Texture, v_TexCoord);
-	if (texColor[4] != 0.0)
-	{
-		FragColor = texColor;
-	}
-
+	//	color = vec4(v_TexCoord, 0.0, 1.0); // this was for debbugging
+	color = texture(u_Textures[int(v_TexIndex)], v_TexCoord * v_TilingFactor) * v_Color;
+	//	color = v_Color;
 }
+
+
 

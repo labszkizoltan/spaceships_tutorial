@@ -33,6 +33,7 @@ class Shader
 {
 public:
 //	Shader(const std::string& filepath);
+	Shader() = default;
 	Shader(const std::string& vertexSrc, const std::string& fragmentSrc);
 	~Shader();
 

@@ -28,11 +28,18 @@ void main()
 	float phi = atan(position_tmp.x, position_tmp.y);
 	float theta = acos(position_tmp.z / r);
 
-	float new_r = zoom_level * theta;
+	float aspect_ratio = 1.777;
+	float theta_max = 1.0471955; // 60 degrees
+	float r_min = 0.25;
+
+	float new_r = zoom_level * theta/theta_max;
+	float z_sign = position_tmp[2] / abs(position_tmp[2]);
+
 	gl_Position = vec4(
-		new_r*cos(phi),
+		new_r*cos(phi)/aspect_ratio,
 		new_r*sin(phi),
-		max(0, atan(r) / 1.570787f),
+		2.0 * atan(z_sign*r-r_min) / 1.570787f-1.0,
+//		-atan(r-r_min) / 1.570787f,
 		1.0f
 	);
 

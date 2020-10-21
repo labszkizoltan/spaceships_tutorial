@@ -1,0 +1,41 @@
+
+// ---------------- //
+// ----- TODO ----- //
+// ---------------- //
+
+- Add skybox
+	- Create the required buffers and fill them with data:
+		- create six quads in 3D space with texture coordinates
+		- create the corresponding index data
+	- Create a shader that can process the data and draw the textures on the quads
+
+	
+- Exclude vertices behind camera
+	The whole way of mapping directions into the clip space should be reviewed.
+	When I create a huge sphere, and watch the scene inside, I see weird behaviour.
+		Most likely due to the vertices behind the observer.
+
+- Upload all meshes into one buffer with ID's (ID should be part of the vertex layout), and add a uniform arrays that stores the transforms
+
+- Move input handling somewhere else, currently it is in the main functions game loop
+
+- Revise the matrix library and rewrite to column major
+
+- Add aspect ratio into the shader as a uniform float
+
+
+
+
+
+// ---------------- //
+// ----- Done ----- //
+// ---------------- //
+
+- Add timesteps
+
+
+
+
+
+
+
