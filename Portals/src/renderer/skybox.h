@@ -14,9 +14,7 @@ public:
 	Skybox(std::vector<std::string> texture_files, int planeResolution);
 	~Skybox();
 
-
 	void Draw(Observer obs);
-
 
 private:
 	void Init(std::vector<std::string> texture_files, int planeResolution);

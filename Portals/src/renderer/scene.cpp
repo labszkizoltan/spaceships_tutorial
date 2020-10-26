@@ -6,7 +6,7 @@
 Scene::Scene(OpenGLVertexBuffer& vb, OpenGLIndexBuffer& ib)
 {
 //	glGenVertexArrays(1, &m_VertexArray);
-	m_VertexBuffer = vb;
+	m_VertexBuffer = std::move(vb);
 	m_IndexBuffer = ib;
 }
 

@@ -108,7 +108,7 @@ Shader::Shader(const std::string & vertexSrc, const std::string & fragmentSrc)
 
 Shader::~Shader()
 {
-	glDeleteProgram(m_RendererID);
+//	glDeleteProgram(m_RendererID);
 }
 
 void Shader::Bind() const

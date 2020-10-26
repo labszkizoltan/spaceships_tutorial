@@ -95,5 +95,7 @@
     <None Include="src\renderer\shader_sources\fragment_shader_textured.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader_textured.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader.glsl" />
+    <None Include="src\renderer\shader_sources\fragment_shader_skybox.glsl" />
+    <None Include="src\renderer\shader_sources\vertex_shader_skybox.glsl" />
   </ItemGroup>
 </Project>

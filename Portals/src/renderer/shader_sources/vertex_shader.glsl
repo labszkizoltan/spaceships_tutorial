@@ -1,5 +1,9 @@
 
-#version 330 core
+// OpenGL clip space was left handed always!!!
+// https://stackoverflow.com/questions/17650219/when-is-z-axis-flipped-opengl
+
+
+#version 450 core
 
 layout(location = 0) in vec3 aPos;
 layout(location = 1) in vec3 aColor;
@@ -25,21 +29,24 @@ void main()
 	);
 
 	float r = length(position_tmp);
-	float phi = atan(position_tmp.x, position_tmp.y);
+//	float phi = atan(position_tmp.y, position_tmp.x);
 	float theta = acos(position_tmp.z / r);
+	float rho = length(vec2(position_tmp.x, position_tmp.y));
 
 	float aspect_ratio = 1.777;
 	float theta_max = 1.0471955; // 60 degrees
+	float r_max = 200.0f;
 	float r_min = 0.25;
 
 	float new_r = zoom_level * theta/theta_max;
-	float z_sign = position_tmp[2] / abs(position_tmp[2]);
 
 	gl_Position = vec4(
-		new_r*cos(phi)/aspect_ratio,
-		new_r*sin(phi),
-		2.0 * atan(z_sign*r-r_min) / 1.570787f-1.0,
-//		-atan(r-r_min) / 1.570787f,
+//		new_r*cos(phi)/aspect_ratio,
+//		new_r*sin(phi),
+		new_r*position_tmp.x/(rho*aspect_ratio),
+		new_r*position_tmp.y/rho,
+//		2.0 * atan(sign(position_tmp[2])*r-r_min) / 1.570787f-1.0,
+		2*(sign(position_tmp[2])*r-r_min)/r_max-1,
 		1.0f
 	);
 

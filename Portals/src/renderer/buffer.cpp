@@ -92,6 +92,40 @@ void OpenGLVertexBuffer::SetLayout()
 	}
 }
 
+OpenGLVertexBuffer::OpenGLVertexBuffer(const OpenGLVertexBuffer & other)
+	: m_RendererID(other.m_RendererID), m_Layout(other.m_Layout)
+{
+	std::cout << "OpenGLVertexBuffer::OpenGLVertexBuffer(const OpenGLVertexBuffer & other) is being used!" << std::endl;
+}
+
+OpenGLVertexBuffer & OpenGLVertexBuffer::operator=(const OpenGLVertexBuffer & other)
+{
+	return *this = OpenGLVertexBuffer(other);
+}
+
+OpenGLVertexBuffer::OpenGLVertexBuffer(OpenGLVertexBuffer && other) noexcept
+{
+	m_RendererID = other.m_RendererID;
+	m_Layout = other.m_Layout;
+
+	other.m_RendererID = 0;
+}
+
+OpenGLVertexBuffer & OpenGLVertexBuffer::operator=(OpenGLVertexBuffer && other) noexcept
+{
+	if(this != &other)
+	{
+		glDeleteBuffers(1, &m_RendererID);
+
+		m_RendererID = other.m_RendererID;
+		m_Layout = other.m_Layout;
+
+		other.m_RendererID = 0;
+	}
+
+	return *this;
+}
+
 
 //-------------------------------------------//
 //-------------- Index Buffer ---------------//

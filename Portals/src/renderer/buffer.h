@@ -115,6 +115,11 @@ public:
 	OpenGLVertexBuffer() = default;
 	OpenGLVertexBuffer(uint32_t size);
 	OpenGLVertexBuffer(float* vertices, uint32_t size);
+
+	OpenGLVertexBuffer(const OpenGLVertexBuffer& other);// copy constructor
+	OpenGLVertexBuffer& operator=(const OpenGLVertexBuffer& other);// copy assignment
+	OpenGLVertexBuffer(OpenGLVertexBuffer&& other) noexcept; // move constructor
+	OpenGLVertexBuffer& operator=(OpenGLVertexBuffer&& other) noexcept; // move assignment
 	~OpenGLVertexBuffer();
 
 	void Bind() const;
@@ -125,6 +130,7 @@ public:
 	const BufferLayout& GetLayout() const { return m_Layout; };
 	void SetLayout(const BufferLayout& layout);
 	void SetLayout();
+
 
 public:
 	uint32_t m_RendererID;
