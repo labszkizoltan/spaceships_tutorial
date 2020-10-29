@@ -8,20 +8,22 @@
 		- create six quads in 3D space with texture coordinates
 		- create the corresponding index data
 	- Create a shader that can process the data and draw the textures on the quads
+	- Figure out why only one texture is being displayed!
 
 	
-- Exclude vertices behind camera
-	The whole way of mapping directions into the clip space should be reviewed.
-	When I create a huge sphere, and watch the scene inside, I see weird behaviour.
-		Most likely due to the vertices behind the observer.
-
-- Upload all meshes into one buffer with ID's (ID should be part of the vertex layout), and add a uniform arrays that stores the transforms
-
-- Move input handling somewhere else, currently it is in the main functions game loop
-
-- Revise the matrix library and rewrite to column major
+- Upload all meshes into one buffer with ID's (ID should be part of the vertex layout),
+	and add a uniform array that stores the transforms by ID
 
 - Add aspect ratio into the shader as a uniform float
+
+- Investigate why the destructor of the Shader class throws an exception !!!
+	- So far it looks like the unordered_map in UniformSet causes the problem. The unordered_map
+		is a vector of lists, so no wonder that the read access violation is coming from the <list> header.
+		
+
+- use the move assignment operator of the shader in Skybox.cpp - "Skybox::Skybox(Skybox && other) noexcept"
+
+- Revise the matrix library and rewrite to column major
 
 
 
@@ -33,6 +35,19 @@
 
 - Add timesteps
 
+- Exclude vertices behind camera
+	The whole way of mapping directions into the clip space should be reviewed.
+	When I create a huge sphere, and watch the scene inside, I see weird behaviour.
+		Most likely due to the vertices behind the observer.
+
+
+- Move input handling somewhere else, currently it is in the main functions game loop
+
+- Implement rule of five for the Vertex and Index buffer classes
+
+- Implement rule of five for the Skybox class
+
+- Implement rule of five for the Shader class
 
 
 

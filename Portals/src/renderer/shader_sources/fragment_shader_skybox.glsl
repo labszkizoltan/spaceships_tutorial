@@ -11,8 +11,8 @@ uniform sampler2D u_Textures[32];
 void main()
 {
 //	color = 0.5 * texture(u_Textures[int(vTexID)], vTexCoord) + 0.5*vec4(vTexCoord, 0, 1);
-	color = 0.5 * texture(u_Textures[1], vTexCoord) + 0.5*vec4(vTexCoord, 0, 1);
-//	color = vec4(vTexCoord, 0, 1);
+//	color = 0.5 * texture(u_Textures[1], vTexCoord) + 0.5*vec4(vTexCoord, 0, 1);
+	color = vec4(vTexCoord, 0, 1);
 
 //	switch (int(vTexID))
 //	{

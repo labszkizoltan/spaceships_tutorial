@@ -20,8 +20,8 @@ void main()
 	);
 
 	float r = length(position_tmp);
-	float phi = atan(position_tmp.x, position_tmp.y);
 	float theta = acos(position_tmp.z / r);
+	float rho = length(vec2(position_tmp.x, position_tmp.y));
 
 	float aspect_ratio = 1.777; // aspect ratio of a 1280 x 720 screen
 	float theta_max = 1.0471955; // 60 degrees
@@ -31,10 +31,9 @@ void main()
 	float z_sign = position_tmp[2] / abs(position_tmp[2]);
 
 	gl_Position = vec4(
-		new_r*cos(phi) / aspect_ratio,
-		new_r*sin(phi),
+		new_r*position_tmp.x / (rho*aspect_ratio),
+		new_r*position_tmp.y / rho,
 		2.0 * atan(z_sign*r - r_min) / 1.570787f - 1.0,
-		//		-atan(r-r_min) / 1.570787f,
 		1.0f
 	);
 

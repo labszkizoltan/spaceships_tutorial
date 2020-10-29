@@ -116,8 +116,8 @@ public:
 	OpenGLVertexBuffer(uint32_t size);
 	OpenGLVertexBuffer(float* vertices, uint32_t size);
 
-	OpenGLVertexBuffer(const OpenGLVertexBuffer& other);// copy constructor
-	OpenGLVertexBuffer& operator=(const OpenGLVertexBuffer& other);// copy assignment
+	OpenGLVertexBuffer(const OpenGLVertexBuffer& other) = delete;// copy constructor
+	OpenGLVertexBuffer& operator=(const OpenGLVertexBuffer& other) = delete;// copy assignment
 	OpenGLVertexBuffer(OpenGLVertexBuffer&& other) noexcept; // move constructor
 	OpenGLVertexBuffer& operator=(OpenGLVertexBuffer&& other) noexcept; // move assignment
 	~OpenGLVertexBuffer();
@@ -145,12 +145,17 @@ class OpenGLIndexBuffer
 public:
 	OpenGLIndexBuffer() = default;
 	OpenGLIndexBuffer(uint32_t* indices, uint32_t count);
-	virtual ~OpenGLIndexBuffer();
 
-	virtual void Bind() const;
-	virtual void Unbind() const;
+	OpenGLIndexBuffer(const OpenGLIndexBuffer& other) = delete;// copy constructor
+	OpenGLIndexBuffer& operator=(const OpenGLIndexBuffer& other) = delete;// copy assignment
+	OpenGLIndexBuffer(OpenGLIndexBuffer&& other) noexcept; // move constructor
+	OpenGLIndexBuffer& operator=(OpenGLIndexBuffer&& other) noexcept; // move assignment
+	~OpenGLIndexBuffer();
 
-	virtual uint32_t GetCount() const { return m_Count; };
+	void Bind() const;
+	void Unbind() const;
+
+	uint32_t GetCount() const { return m_Count; };
 public:
 	uint32_t m_RendererID;
 	uint32_t m_Count;

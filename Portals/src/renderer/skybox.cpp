@@ -7,9 +7,10 @@
 
 #include "vendor/stb_image/stb_image.h"
 
-// #include "glad/glad.h"
+// First iteration of this class, above is a reworked version
 
 Skybox::Skybox()
+	: m_VertexArray(0), m_VertexBuffer(), m_IndexBuffer(), m_TextureShader()
 {
 	std::vector<std::string> texture_files = {
 		"assets/back.png",
@@ -28,6 +29,65 @@ Skybox::Skybox(std::vector<std::string> texture_files, int planeResolution)
 	Init(texture_files, planeResolution);
 }
 
+// // copy constructor
+// Skybox::Skybox(const Skybox & other)
+// 	: m_VertexArray(other.m_VertexArray), m_VertexBuffer(other.m_VertexBuffer), m_IndexBuffer(other.m_IndexBuffer), m_TextureShader(other.m_TextureShader)
+// {
+// 	std::cout << "Skybox::Skybox(const Skybox & other) - copy constructor was called. \n";
+// }
+// 
+// 
+// // copy assignment
+// Skybox & Skybox::operator=(const Skybox & other)
+// {
+// 	// perhaps it should be checked if " this != &other " just like in the move assignment operator
+// 
+// 	glDeleteVertexArrays(1, &m_VertexArray);
+// 	m_VertexBuffer.~OpenGLVertexBuffer();
+// 	m_IndexBuffer.~OpenGLIndexBuffer();
+// 	m_TextureShader.~Shader();
+// 	return *this = Skybox(other);
+// }
+
+// move constructor
+Skybox::Skybox(Skybox && other) noexcept
+{
+	m_VertexArray = other.m_VertexArray;
+	m_VertexBuffer = std::move(other.m_VertexBuffer);
+	m_IndexBuffer = std::move(other.m_IndexBuffer);
+	m_TextureShader = std::move(other.m_TextureShader);
+
+	other.m_VertexArray = 0;
+	other.m_VertexBuffer.m_RendererID = 0;
+	other.m_IndexBuffer.m_RendererID = 0;
+	other.m_TextureShader.m_RendererID = 0;
+}
+
+// move assignment
+Skybox & Skybox::operator=(Skybox && other) noexcept
+{
+	if (this != &other)
+	{
+		glDeleteVertexArrays(1, &m_VertexArray);
+		m_VertexBuffer.~OpenGLVertexBuffer();
+		m_IndexBuffer.~OpenGLIndexBuffer();
+		m_TextureShader.~Shader();
+
+		m_VertexArray = other.m_VertexArray;
+		m_VertexBuffer = std::move(other.m_VertexBuffer);
+		m_IndexBuffer = std::move(other.m_IndexBuffer);
+		m_TextureShader = std::move(other.m_TextureShader);
+
+		other.m_VertexArray = 0;
+		other.m_VertexBuffer.m_RendererID = 0;
+		other.m_IndexBuffer.m_RendererID = 0;
+		other.m_TextureShader.m_RendererID = 0;
+	}
+
+	return *this;
+}
+
+
 Skybox::~Skybox()
 {
 	glDeleteVertexArrays(1, &m_VertexArray);
@@ -40,10 +100,10 @@ void Skybox::Draw(Observer obs)
 {
 	glDisable(GL_DEPTH_TEST);
 
-	m_TextureShader.Bind();
 	glBindVertexArray(m_VertexArray);
-//	m_VertexBuffer.Bind();
-//	m_IndexBuffer.Bind();
+	m_VertexBuffer.Bind();
+	m_IndexBuffer.Bind();
+	m_TextureShader.Bind();
 
 	m_TextureShader.UploadUniformMat3("observer_orientation", obs.orientation.Glm());
 	m_TextureShader.UploadUniformFloat("zoom_level", obs.zoom_level);
@@ -98,9 +158,9 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 		int j = 0;
 		for (int i = 0; i < face_U.vertices.size(); i++)
 		{
-			allVertexDataWithTextureCoords[6 * j + 0] = face_U.vertices[0].x; // vertex positions
-			allVertexDataWithTextureCoords[6 * j + 1] = face_U.vertices[0].y;
-			allVertexDataWithTextureCoords[6 * j + 2] = face_U.vertices[0].z;
+			allVertexDataWithTextureCoords[6 * j + 0] = face_U.vertices[i].x; // vertex positions
+			allVertexDataWithTextureCoords[6 * j + 1] = face_U.vertices[i].y;
+			allVertexDataWithTextureCoords[6 * j + 2] = face_U.vertices[i].z;
 			allVertexDataWithTextureCoords[6 * j + 3] = (float)(i % (planeResolution +1)/(float)planeResolution); // texture coords
 			allVertexDataWithTextureCoords[6 * j + 4] = (float)(i / (planeResolution +1)/(float)planeResolution);
 			allVertexDataWithTextureCoords[6 * j + 5] = 0.0f; // texture ID
@@ -108,9 +168,9 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 		}
 		for (int i = 0; i < face_D.vertices.size(); i++)
 		{
-			allVertexDataWithTextureCoords[6 * j + 0] = face_D.vertices[0].x;
-			allVertexDataWithTextureCoords[6 * j + 1] = face_D.vertices[0].y;
-			allVertexDataWithTextureCoords[6 * j + 2] = face_D.vertices[0].z;
+			allVertexDataWithTextureCoords[6 * j + 0] = face_D.vertices[i].x;
+			allVertexDataWithTextureCoords[6 * j + 1] = face_D.vertices[i].y;
+			allVertexDataWithTextureCoords[6 * j + 2] = face_D.vertices[i].z;
 			allVertexDataWithTextureCoords[6 * j + 3] = (float)(i % (planeResolution + 1) / (float)planeResolution); // texture coords
 			allVertexDataWithTextureCoords[6 * j + 4] = (float)(i / (planeResolution + 1) / (float)planeResolution);
 			allVertexDataWithTextureCoords[6 * j + 5] = 1.0f;
@@ -118,9 +178,9 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 		}
 		for (int i = 0; i < face_F.vertices.size(); i++)
 		{
-			allVertexDataWithTextureCoords[6 * j + 0] = face_F.vertices[0].x;
-			allVertexDataWithTextureCoords[6 * j + 1] = face_F.vertices[0].y;
-			allVertexDataWithTextureCoords[6 * j + 2] = face_F.vertices[0].z;
+			allVertexDataWithTextureCoords[6 * j + 0] = face_F.vertices[i].x;
+			allVertexDataWithTextureCoords[6 * j + 1] = face_F.vertices[i].y;
+			allVertexDataWithTextureCoords[6 * j + 2] = face_F.vertices[i].z;
 			allVertexDataWithTextureCoords[6 * j + 3] = (float)(i % (planeResolution + 1) / (float)planeResolution); // texture coords
 			allVertexDataWithTextureCoords[6 * j + 4] = (float)(i / (planeResolution + 1) / (float)planeResolution);
 			allVertexDataWithTextureCoords[6 * j + 5] = 2.0f;
@@ -128,9 +188,9 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 		}
 		for (int i = 0; i < face_B.vertices.size(); i++)
 		{
-			allVertexDataWithTextureCoords[6 * j + 0] = face_B.vertices[0].x;
-			allVertexDataWithTextureCoords[6 * j + 1] = face_B.vertices[0].y;
-			allVertexDataWithTextureCoords[6 * j + 2] = face_B.vertices[0].z;
+			allVertexDataWithTextureCoords[6 * j + 0] = face_B.vertices[i].x;
+			allVertexDataWithTextureCoords[6 * j + 1] = face_B.vertices[i].y;
+			allVertexDataWithTextureCoords[6 * j + 2] = face_B.vertices[i].z;
 			allVertexDataWithTextureCoords[6 * j + 3] = (float)(i % (planeResolution + 1) / (float)planeResolution); // texture coords
 			allVertexDataWithTextureCoords[6 * j + 4] = (float)(i / (planeResolution + 1) / (float)planeResolution);
 			allVertexDataWithTextureCoords[6 * j + 5] = 3.0f;
@@ -138,9 +198,9 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 		}
 		for (int i = 0; i < face_L.vertices.size(); i++)
 		{
-			allVertexDataWithTextureCoords[6 * j + 0] = face_L.vertices[0].x;
-			allVertexDataWithTextureCoords[6 * j + 1] = face_L.vertices[0].y;
-			allVertexDataWithTextureCoords[6 * j + 2] = face_L.vertices[0].z;
+			allVertexDataWithTextureCoords[6 * j + 0] = face_L.vertices[i].x;
+			allVertexDataWithTextureCoords[6 * j + 1] = face_L.vertices[i].y;
+			allVertexDataWithTextureCoords[6 * j + 2] = face_L.vertices[i].z;
 			allVertexDataWithTextureCoords[6 * j + 3] = (float)(i % (planeResolution + 1) / (float)planeResolution); // texture coords
 			allVertexDataWithTextureCoords[6 * j + 4] = (float)(i / (planeResolution + 1) / (float)planeResolution);
 			allVertexDataWithTextureCoords[6 * j + 5] = 4.0f;
@@ -148,9 +208,9 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 		}
 		for (int i = 0; i < face_R.vertices.size(); i++)
 		{
-			allVertexDataWithTextureCoords[6 * j + 0] = face_R.vertices[0].x;
-			allVertexDataWithTextureCoords[6 * j + 1] = face_R.vertices[0].y;
-			allVertexDataWithTextureCoords[6 * j + 2] = face_R.vertices[0].z;
+			allVertexDataWithTextureCoords[6 * j + 0] = face_R.vertices[i].x;
+			allVertexDataWithTextureCoords[6 * j + 1] = face_R.vertices[i].y;
+			allVertexDataWithTextureCoords[6 * j + 2] = face_R.vertices[i].z;
 			allVertexDataWithTextureCoords[6 * j + 3] = (float)(i % (planeResolution + 1) / (float)planeResolution); // texture coords
 			allVertexDataWithTextureCoords[6 * j + 4] = (float)(i / (planeResolution + 1) / (float)planeResolution);
 			allVertexDataWithTextureCoords[6 * j + 5] = 5.0f;
@@ -223,7 +283,7 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 		}
 	}
 
-	m_IndexBuffer = OpenGLIndexBuffer((uint32_t*)&allIndexData[0], allIndexData.size());
+	m_IndexBuffer = std::move(OpenGLIndexBuffer((uint32_t*)&allIndexData[0], allIndexData.size()));
 
 //	Load images and create textures out of them
 	std::vector<uint32_t> rendererID; rendererID.resize(texture_files.size());
@@ -265,8 +325,8 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 		stbi_image_free(data);
 	}
 
-	// Create the shader that will draw the skybox
-	m_TextureShader = Shader(ParseShader("src/renderer/shader_sources/vertex_shader_skybox.glsl"), ParseShader("src/renderer/shader_sources/fragment_shader_skybox.glsl"));
+// Create the shader that will draw the skybox
+	m_TextureShader = std::move(Shader(ParseShader("src/renderer/shader_sources/vertex_shader_skybox.glsl"), ParseShader("src/renderer/shader_sources/fragment_shader_skybox.glsl")));
 
 	m_TextureShader.SearchAndAddUniform("observer_orientation");
 	m_TextureShader.SearchAndAddUniform("zoom_level");
@@ -283,14 +343,56 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 
 
 
-// int samplers[s_Data.MaxTextureSlots];
-// for (uint32_t i = 0; i < s_Data.MaxTextureSlots; i++)
-// {
-// 	samplers[i] = i;
-// }
-// 
-// s_Data.TextureShader = Shader::Create("assets/shaders/Texture.glsl");
-// s_Data.TextureShader->Bind();
-// //		s_Data.TextureShader->SetInt("u_Texture", 0);
-// s_Data.TextureShader->SetIntArray("u_Textures", samplers, s_Data.MaxTextureSlots);
+
+
+
+
+/*
+Skybox::Skybox()
+	: m_VertexArray(0), m_VertexBuffer(0), m_IndexBuffer(0), m_Shader(0)
+{
+	std::vector<std::string> texture_files = {
+		"assets/back.png",
+		"assets/front.png",
+		"assets/left.png",
+		"assets/right.png",
+		"assets/up.png",
+		"assets/down.png"
+	};
+
+	Init(texture_files);
+}
+
+Skybox::Skybox(std::vector<std::string> texture_files)
+{
+	Init(texture_files);
+}
+
+Skybox::~Skybox()
+{
+	glDeleteVertexArrays(1, &m_VertexArray);
+	glDeleteBuffers(1, &m_VertexBuffer);
+	glDeleteBuffers(1, &m_IndexBuffer);
+	glDeleteProgram(m_Shader);
+}
+
+void Skybox::Draw(Observer obs)
+{
+}
+
+void Skybox::Init(std::vector<std::string> texture_files)
+{
+	glGenVertexArrays(1, &m_VertexArray);
+	glBindVertexArray(m_VertexArray);
+
+	Shape3D sphereMesh = CreateSphere(10);
+
+
+}
+
+*/
+
+
+
+
 

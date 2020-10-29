@@ -14,7 +14,7 @@
 MyWindow::MyWindow(int width, int height, std::string name)
 {
 
-	std::cout << "Starting GLFW context, OpenGL 3.3" << std::endl;
+	std::cout << "Starting GLFW context, OpenGL 4.5" << std::endl;
 	// Init GLFW
 	glfwInit();
 	// Set all the required options for GLFW
@@ -22,12 +22,6 @@ MyWindow::MyWindow(int width, int height, std::string name)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
-
-//	With these setting the glCreateBuffers() function doesnt work, only glGenBuffers
-//	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-//	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-//	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-//	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	// Create a GLFWwindow object that we can use for GLFW's functions
 	m_Window = glfwCreateWindow(width, height, name.c_str(), NULL, NULL);
@@ -49,6 +43,8 @@ MyWindow::MyWindow(int width, int height, std::string name)
 	glViewport(0, 0, width, height);
 
 	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 
@@ -58,6 +54,16 @@ void MyWindow::SetKeyCallback(GLFWkeyfun callback)
 {
 	glfwSetKeyCallback(m_Window, callback);
 }
+
+// // Is called whenever a key is pressed/released via GLFW
+// void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
+// {
+// 	std::cout << key << std::endl;
+// 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+// 		glfwSetWindowShouldClose(window, GL_TRUE);
+// }
+
+
 
 
 // GLFWAPI GLFWmousebuttonfun glfwSetMouseButtonCallback(GLFWwindow* window, GLFWmousebuttonfun callback);
@@ -108,9 +114,29 @@ std::pair<float, float> MyWindow::GetMousePosition()
 // }
 // 
 
-void MyWindow::HandleUserInputs()
+void MyWindow::HandleUserInputs(Observer& obs, Timestep timestep)
 {
+	// Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
+	glfwPollEvents();
 
+	float obsTurnRate = 1.0f, obsMoveSpeed = 15.0f;
+
+	if (IsKeyPressed(GLFW_KEY_W)) { obs.MoveForward(timestep * obsMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_S)) { obs.MoveBackward(timestep * obsMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_R)) { obs.MoveUp(timestep * obsMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_F)) { obs.MoveDown(timestep * obsMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_D)) { obs.MoveRight(timestep * obsMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_A)) { obs.MoveLeft(timestep * obsMoveSpeed); }
+
+	if (IsKeyPressed(GLFW_KEY_E)) { obs.TurnClockwise(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_Q)) { obs.TurnAntiClockwise(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_RIGHT)) { obs.TurnLeft(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_LEFT)) { obs.TurnRight(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_DOWN)) { obs.TurnUp(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_UP)) { obs.TurnDown(timestep * obsTurnRate); }
+
+	if (IsKeyPressed(GLFW_KEY_P)) { obs.ZoomIn(1.05f); }
+	if (IsKeyPressed(GLFW_KEY_O)) { obs.ZoomOut(1.05f); }
 
 }
 

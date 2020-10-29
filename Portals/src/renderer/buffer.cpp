@@ -45,6 +45,46 @@ OpenGLVertexBuffer::OpenGLVertexBuffer(float * vertices, uint32_t size)
 	GLCall(glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW));
 }
 
+// // copy constructor
+// OpenGLVertexBuffer::OpenGLVertexBuffer(const OpenGLVertexBuffer & other)
+// 	: m_RendererID(other.m_RendererID), m_Layout(other.m_Layout)
+// {
+// 	std::cout << "OpenGLVertexBuffer::OpenGLVertexBuffer(const OpenGLVertexBuffer & other) is being used!" << std::endl;
+// }
+// 
+// // copy assignment
+// OpenGLVertexBuffer & OpenGLVertexBuffer::operator=(const OpenGLVertexBuffer & other)
+// {
+// 	// shouldn't the resources of the original object need to be freed? like this:
+// 	glDeleteBuffers(1, &m_RendererID);
+// 	return *this = OpenGLVertexBuffer(other);
+// }
+
+// move constructor
+OpenGLVertexBuffer::OpenGLVertexBuffer(OpenGLVertexBuffer && other) noexcept
+{
+	m_RendererID = other.m_RendererID;
+	m_Layout = other.m_Layout;
+
+	other.m_RendererID = 0;
+}
+
+// move assignment
+OpenGLVertexBuffer & OpenGLVertexBuffer::operator=(OpenGLVertexBuffer && other) noexcept
+{
+	if (this != &other)
+	{
+		glDeleteBuffers(1, &m_RendererID);
+
+		m_RendererID = other.m_RendererID;
+		m_Layout = other.m_Layout;
+
+		other.m_RendererID = 0;
+	}
+
+	return *this;
+}
+
 OpenGLVertexBuffer::~OpenGLVertexBuffer()
 {
 	glDeleteBuffers(1, &m_RendererID);
@@ -92,40 +132,6 @@ void OpenGLVertexBuffer::SetLayout()
 	}
 }
 
-OpenGLVertexBuffer::OpenGLVertexBuffer(const OpenGLVertexBuffer & other)
-	: m_RendererID(other.m_RendererID), m_Layout(other.m_Layout)
-{
-	std::cout << "OpenGLVertexBuffer::OpenGLVertexBuffer(const OpenGLVertexBuffer & other) is being used!" << std::endl;
-}
-
-OpenGLVertexBuffer & OpenGLVertexBuffer::operator=(const OpenGLVertexBuffer & other)
-{
-	return *this = OpenGLVertexBuffer(other);
-}
-
-OpenGLVertexBuffer::OpenGLVertexBuffer(OpenGLVertexBuffer && other) noexcept
-{
-	m_RendererID = other.m_RendererID;
-	m_Layout = other.m_Layout;
-
-	other.m_RendererID = 0;
-}
-
-OpenGLVertexBuffer & OpenGLVertexBuffer::operator=(OpenGLVertexBuffer && other) noexcept
-{
-	if(this != &other)
-	{
-		glDeleteBuffers(1, &m_RendererID);
-
-		m_RendererID = other.m_RendererID;
-		m_Layout = other.m_Layout;
-
-		other.m_RendererID = 0;
-	}
-
-	return *this;
-}
-
 
 //-------------------------------------------//
 //-------------- Index Buffer ---------------//
@@ -138,6 +144,45 @@ OpenGLIndexBuffer::OpenGLIndexBuffer(uint32_t * indices, uint32_t count)
 	GLCall(glCreateBuffers(1, &m_RendererID));
 	GLCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID));
 	GLCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW));
+}
+
+// // copy constructor
+// OpenGLIndexBuffer::OpenGLIndexBuffer(const OpenGLIndexBuffer & other)
+// 	: m_RendererID(other.m_RendererID), m_Count(other.m_Count)
+// {
+// 	std::cout << "OpenGLIndexBuffer::OpenGLIndexBuffer(const OpenGLIndexBuffer & other) is being used!" << std::endl;
+// }
+// 
+// // copy assignment
+// OpenGLIndexBuffer & OpenGLIndexBuffer::operator=(const OpenGLIndexBuffer & other)
+// {
+// 	// shouldn't the resources of the original object need to be freed? like this:
+// 	glDeleteBuffers(1, &m_RendererID);
+// 	return *this = OpenGLIndexBuffer(other);
+// }
+
+// move constructor
+OpenGLIndexBuffer::OpenGLIndexBuffer(OpenGLIndexBuffer && other) noexcept
+{
+	m_RendererID = other.m_RendererID;
+	m_Count = other.m_Count;
+	other.m_RendererID = 0;
+}
+
+// move assignment
+OpenGLIndexBuffer & OpenGLIndexBuffer::operator=(OpenGLIndexBuffer && other) noexcept
+{
+	if (this != &other)
+	{
+		glDeleteBuffers(1, &m_RendererID);
+
+		m_RendererID = other.m_RendererID;
+		m_Count = other.m_Count;
+
+		other.m_RendererID = 0;
+	}
+
+	return *this;
 }
 
 OpenGLIndexBuffer::~OpenGLIndexBuffer()

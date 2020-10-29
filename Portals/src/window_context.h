@@ -8,6 +8,8 @@
 // GLFW
 #include <glfw3.h>
 
+#include "controls/observer.h"
+#include "controls/timestep.h"
 
 class MyWindow
 {
@@ -24,7 +26,7 @@ public:
 //	float GetMouseX();
 //	float GetMouseY();
 
-	void HandleUserInputs();
+	void HandleUserInputs(Observer& obs, Timestep timestep);
 
 	GLFWwindow* GetWindow() { return m_Window; }
 

@@ -23,23 +23,14 @@
 
 #include "glm/gtc/matrix_transform.hpp"
 
-// Is called whenever a key is pressed/released via GLFW
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-{
-	std::cout << key << std::endl;
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
-}
-
-
+#include "vendor/stb_image/stb_image.h"
 
 int main()
 {
 	MyWindow appWindow(1280, 720, "Portals");
-	appWindow.SetKeyCallback(key_callback);
-
-//	Skybox mySky();
-	Skybox mySky = std::move(Skybox());
+//	appWindow.SetKeyCallback(key_callback);
+	
+//	Skybox mySky = std::move(Skybox());
 
 	uint32_t vertexArray;
 	glGenVertexArrays(1, &vertexArray);
@@ -68,22 +59,24 @@ int main()
 	OpenGLIndexBuffer cube_index_buffer((uint32_t*)&myShape.indices[0], myShape.indices.size()); // despite the name, this sould be a sphere
 
 	Shader myShader(ParseShader("src/renderer/shader_sources/vertex_shader.glsl"), ParseShader("src/renderer/shader_sources/fragment_shader.glsl"));
-	myShader.Bind();
-	myShader.SearchAndAddUniform("body_translation");
-	myShader.SearchAndAddUniform("body_orientation");
-	myShader.SearchAndAddUniform("body_scale");
-	myShader.SearchAndAddUniform("observer_translation");
-	myShader.SearchAndAddUniform("observer_orientation");
-	myShader.SearchAndAddUniform("zoom_level");
-	myShader.SearchAndAddUniform("alpha");
+	{
+		myShader.Bind();
+		myShader.SearchAndAddUniform("body_translation");
+		myShader.SearchAndAddUniform("body_orientation");
+		myShader.SearchAndAddUniform("body_scale");
+		myShader.SearchAndAddUniform("observer_translation");
+		myShader.SearchAndAddUniform("observer_orientation");
+		myShader.SearchAndAddUniform("zoom_level");
+		myShader.SearchAndAddUniform("alpha");
 
-	myShader.UploadUniformFloat3("body_translation", glm::vec3(0.0f, 0.0f, 0.0f));
-	myShader.UploadUniformMat3  ("body_orientation", glm::mat3(1.0f));
-	myShader.UploadUniformFloat ("body_scale", 1.0f);
-	myShader.UploadUniformFloat3("observer_translation", glm::vec3(0.0f, 0.0f, 0.0f));
-	myShader.UploadUniformMat3  ("observer_orientation", glm::mat3(1.0f));
-	myShader.UploadUniformFloat ("zoom_level", 1.0f);
-	myShader.UploadUniformFloat ("alpha", 1.0f);
+		myShader.UploadUniformFloat3("body_translation", glm::vec3(0.0f, 0.0f, 0.0f));
+		myShader.UploadUniformMat3("body_orientation", glm::mat3(1.0f));
+		myShader.UploadUniformFloat("body_scale", 1.0f);
+		myShader.UploadUniformFloat3("observer_translation", glm::vec3(0.0f, 0.0f, 0.0f));
+		myShader.UploadUniformMat3("observer_orientation", glm::mat3(1.0f));
+		myShader.UploadUniformFloat("zoom_level", 1.0f);
+		myShader.UploadUniformFloat("alpha", 1.0f);
+	}
 
 	Scene myScene(cube_buffer, cube_index_buffer);
 
@@ -91,11 +84,7 @@ int main()
 	float time = (float)glfwGetTime();
 	Timestep timestep = 0.0f; // timestep can be initialized like this, because its constructor takes in only one float, implicit cast is possible
 	float lastFrameTime = 0.0f;
-	float obsTurnRate = 1.0f, obsMoveSpeed = 15.0f;
-
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	
 	// Game loop
 	while (!glfwWindowShouldClose(appWindow.GetWindow()))
 	{
@@ -104,61 +93,36 @@ int main()
 		lastFrameTime = time;
 
 		// Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
-		glfwPollEvents();
-		
-		if (appWindow.IsKeyPressed(GLFW_KEY_W)) { myScene.m_Observer.MoveForward(timestep * obsMoveSpeed); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_S)) { myScene.m_Observer.MoveBackward(timestep * obsMoveSpeed); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_R)) { myScene.m_Observer.MoveUp(timestep * obsMoveSpeed); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_F)) { myScene.m_Observer.MoveDown(timestep * obsMoveSpeed); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_D)) { myScene.m_Observer.MoveRight(timestep * obsMoveSpeed); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_A)) { myScene.m_Observer.MoveLeft(timestep * obsMoveSpeed); }
-
-		if (appWindow.IsKeyPressed(GLFW_KEY_E))		{ myScene.m_Observer.TurnClockwise(timestep * obsTurnRate); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_Q))		{ myScene.m_Observer.TurnAntiClockwise(timestep * obsTurnRate); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_RIGHT))	{ myScene.m_Observer.TurnLeft(timestep * obsTurnRate); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_LEFT))	{ myScene.m_Observer.TurnRight(timestep * obsTurnRate); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_DOWN))	{ myScene.m_Observer.TurnUp(timestep * obsTurnRate); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_UP))	{ myScene.m_Observer.TurnDown(timestep * obsTurnRate); }
-
-		if (appWindow.IsKeyPressed(GLFW_KEY_P)) { myScene.m_Observer.ZoomIn(1.05f); }
-		if (appWindow.IsKeyPressed(GLFW_KEY_O)) { myScene.m_Observer.ZoomOut(1.05f); }
+		appWindow.HandleUserInputs(myScene.m_Observer, timestep);
 
 		myScene.SetObserver(myShader);
-
+		
 		// Render
-		// Clear the colorbuffer
 		glClearColor(0.0f, 0.05f, 0.3f, 1.0f);
-//		glClear(GL_COLOR_BUFFER_BIT);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-//		mySky.Draw(myScene.m_Observer);
-
-		glBindVertexArray(vertexArray);
+//		glBindVertexArray(vertexArray);
+//		cube_buffer.Bind();
+//		cube_index_buffer.Bind();
 //		myShader.Bind();
 
-		/*
-//		static float angle = 0.0f;
-//		angle += 0.005f;
-//		Mat_3D mat = Rotation(angle, { 1,1,0 });
-		myShader.UploadUniformFloat3("body_translation", glm::vec3(0.0f, 0.0f, 0.0f));
-//		myShader.UploadUniformMat3("body_orientation", mat.Glm());
-		myShader.UploadUniformFloat("body_scale", 1.0f);
-		myScene.Draw();
-		
-		myShader.UploadUniformFloat3("body_translation", glm::vec3(5.0f, 0.0f, 0.0f));
-//		myShader.UploadUniformMat3("body_orientation", glm::mat3(1.0f));
-		myShader.UploadUniformFloat("body_scale", 1.0f);
-		myScene.Draw();
+//		myShader.UploadUniformFloat3("body_translation", glm::vec3(0.0f, 0.0f, 0.0f));
+//		myShader.UploadUniformFloat("body_scale", 1.0f);
+//		myScene.Draw();
+//		
+//		myShader.UploadUniformFloat3("body_translation", glm::vec3(5.0f, 0.0f, 0.0f));
+//		myShader.UploadUniformFloat("body_scale", 1.0f);
+//		myScene.Draw();
+//
+//		myShader.UploadUniformFloat3("body_translation", glm::vec3(0.0f, 5.0f, 0.0f));
+//		myShader.UploadUniformFloat("body_scale", 1.0f);
+//		myScene.Draw();
+//
+//		myShader.UploadUniformFloat3("body_translation", glm::vec3(0.0f, 0.0f, 5.0f));
+//		myShader.UploadUniformFloat("body_scale", 2.0f);
+//		myScene.Draw();
 
-		myShader.UploadUniformFloat3("body_translation", glm::vec3(0.0f, 5.0f, 0.0f));
-		myShader.UploadUniformFloat("body_scale", 1.0f);
-		myScene.Draw();
 
-		myShader.UploadUniformFloat3("body_translation", glm::vec3(0.0f, 0.0f, 5.0f));
-		myShader.UploadUniformFloat("body_scale", 2.0f);
-		myScene.Draw();
-		*/
-//		/*
 		static int dim = 10;
 		myShader.UploadUniformMat3("body_orientation", glm::mat3(1.0f));
 		myShader.UploadUniformFloat("body_scale", 2.0f);
@@ -184,7 +148,8 @@ int main()
 			myShader.UploadUniformFloat("body_scale", 2.0f*(float)i);
 			myScene.Draw();
 		}
-//		*/
+
+
 		// Swap the screen buffers
 		glfwSwapBuffers(appWindow.GetWindow());
 	}
