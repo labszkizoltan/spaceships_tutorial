@@ -8,6 +8,31 @@
 #include "Portals/src/controls/observer.h"
 
 
+/*
+class Skybox
+{
+public:
+	Skybox();
+//	Skybox(std::vector<std::string> texture_files);
+
+//	Skybox(const Skybox& other); // copy constructor
+//	Skybox& operator=(const Skybox& other); // copy assignment
+//	Skybox(Skybox&& other) noexcept; // move constructor
+//	Skybox& operator=(Skybox&& other) noexcept; // move assignment
+	~Skybox();
+
+	void Draw(Observer obs);
+
+private:
+//	void Init(std::vector<std::string> texture_files);
+
+private:
+	uint32_t m_VertexArray, m_VertexBuffer, m_IndexBuffer, m_Shader, m_Texture;
+};
+*/
+
+
+
 
 // First iteration of this class, above is a reworked version
 
@@ -33,33 +58,8 @@ private:
 	OpenGLVertexBuffer m_VertexBuffer;
 	OpenGLIndexBuffer m_IndexBuffer;
 	Shader m_TextureShader;
+	std::vector<uint32_t> m_Textures;
 };
 
-
-
-/*
-
-class Skybox
-{
-public:
-	Skybox();
-	Skybox(std::vector<std::string> texture_files);
-
-//	Skybox(const Skybox& other); // copy constructor
-//	Skybox& operator=(const Skybox& other); // copy assignment
-//	Skybox(Skybox&& other) noexcept; // move constructor
-//	Skybox& operator=(Skybox&& other) noexcept; // move assignment
-	~Skybox();
-
-	void Draw(Observer obs);
-
-private:
-	void Init(std::vector<std::string> texture_files);
-
-private:
-	uint32_t m_VertexArray, m_VertexBuffer, m_IndexBuffer, m_Shader;
-};
-
-*/
 
 

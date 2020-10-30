@@ -47,7 +47,7 @@ static uint32_t CompileShader(uint32_t type, const std::string& source)
 }
 
 Shader::Shader()
-	: m_RendererID(0), m_UniformLocations()
+	: m_RendererID(0)//, m_UniformLocations()
 {
 	std::cout << "Default Shader was created.\n";
 }
@@ -90,7 +90,7 @@ Shader::Shader(Shader && other) noexcept
 {
 	std::cout << "Shader has been move constructed! \n";
 	m_RendererID = other.m_RendererID;
-	m_UniformLocations = other.m_UniformLocations;
+//	m_UniformLocations = other.m_UniformLocations;
 
 	other.m_RendererID = 0;
 }
@@ -102,10 +102,10 @@ Shader & Shader::operator=(Shader && other) noexcept
 	if (this != &other)
 	{
 		glDeleteProgram(m_RendererID);
-		m_UniformLocations.clear();
+//		m_UniformLocations.clear();
 
 		m_RendererID = other.m_RendererID;
-		m_UniformLocations = other.m_UniformLocations;
+//		m_UniformLocations = other.m_UniformLocations;
 
 		other.m_RendererID = 0;
 	}
@@ -134,9 +134,12 @@ void Shader::Unbind() const
 
 void Shader::UploadUniformInt(const std::string & name, const int value)
 {
-	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+//	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	if (loc != -1)
 	{
-		glUniform1i(m_UniformLocations[name], value);
+//		glUniform1i(m_UniformLocations[name], value);
+		glUniform1i(loc, value);
 	}
 	else
 	{
@@ -146,9 +149,12 @@ void Shader::UploadUniformInt(const std::string & name, const int value)
 
 void Shader::UploadUniformIntArray(const std::string & name, int * values, uint32_t count)
 {
-	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+//	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	if (loc != -1)
 	{
-		glUniform1iv(m_UniformLocations[name], count, values);
+//		glUniform1iv(m_UniformLocations[name], count, values);
+		glUniform1iv(loc, count, values);
 	}
 	else
 	{
@@ -156,11 +162,15 @@ void Shader::UploadUniformIntArray(const std::string & name, int * values, uint3
 	}
 }
 
+
 void Shader::UploadUniformFloat(const std::string & name, const float value)
 {
-	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+//	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	if (loc != -1)
 	{
-		glUniform1f(m_UniformLocations[name], value);
+//		glUniform1f(m_UniformLocations[name], value);
+		glUniform1f(loc, value);
 	}
 	else
 	{
@@ -171,9 +181,12 @@ void Shader::UploadUniformFloat(const std::string & name, const float value)
 
 void Shader::UploadUniformFloat2(const std::string & name, const glm::vec2 & value)
 {
-	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+//	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	if (loc != -1)
 	{
-		glUniform2f(m_UniformLocations[name], value.x, value.y);
+//		glUniform2f(m_UniformLocations[name], value.x, value.y);
+		glUniform2f(loc, value.x, value.y);
 	}
 	else
 	{
@@ -183,9 +196,12 @@ void Shader::UploadUniformFloat2(const std::string & name, const glm::vec2 & val
 
 void Shader::UploadUniformFloat3(const std::string & name, const glm::vec3 & value)
 {
-	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+//	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	if (loc != -1)
 	{
-		glUniform3f(m_UniformLocations[name], value.x, value.y, value.z);
+//		glUniform3f(m_UniformLocations[name], value.x, value.y, value.z);
+		glUniform3f(loc, value.x, value.y, value.z);
 	}
 	else
 	{
@@ -195,9 +211,12 @@ void Shader::UploadUniformFloat3(const std::string & name, const glm::vec3 & val
 
 void Shader::UploadUniformFloat4(const std::string & name, const glm::vec4 & value)
 {
-	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+//	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	if (loc != -1)
 	{
-		glUniform4f(m_UniformLocations[name], value.x, value.y, value.z, value.w);
+//		glUniform4f(m_UniformLocations[name], value.x, value.y, value.z, value.w);
+		glUniform4f(loc, value.x, value.y, value.z, value.w);
 	}
 	else
 	{
@@ -207,9 +226,12 @@ void Shader::UploadUniformFloat4(const std::string & name, const glm::vec4 & val
 
 void Shader::UploadUniformMat3(const std::string & name, const glm::mat3 & value)
 {
-	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+//	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	if (loc != -1)
 	{
-		glUniformMatrix3fv(m_UniformLocations[name], 1, GL_FALSE, glm::value_ptr(value));
+//		glUniformMatrix3fv(m_UniformLocations[name], 1, GL_FALSE, glm::value_ptr(value));
+		glUniformMatrix3fv(loc, 1, GL_FALSE, glm::value_ptr(value));
 	}
 	else
 	{
@@ -219,9 +241,12 @@ void Shader::UploadUniformMat3(const std::string & name, const glm::mat3 & value
 
 void Shader::UploadUniformMat4(const std::string & name, const glm::mat4 & value)
 {
-	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+//	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	if(loc != -1)
 	{
-		glUniformMatrix4fv(m_UniformLocations[name], 1, GL_FALSE, glm::value_ptr(value));
+//		glUniformMatrix4fv(m_UniformLocations[name], 1, GL_FALSE, glm::value_ptr(value));
+		glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(value));
 	}
 	else
 	{
@@ -229,11 +254,10 @@ void Shader::UploadUniformMat4(const std::string & name, const glm::mat4 & value
 	}
 }
 
-void Shader::SearchAndAddUniform(const std::string & name)
-{
-	m_UniformLocations[name] = glGetUniformLocation(m_RendererID, name.c_str());
-//	m_UniformLocations.insert(std::pair<std::string, GLint>(m_RendererID, name));
-}
+ void Shader::SearchAndAddUniform(const std::string & name)
+ {
+// 	m_UniformLocations[name] = glGetUniformLocation(m_RendererID, name.c_str());
+ }
 
 
 

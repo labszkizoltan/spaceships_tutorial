@@ -1,27 +1,41 @@
 
-#version 330 core
+#version 450 core
 
-layout(location = 0) in vec3 a_Position;
-layout(location = 2) in vec2 a_TexCoord;
-layout(location = 3) in float a_TexIndex;
-layout(location = 4) in float a_TilingFactor;
+layout(location = 0) in vec3 aPos;
+layout(location = 2) in vec2 aTexCoord;
 
-uniform mat4 u_ViewProjection;
-//uniform mat4 u_Transform; // this doesnt exist since batch rendering added
+uniform mat3 observer_orientation;
+uniform float zoom_level;
 
-out vec2 v_TexCoord;
-out vec4 v_Color;
-out float v_TexIndex;
-out float v_TilingFactor;
+out vec2 vTexCoord;
 
 void main()
 {
-	v_Color = a_Color;
-	v_TexCoord = a_TexCoord;
-	v_TexIndex = a_TexIndex;
-	v_TilingFactor = a_TilingFactor;
-	//	gl_Position = u_ViewProjection * u_Transform * vec4(a_Position, 1.0);
-	gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+	vec3 position_tmp = vec3(
+		dot(aPos, observer_orientation[0]),
+		dot(aPos, observer_orientation[1]),
+		dot(aPos, observer_orientation[2])
+	);
+
+	float r = length(position_tmp);
+	float theta = acos(position_tmp.z / r);
+	float rho = length(vec2(position_tmp.x, position_tmp.y));
+
+	float aspect_ratio = 1.777; // aspect ratio of a 1280 x 720 screen
+	float theta_max = 1.0471955; // 60 degrees
+	float r_min = 0.01;
+
+	float new_r = zoom_level * theta / theta_max;
+	float z_sign = position_tmp[2] / abs(position_tmp[2]);
+
+	gl_Position = vec4(
+		new_r*position_tmp.x / (rho*aspect_ratio),
+		new_r*position_tmp.y / rho,
+		2.0 * atan(z_sign*r - r_min) / 1.570787f - 1.0,
+		1.0f
+	);
+
+	vTexCoord = aTexCoord;
 }
 
 

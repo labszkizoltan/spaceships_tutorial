@@ -9,6 +9,9 @@ struct Shape3D
 	std::vector<Vec3D> vertices;
 	std::vector<uint32_t> indices;
 
+	Shape3D() = default;
+	Shape3D(const std::string& filename);
+
 	void merge(Shape3D shape_to_add);
 	void simplify(float tolerance);
 
@@ -17,6 +20,8 @@ struct Shape3D
 	void rotate(Mat_3D m);
 	void center();
 	void normalize();
+
+	void write_to_file(const std::string& filename);
 };
 
 

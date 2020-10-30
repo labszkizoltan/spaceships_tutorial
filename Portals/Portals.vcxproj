@@ -126,12 +126,16 @@
     <ClCompile Include="src\controls\observer.cpp" />
     <ClCompile Include="src\controls\timestep.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\objects\body.cpp" />
+    <ClCompile Include="src\objects\mesh.cpp" />
     <ClCompile Include="src\renderer\buffer.cpp" />
     <ClCompile Include="src\renderer\scene.cpp" />
     <ClCompile Include="src\renderer\shader.cpp" />
     <ClCompile Include="src\renderer\skybox.cpp" />
+    <ClCompile Include="src\renderer\texture.cpp" />
     <ClCompile Include="src\utils\Matrix_3D.cpp" />
     <ClCompile Include="src\utils\shape_creator.cpp" />
+    <ClCompile Include="src\utils\Vector_2D.cpp" />
     <ClCompile Include="src\utils\Vector_3D.cpp" />
     <ClCompile Include="src\window_context.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
@@ -141,6 +145,8 @@
   <ItemGroup>
     <ClInclude Include="src\controls\observer.h" />
     <ClInclude Include="src\controls\timestep.h" />
+    <ClInclude Include="src\objects\body.h" />
+    <ClInclude Include="src\objects\mesh.h" />
     <ClInclude Include="src\renderer\buffer.h" />
     <ClInclude Include="src\renderer\renderer.h" />
     <ClInclude Include="src\renderer\scene.h" />
@@ -150,6 +156,7 @@
     <ClInclude Include="src\sample_code.h" />
     <ClInclude Include="src\utils\Matrix_3D.h" />
     <ClInclude Include="src\utils\shape_creator.h" />
+    <ClInclude Include="src\utils\Vector_2D.h" />
     <ClInclude Include="src\utils\Vector_3D.h" />
     <ClInclude Include="src\window_context.h" />
   </ItemGroup>

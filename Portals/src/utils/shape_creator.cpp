@@ -1,6 +1,31 @@
 
 #include "shape_creator.h"
 
+#include <fstream>
+
+Shape3D::Shape3D(const std::string & filename)
+{
+	std::ifstream myfile(filename.c_str());
+	int v_count=0, i_count=0;
+
+	myfile >> v_count;
+	myfile >> i_count;
+
+	vertices.resize(v_count);
+	indices.resize(i_count);
+
+	for (int i = 0; i < v_count; i++)
+	{
+		myfile >> vertices[i].x;
+		myfile >> vertices[i].y;
+		myfile >> vertices[i].z;
+	}
+
+	for (int i = 0; i < i_count; i++)
+		myfile >> indices[i];
+
+	myfile.close();
+}
 
 void Shape3D::merge(Shape3D shape_to_add)
 {
@@ -84,6 +109,24 @@ void Shape3D::normalize()
 		vert /= max_length;
 }
 
+void Shape3D::write_to_file(const std::string& filename)
+{
+	std::ofstream myfile;
+	myfile.open(filename.c_str());
+
+	myfile << vertices.size() << " " << indices.size() << "\n";
+	for(auto vec : vertices)
+		myfile << vec.x << "\t" << vec.y << "\t" << vec.z << "\n";
+
+	myfile << "\n";
+	for (int i = 0; i < indices.size()/3; i++)
+	{
+		myfile << indices[3*i+0] << "\t" << indices[3 * i + 1] << "\t" << indices[3 * i + 2] << "\n";
+	}
+
+	myfile.close();
+}
+
 
 Shape3D CreateQuad()
 {
@@ -161,16 +204,17 @@ Shape3D CreateCube(uint32_t size)
 	face_U.translate({ 0.0f, 0.0f,  d });
 	face_D.translate({ 0.0f, 0.0f, -d });
 
+	// Im leaving out the simplification step now, so it is easier to map texture coordinates to the vertices
 	face_F.merge(face_B);
-	face_F.simplify(0.0001f);
+//	face_F.simplify(0.0001f);
 	face_F.merge(face_L);
-	face_F.simplify(0.0001f);
+//	face_F.simplify(0.0001f);
 	face_F.merge(face_R);
-	face_F.simplify(0.0001f);
+//	face_F.simplify(0.0001f);
 	face_F.merge(face_U);
-	face_F.simplify(0.0001f);
+//	face_F.simplify(0.0001f);
 	face_F.merge(face_D);
-	face_F.simplify(0.0001f);
+//	face_F.simplify(0.0001f);
 
 	return face_F;
 }

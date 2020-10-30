@@ -119,7 +119,7 @@ void MyWindow::HandleUserInputs(Observer& obs, Timestep timestep)
 	// Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
 	glfwPollEvents();
 
-	float obsTurnRate = 1.0f, obsMoveSpeed = 15.0f;
+	float obsTurnRate = 2.5f/obs.zoom_level, obsMoveSpeed = 15.0f;
 
 	if (IsKeyPressed(GLFW_KEY_W)) { obs.MoveForward(timestep * obsMoveSpeed); }
 	if (IsKeyPressed(GLFW_KEY_S)) { obs.MoveBackward(timestep * obsMoveSpeed); }
