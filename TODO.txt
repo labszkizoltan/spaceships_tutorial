@@ -3,13 +3,6 @@
 // ----- TODO ----- //
 // ---------------- //
 
-- Add skybox
-	- Create the required buffers and fill them with data:
-		- create six quads in 3D space with texture coordinates
-		- create the corresponding index data
-	- Create a shader that can process the data and draw the textures on the quads
-	- Figure out why only one texture is being displayed!
-
 	
 - Upload all meshes into one buffer with ID's (ID should be part of the vertex layout),
 	and add a uniform array that stores the transforms by ID
@@ -19,12 +12,23 @@
 - Investigate why the destructor of the Shader class throws an exception !!!
 	- So far it looks like the unordered_map in UniformSet causes the problem. The unordered_map
 		is a vector of lists, so no wonder that the read access violation is coming from the <list> header.
+	- Update: I have changed the unordered map to just map, but still got an error. For some reason a 
+		shaders destructor is called twice, and this is causing the issue. When I remove the explicit shader destructor call
+		from the Skaybox destructor, the error goes away. However I still dont know why the destructor is called
+		twice on the same object, my best guess is that I have implemented the move semantics incorrectly somewhere.
 		
 
-- use the move assignment operator of the shader in Skybox.cpp - "Skybox::Skybox(Skybox && other) noexcept"
 
 - Revise the matrix library and rewrite to column major
 
+
+
+- Add skybox
+	- Create the required buffers and fill them with data:
+		- create six quads in 3D space with texture coordinates
+		- create the corresponding index data
+	- Create a shader that can process the data and draw the textures on the quads
+	- Figure out why only one texture is being displayed!
 
 
 
@@ -48,6 +52,9 @@
 - Implement rule of five for the Skybox class
 
 - Implement rule of five for the Shader class
+
+- use the move assignment operator of the shader in Skybox.cpp - "Skybox::Skybox(Skybox && other) noexcept"
+
 
 
 

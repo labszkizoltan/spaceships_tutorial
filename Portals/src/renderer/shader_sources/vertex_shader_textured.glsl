@@ -2,36 +2,44 @@
 #version 450 core
 
 layout(location = 0) in vec3 aPos;
-layout(location = 2) in vec2 aTexCoord;
+layout(location = 1) in vec2 aTexCoord;
 
+uniform vec3 body_translation;
+uniform mat3 body_orientation;
+uniform float body_scale;
+
+uniform vec3 observer_translation;
 uniform mat3 observer_orientation;
+
 uniform float zoom_level;
 
 out vec2 vTexCoord;
 
 void main()
 {
-	vec3 position_tmp = vec3(
-		dot(aPos, observer_orientation[0]),
-		dot(aPos, observer_orientation[1]),
-		dot(aPos, observer_orientation[2])
+	vec3 position_tmp = body_translation - observer_translation + body_scale * (aPos[0] * body_orientation[0] + aPos[1] * body_orientation[1] + aPos[2] * body_orientation[2]);
+	position_tmp = vec3(
+		dot(position_tmp, observer_orientation[0]),
+		dot(position_tmp, observer_orientation[1]),
+		dot(position_tmp, observer_orientation[2])
 	);
 
 	float r = length(position_tmp);
 	float theta = acos(position_tmp.z / r);
 	float rho = length(vec2(position_tmp.x, position_tmp.y));
 
-	float aspect_ratio = 1.777; // aspect ratio of a 1280 x 720 screen
+	float aspect_ratio = 1.777;
 	float theta_max = 1.0471955; // 60 degrees
-	float r_min = 0.01;
+//	float r_max = 200.0f;
+	float r_min = 0.25;
 
 	float new_r = zoom_level * theta / theta_max;
-	float z_sign = position_tmp[2] / abs(position_tmp[2]);
 
 	gl_Position = vec4(
 		new_r*position_tmp.x / (rho*aspect_ratio),
 		new_r*position_tmp.y / rho,
-		2.0 * atan(z_sign*r - r_min) / 1.570787f - 1.0,
+		//		2*(sign(position_tmp[2])*r-r_min)/r_max-1, // finite sight range, ending at distance == r_max
+		2.0 * atan(sign(position_tmp[2])*r - r_min) / 1.570787f - 1.0, // infinite sight range
 		1.0f
 	);
 

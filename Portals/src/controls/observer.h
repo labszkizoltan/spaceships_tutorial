@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Portals/src/utils/Matrix_3D.h"
+#include "Portals/src/renderer/shader.h"
 
 struct Observer
 {
@@ -11,6 +12,8 @@ struct Observer
 	Observer();
 	Observer(Vec3D v, Mat_3D m, float zoom);
 	~Observer() = default;
+
+	void SetObserverInShader(Shader& shader);
 
 	void MoveForward(float distance);
 	void MoveBackward(float distance);
@@ -29,7 +32,6 @@ struct Observer
 	void ZoomIn(float multiplier);
 	void ZoomOut(float multiplier);
 };
-
 
 
 

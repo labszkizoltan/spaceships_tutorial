@@ -27,9 +27,6 @@
     <ClCompile Include="src\renderer\shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\controls\observer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,10 +51,13 @@
     <ClCompile Include="src\objects\body.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\objects\mesh.cpp">
+    <ClCompile Include="src\utils\Vector_2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\utils\Vector_2D.cpp">
+    <ClCompile Include="src\renderer\coloured_mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\textured_mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,9 +80,6 @@
     <ClInclude Include="src\renderer\renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\utils\shape_creator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -101,13 +98,16 @@
     <ClInclude Include="src\renderer\skybox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\objects\mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\objects\body.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\utils\Vector_2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\coloured_mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\textured_mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

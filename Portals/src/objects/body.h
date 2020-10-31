@@ -2,7 +2,7 @@
 
 #include "Portals/src/utils/Vector_3D.h"
 #include "Portals/src/utils/Matrix_3D.h"
-#include "mesh.h"
+#include "Portals/src/renderer/textured_mesh.h"
 
 
 

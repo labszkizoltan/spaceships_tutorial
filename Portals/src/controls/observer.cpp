@@ -11,6 +11,15 @@ Observer::Observer() : translation(Vec3D()), orientation(Identity(1.0f)), zoom_l
 
 Observer::Observer(Vec3D v, Mat_3D m, float zoom) : translation(v), orientation(m), zoom_level(zoom) {}
 
+void Observer::SetObserverInShader(Shader& shader)
+{
+	shader.Bind();
+	shader.UploadUniformFloat3("observer_translation", translation.Glm());
+	shader.UploadUniformMat3("observer_orientation", orientation.Glm());
+	shader.UploadUniformFloat("zoom_level", zoom_level);
+}
+
+
 void Observer::MoveForward(float distance)
 {
 	translation += distance * orientation.f3;
@@ -73,12 +82,12 @@ void Observer::TurnAntiClockwise(float angle)
 
 void Observer::ZoomIn(float multiplier)
 {
-	zoom_level *= multiplier;
+	zoom_level *= zoom_level > 100.0f ? 1.0f : multiplier;
 }
 
 void Observer::ZoomOut(float multiplier)
 {
-	zoom_level /= multiplier;
+	zoom_level /= zoom_level < 0.5f ? 1.0f : multiplier;
 }
 
 
