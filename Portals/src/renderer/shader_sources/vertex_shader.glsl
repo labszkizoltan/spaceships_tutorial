@@ -17,6 +17,8 @@ uniform mat3 observer_orientation;
 
 uniform float zoom_level;
 
+uniform float aspect_ratio;
+
 out vec3 outColor;
 
 void main()
@@ -32,7 +34,6 @@ void main()
 	float theta = acos(position_tmp.z / r);
 	float rho = length(vec2(position_tmp.x, position_tmp.y));
 
-	float aspect_ratio = 1.777;
 	float theta_max = 1.0471955; // 60 degrees
 //	float r_max = 200.0f;
 	float r_min = 0.25;

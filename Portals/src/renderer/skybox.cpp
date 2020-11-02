@@ -354,6 +354,12 @@ void Skybox::Draw(Observer obs)
 //	glEnable(GL_DEPTH_TEST);
 }
 
+void Skybox::SetShaderAspectRatio(float aspectRatio)
+{
+	m_TextureShader.Bind();
+	m_TextureShader.UploadUniformFloat("aspect_ratio", aspectRatio);
+}
+
 
 void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 {

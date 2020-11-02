@@ -17,6 +17,7 @@ class TexturedMesh
 public:
 	TexturedMesh();
 	TexturedMesh(BodyType type);
+	TexturedMesh(const std::string& vertexFilepath, uint32_t textureID); // use existing texture instead of creating one from a file
 	TexturedMesh(const std::string& vertexFilepath, const std::string& textureFilepath);
 	~TexturedMesh();
 

@@ -42,6 +42,46 @@ TexturedMesh::TexturedMesh(BodyType type)
 	Init(type);
 }
 
+TexturedMesh::TexturedMesh(const std::string & vertexFilepath, uint32_t textureID)
+{
+	// reading in the data from the vertex file
+	std::vector<float> vertexAndTexcoordData;
+	std::vector<uint32_t> indexData;
+	{
+		std::ifstream myfile(vertexFilepath.c_str());
+		int v_count = 0, i_count = 0;
+
+		myfile >> v_count;
+		myfile >> i_count;
+
+		vertexAndTexcoordData.resize(v_count * 5); // each vertex consists of five floats
+		indexData.resize(i_count);
+
+		for (int i = 0; i < v_count * 5; i++)
+			myfile >> vertexAndTexcoordData[i];
+
+		for (int i = 0; i < i_count; i++)
+			myfile >> indexData[i];
+
+		myfile.close();
+	}
+
+	// Create the Vertex/Index array/buffers 
+	glGenVertexArrays(1, &m_VertexArray);
+	glBindVertexArray(m_VertexArray);
+
+	m_VertexBuffer = std::move(OpenGLVertexBuffer((float*)&vertexAndTexcoordData[0], vertexAndTexcoordData.size() * sizeof(float)));
+	m_VertexBuffer.Bind();
+	m_VertexBuffer.SetLayout({
+		{ShaderDataType::Float3, "aPos"},
+		{ShaderDataType::Float2, "aTexCoord"}
+		});
+
+	m_IndexBuffer = std::move(OpenGLIndexBuffer((uint32_t*)&indexData[0], indexData.size()));
+
+	m_Texture = textureID;
+}
+
 // dont use this, not finished, and there is a good chance that it wont be finished at all
 void TexturedMesh::Init(BodyType type)
 {

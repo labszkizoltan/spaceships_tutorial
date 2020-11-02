@@ -127,6 +127,8 @@
     <ClCompile Include="src\controls\timestep.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\objects\body.cpp" />
+    <ClCompile Include="src\renderer\framebuffer.cpp" />
+    <ClCompile Include="src\renderer\portal.cpp" />
     <ClCompile Include="src\renderer\textured_mesh.cpp" />
     <ClCompile Include="src\renderer\buffer.cpp" />
     <ClCompile Include="src\renderer\coloured_mesh.cpp" />
@@ -146,6 +148,8 @@
     <ClInclude Include="src\controls\observer.h" />
     <ClInclude Include="src\controls\timestep.h" />
     <ClInclude Include="src\objects\body.h" />
+    <ClInclude Include="src\renderer\framebuffer.h" />
+    <ClInclude Include="src\renderer\portal.h" />
     <ClInclude Include="src\renderer\textured_mesh.h" />
     <ClInclude Include="src\renderer\buffer.h" />
     <ClInclude Include="src\renderer\renderer.h" />

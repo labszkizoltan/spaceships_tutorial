@@ -3,11 +3,8 @@
 // ----- TODO ----- //
 // ---------------- //
 
-	
 - Upload all meshes into one buffer with ID's (ID should be part of the vertex layout),
 	and add a uniform array that stores the transforms by ID
-
-- Add aspect ratio into the shader as a uniform float
 
 - Investigate why the destructor of the Shader class throws an exception !!!
 	- So far it looks like the unordered_map in UniformSet causes the problem. The unordered_map
@@ -21,14 +18,6 @@
 
 - Revise the matrix library and rewrite to column major
 
-
-
-- Add skybox
-	- Create the required buffers and fill them with data:
-		- create six quads in 3D space with texture coordinates
-		- create the corresponding index data
-	- Create a shader that can process the data and draw the textures on the quads
-	- Figure out why only one texture is being displayed!
 
 
 
@@ -54,6 +43,15 @@
 - Implement rule of five for the Shader class
 
 - use the move assignment operator of the shader in Skybox.cpp - "Skybox::Skybox(Skybox && other) noexcept"
+
+- Add skybox
+	- Create the required buffers and fill them with data:
+		- create six quads in 3D space with texture coordinates
+		- create the corresponding index data
+	- Create a shader that can process the data and draw the textures on the quads
+	- Figure out why only one texture is being displayed!
+
+- Add aspect ratio into the shader as a uniform float
 
 
 

@@ -8,6 +8,8 @@ layout(location = 2) in float aTexID;
 uniform mat3 observer_orientation;
 uniform float zoom_level;
 
+uniform float aspect_ratio;
+
 out vec2 vTexCoord;
 out float vTexID;
 
@@ -23,7 +25,7 @@ void main()
 	float theta = acos(position_tmp.z / r);
 	float rho = length(vec2(position_tmp.x, position_tmp.y));
 
-	float aspect_ratio = 1.777; // aspect ratio of a 1280 x 720 screen
+//	float aspect_ratio = 1.777; // aspect ratio of a 1280 x 720 screen
 	float theta_max = 1.0471955; // 60 degrees
 	float r_min = 0.01;
 

@@ -49,6 +49,7 @@ public:
 	~Skybox();
 
 	void Draw(Observer obs);
+	void SetShaderAspectRatio(float aspectRatio);
 
 private:
 	void Init(std::vector<std::string> texture_files, int planeResolution);
