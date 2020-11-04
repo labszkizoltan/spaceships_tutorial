@@ -1,0 +1,63 @@
+# SkyboxFiles
+"D:/cpp_codes/26_portals/Portals/assets/up.png"
+"D:/cpp_codes/26_portals/Portals/assets/down.png"
+"D:/cpp_codes/26_portals/Portals/assets/front.png"
+"D:/cpp_codes/26_portals/Portals/assets/back.png"
+"D:/cpp_codes/26_portals/Portals/assets/left.png"
+"D:/cpp_codes/26_portals/Portals/assets/right.png"
+
+# MeshTable
+cube	"D:/cpp_codes/26_portals/Portals/assets/textured_meshes"
+
+4
+
+1.0
+-5.0	0.0	2.0
+
+1.0	0.0	0.0
+0.0	1.0	0.0
+0.0	0.0	1.0
+
+0	0	0
+1
+0	0	0
+
+
+1.0
+0.0	0.0	2.0
+
+1.0	0.0	0.0
+0.0	1.0	0.0
+0.0	0.0	1.0
+
+0	0	0
+1
+1	0	0
+
+
+1.0
+5.0	1.0	2.0
+
+1.0	0.0	0.0
+0.0	1.0	0.0
+0.0	0.0	1.0
+
+0	0	0
+1
+0	-1	0
+
+
+2.0
+10.0	1.0	2.0
+
+1.0	0.0	0.0
+0.0	1.0	0.0
+0.0	0.0	1.0
+
+0	0	0
+1
+0	0.6	0.8
+
+
+
+

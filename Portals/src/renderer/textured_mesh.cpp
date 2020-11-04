@@ -8,7 +8,7 @@
 
 
 
-
+/*
 std::string BodyTypeToFilepath(BodyType type)
 {
 	switch (type)
@@ -29,19 +29,20 @@ std::string BodyTypeToFilepath(BodyType type)
 		return "assets/textured_meshes/cube_1.txt";
 	}
 }
+*/
 
 
+// TexturedMesh::TexturedMesh()
+// {
+// 	Init(BodyType::cube_low_res);
+// }
+// 
+// TexturedMesh::TexturedMesh(BodyType type)
+// {
+// 	Init(type);
+// }
 
-TexturedMesh::TexturedMesh()
-{
-	Init(BodyType::cube_low_res);
-}
-
-TexturedMesh::TexturedMesh(BodyType type)
-{
-	Init(type);
-}
-
+// dont use this see explanation in the destructor
 TexturedMesh::TexturedMesh(const std::string & vertexFilepath, uint32_t textureID)
 {
 	// reading in the data from the vertex file
@@ -83,34 +84,34 @@ TexturedMesh::TexturedMesh(const std::string & vertexFilepath, uint32_t textureI
 }
 
 // dont use this, not finished, and there is a good chance that it wont be finished at all
-void TexturedMesh::Init(BodyType type)
-{
-	std::ifstream myfile(BodyTypeToFilepath(type).c_str());
-	int v_count = 0, i_count = 0;
-
-	myfile >> v_count;
-	myfile >> i_count;
-
-	std::vector<float> vertexData;
-	std::vector<uint32_t> indices;
-
-	vertexData.resize(v_count*5); // the layout is a vec3 for positions and vec2 for texture coords, that's why the hardcoded 5
-	indices.resize(i_count);
-
-	for (int i = 0; i < v_count; i++)
-	{
-		myfile >> vertexData[5*i+0];
-		myfile >> vertexData[5*i+1];
-		myfile >> vertexData[5*i+2];
-		myfile >> vertexData[5*i+3];
-		myfile >> vertexData[5*i+4];
-	}
-
-	for (int i = 0; i < i_count; i++)
-		myfile >> indices[i];
-
-	myfile.close();
-}
+// void TexturedMesh::Init(BodyType type)
+// {
+// 	std::ifstream myfile(BodyTypeToFilepath(type).c_str());
+// 	int v_count = 0, i_count = 0;
+// 
+// 	myfile >> v_count;
+// 	myfile >> i_count;
+// 
+// 	std::vector<float> vertexData;
+// 	std::vector<uint32_t> indices;
+// 
+// 	vertexData.resize(v_count*5); // the layout is a vec3 for positions and vec2 for texture coords, that's why the hardcoded 5
+// 	indices.resize(i_count);
+// 
+// 	for (int i = 0; i < v_count; i++)
+// 	{
+// 		myfile >> vertexData[5*i+0];
+// 		myfile >> vertexData[5*i+1];
+// 		myfile >> vertexData[5*i+2];
+// 		myfile >> vertexData[5*i+3];
+// 		myfile >> vertexData[5*i+4];
+// 	}
+// 
+// 	for (int i = 0; i < i_count; i++)
+// 		myfile >> indices[i];
+// 
+// 	myfile.close();
+// }
 
 
 
@@ -193,7 +194,8 @@ TexturedMesh::~TexturedMesh()
 	glDeleteVertexArrays(1, &m_VertexArray);
 	m_VertexBuffer.~OpenGLVertexBuffer();
 	m_IndexBuffer.~OpenGLIndexBuffer();
-	glDeleteTextures(1, &m_Texture);
+	glDeleteTextures(1, &m_Texture); // This might cause problems if the first constructor is being used where an already existing texture is assigned to the mesh.
+	// The same texture might be used by other meshes as well and upon the destruction of one will free the GPU memory for all meshes that use the texture
 }
 
 

@@ -6,17 +6,12 @@
 
 #include "Portals/src/renderer/shader.h"
 
-enum class BodyType
-{
-	cube_low_res, cube, cube_high_res,
-	sphere_low_res, sphere, sphere_high_res
-};
 
 class TexturedMesh
 {
 public:
-	TexturedMesh();
-	TexturedMesh(BodyType type);
+//	TexturedMesh();
+//	TexturedMesh(BodyType type);
 	TexturedMesh(const std::string& vertexFilepath, uint32_t textureID); // use existing texture instead of creating one from a file
 	TexturedMesh(const std::string& vertexFilepath, const std::string& textureFilepath);
 	~TexturedMesh();
@@ -24,7 +19,7 @@ public:
 	void Draw();
 
 private:
-	void Init(BodyType type);
+//	void Init(BodyType type);
 
 private:
 	uint32_t m_VertexArray;

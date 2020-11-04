@@ -190,10 +190,19 @@ Shape3D CreateCube(uint32_t size)
 
 	//	face_U.rotate();
 	//	face_D.rotate();
-	face_L.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 3.1415926535f / 2.0f));
-	face_R.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 3.1415926535f / 2.0f));
-	face_F.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 0.0f));
-	face_B.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 0.0f));
+//	face_L.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 3.1415926535f / 2.0f));
+//	face_R.rotate(Rotation(-3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 3.1415926535f / 2.0f));
+//	face_F.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 0.0f));
+//	face_B.rotate(Rotation(-3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 0.0f));
+//	face_D.rotate(Rotation(3.1415926535f / 2.0f, {}));
+
+	face_L.rotate(Rotation(-3.1415926535f / 2.0f, {0,1,0}));
+	face_R.rotate(Rotation(3.1415926535f / 2.0f, {0,1,0}));
+	face_F.rotate(Rotation(3.1415926535f / 2.0f, {1,0,0}));
+	face_B.rotate(Rotation(-3.1415926535f / 2.0f, {1,0,0}));
+	face_D.rotate(Rotation(3.1415926535f, {1,0,0}));
+
+
 
 	// 1/sqrt(2) = 0.7071067811865475
 	float d = 0.707106781187f;

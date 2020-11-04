@@ -336,6 +336,9 @@ void Skybox::Draw(Observer obs)
 	m_IndexBuffer.Bind();
 	m_TextureShader.Bind();
 
+	for(int i=0; i<m_Textures.size(); i++)
+		glBindTextureUnit(i, m_Textures[i]);
+
 	//for (auto ID : m_Textures)
 	for(int i=0; i< m_Textures.size(); i++)
 	{
@@ -473,10 +476,12 @@ void Skybox::Init(std::vector<std::string> texture_files, int planeResolution)
 	*/
 	
 	{
-		face_R.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 3.1415926535f / 2.0f));
-		face_L.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 3.1415926535f / 2.0f));
-		face_F.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 0.0f));
-		face_B.rotate(Rotation(3.1415926535f / 2.0f, 3.1415926535f / 2.0f, 0.0f));
+		face_R.rotate(Rotation(3.1415926535f / 2.0f, {0,1,0}));
+		face_L.rotate(Rotation(3.1415926535f / 2.0f, {0,-1,0}));
+		face_F.rotate(Rotation(3.1415926535f / 2.0f, {-1,0,0}));
+		face_B.rotate(Rotation(3.1415926535f / 2.0f, {1,0,0}));
+		face_U.rotate(Rotation(3.1415926535f, {1,0,0}));
+
 
 		face_U.center(); face_U.normalize(); face_U.scale(1.05);
 		face_D.center(); face_D.normalize(); face_D.scale(1.05);

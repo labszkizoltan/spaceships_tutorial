@@ -23,7 +23,9 @@ out vec3 outColor;
 
 void main()
 {
+	// point coordinate in the absolute coordinate system
 	vec3 position_tmp = body_translation-observer_translation + body_scale*(aPos[0] * body_orientation[0] + aPos[1] * body_orientation[1] + aPos[2] * body_orientation[2] );
+	// point coordinate in the observers coordinate system
 	position_tmp = vec3(
 		dot(position_tmp, observer_orientation[0]),
 		dot(position_tmp, observer_orientation[1]),
@@ -48,7 +50,11 @@ void main()
 		1.0f
 	);
 
-	outColor = aColor;
+	vec3 vertexDirection = aPos[0] * body_orientation[0] + aPos[1] * body_orientation[1] + aPos[2] * body_orientation[2];
+	vec3 lightDirection = vec3(1, 0, 0);
+	lightDirection = lightDirection / length(lightDirection);
+//	outColor = aColor;
+	outColor = (0.75+0.25*dot(lightDirection, vertexDirection / length(vertexDirection)))*aColor; // try to implement some very basic lighting like stuff
 
 }
 

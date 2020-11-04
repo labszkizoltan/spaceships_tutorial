@@ -44,6 +44,11 @@ MyWindow::MyWindow(int width, int height, std::string name)
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_BLEND);
+
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glFrontFace(GL_CW);
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
@@ -126,6 +131,7 @@ void MyWindow::HandleUserInputs(Observer& obs, Timestep timestep)
 	if (IsKeyPressed(GLFW_KEY_R)) { obs.MoveUp(timestep * obsMoveSpeed); }
 	if (IsKeyPressed(GLFW_KEY_F)) { obs.MoveDown(timestep * obsMoveSpeed); }
 	if (IsKeyPressed(GLFW_KEY_D)) { obs.MoveRight(timestep * obsMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_M)) { obs.MoveRight(timestep * obsMoveSpeed); } // does the same as D, so I can make a video with  my phone when moving and rotating at the same time
 	if (IsKeyPressed(GLFW_KEY_A)) { obs.MoveLeft(timestep * obsMoveSpeed); }
 
 	if (IsKeyPressed(GLFW_KEY_E)) { obs.TurnClockwise(timestep * obsTurnRate); }
