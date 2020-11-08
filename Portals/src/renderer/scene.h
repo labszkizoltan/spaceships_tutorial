@@ -6,8 +6,11 @@
 
 #include "Portals/src/renderer/shader.h"
 #include "Portals/src/renderer/skybox.h"
+#include "Portals/src/renderer/textured_shaded_mesh.h"
 
 std::string ParseShader(const std::string& filepath);
+
+
 
 class Scene
 {
@@ -18,18 +21,19 @@ public:
 
 	void Update(float deltaTime);
 	void Draw(Observer obs);
-
+	void SetAspectRatio(float aspectRatio);
 
 private:
+	std::vector<std::string> m_BodyTypes;
 	std::vector<Body> m_Bodies;
+	std::vector<int> m_MeshIndices; // this and m_BodyTypes are kind of redundant, since they essentially code the same info, just in different ways
 
 //	Shader m_ColourShader; // (ParseShader("src/renderer/shader_sources/vertex_shader.glsl"), ParseShader("src/renderer/shader_sources/fragment_shader.glsl"));
 	Shader m_TextureShader; // (ParseShader("src/renderer/shader_sources/vertex_shader_textured.glsl"), ParseShader("src/renderer/shader_sources/fragment_shader_textured.glsl"));
 
 	Skybox m_Skybox;
 
-	std::vector<TexturedMesh> m_Meshes;
-
+	std::vector<TexturedShadedMesh> m_Meshes;
 };
 
 

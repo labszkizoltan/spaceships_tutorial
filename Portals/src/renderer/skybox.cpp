@@ -282,11 +282,14 @@ Skybox::Skybox(Skybox && other) noexcept
 	m_VertexBuffer = std::move(other.m_VertexBuffer);
 	m_IndexBuffer = std::move(other.m_IndexBuffer);
 	m_TextureShader = std::move(other.m_TextureShader);
+	m_Textures = std::move(other.m_Textures);
 
 	other.m_VertexArray = 0;
 	other.m_VertexBuffer.m_RendererID = 0;
 	other.m_IndexBuffer.m_RendererID = 0;
 	other.m_TextureShader.m_RendererID = 0;
+	for (int i = 0; i < other.m_Textures.size(); i++)
+		other.m_Textures[i] = 0;
 }
 
 // move assignment
@@ -298,16 +301,20 @@ Skybox & Skybox::operator=(Skybox && other) noexcept
 		m_VertexBuffer.~OpenGLVertexBuffer();
 		m_IndexBuffer.~OpenGLIndexBuffer();
 		m_TextureShader.~Shader();
+		glDeleteTextures(m_Textures.size(), &m_Textures[0]);
 
 		m_VertexArray = other.m_VertexArray;
 		m_VertexBuffer = std::move(other.m_VertexBuffer);
 		m_IndexBuffer = std::move(other.m_IndexBuffer);
 		m_TextureShader = std::move(other.m_TextureShader);
+		m_Textures = std::move(other.m_Textures);
 
 		other.m_VertexArray = 0;
 		other.m_VertexBuffer.m_RendererID = 0;
 		other.m_IndexBuffer.m_RendererID = 0;
 		other.m_TextureShader.m_RendererID = 0;
+		for (int i = 0; i < other.m_Textures.size(); i++)
+			other.m_Textures[i] = 0;
 	}
 
 	return *this;

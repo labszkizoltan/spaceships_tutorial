@@ -53,7 +53,8 @@ void main()
 	lightDirection = lightDirection / length(lightDirection);
 	vec3 surfaceDirection = aSurfaceNormal[0] * body_orientation[0] + aSurfaceNormal[1] * body_orientation[1] + aSurfaceNormal[2] * body_orientation[2];
 
-	vColor = vec3(1,1,1)*(0.5 + 0.5*dot(lightDirection, surfaceDirection / length(surfaceDirection)));
+	vColor = vec3(1,1,1)*(0.2 + 0.8*max(0.0, dot(lightDirection, surfaceDirection / length(surfaceDirection))));
+//	vColor = vec3(1, 1, 1)*(0.5 + 0.5*dot(lightDirection, surfaceDirection / length(surfaceDirection)));
 
 }
 

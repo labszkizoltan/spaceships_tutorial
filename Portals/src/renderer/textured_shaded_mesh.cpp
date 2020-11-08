@@ -81,6 +81,45 @@ TexturedShadedMesh::TexturedShadedMesh(const std::string& vertexFilepath, const 
 	}
 }
 
+// move constructor
+TexturedShadedMesh::TexturedShadedMesh(TexturedShadedMesh && other) noexcept
+{
+	glDeleteVertexArrays(1, &m_VertexArray);
+	m_VertexBuffer.~OpenGLVertexBuffer();
+	m_IndexBuffer.~OpenGLIndexBuffer();
+	glDeleteTextures(1, &m_Texture);
+
+	m_VertexArray = other.m_VertexArray;
+	m_VertexBuffer = std::move(other.m_VertexBuffer); // this move operation should transfer the renderer Id of the temporary object, and zero it out afterwards, so upon destruction nothing will be deleted
+	m_IndexBuffer = std::move(other.m_IndexBuffer); // same as above
+	m_Texture = other.m_Texture;
+
+	other.m_VertexArray = 0;
+	other.m_Texture = 0;
+}
+
+// move assignment
+TexturedShadedMesh & TexturedShadedMesh::operator=(TexturedShadedMesh && other) noexcept
+{
+	if (this != &other)
+	{
+		glDeleteVertexArrays(1, &m_VertexArray);
+		m_VertexBuffer.~OpenGLVertexBuffer();
+		m_IndexBuffer.~OpenGLIndexBuffer();
+		glDeleteTextures(1, &m_Texture);
+
+		m_VertexArray = other.m_VertexArray;
+		m_VertexBuffer = std::move(other.m_VertexBuffer); // this move operation should transfer the renderer Id of the temporary object, and zero it out afterwards, so upon destruction nothing will be deleted
+		m_IndexBuffer = std::move(other.m_IndexBuffer); // same as above
+		m_Texture = other.m_Texture;
+
+		other.m_VertexArray = 0;
+		other.m_Texture = 0;
+	}
+
+	return *this;
+}
+
 TexturedShadedMesh::~TexturedShadedMesh()
 {
 	glDeleteVertexArrays(1, &m_VertexArray);
@@ -97,6 +136,8 @@ void TexturedShadedMesh::Draw()
 	glBindTextureUnit(6, m_Texture);
 	glDrawElements(GL_TRIANGLES, m_IndexBuffer.m_Count, GL_UNSIGNED_INT, nullptr);
 }
+
+
 
 
 

@@ -3,6 +3,12 @@
 // ----- TODO ----- //
 // ---------------- //
 
+- Debug the scenario definition parser, since it gives bad scale data
+
+- Create a struct in the shader that defines all properties of the observer.
+	This way only one uniform upload is enough to set the observer.
+	The same should be done separately for the bodies.
+
 - Upload all meshes into one buffer with ID's (ID should be part of the vertex layout),
 	and add a uniform array that stores the transforms by ID
 

@@ -10,7 +10,14 @@
 class TexturedShadedMesh
 {
 public:
+	TexturedShadedMesh() = default;
 	TexturedShadedMesh(const std::string& vertexFilepath, const std::string& textureFilepath);
+
+	TexturedShadedMesh(const TexturedShadedMesh& other) = delete; // copy constructor
+	TexturedShadedMesh& operator=(const TexturedShadedMesh& other) = delete; // copy assignment
+	TexturedShadedMesh(TexturedShadedMesh&& other) noexcept; // move constructor
+	TexturedShadedMesh& operator=(TexturedShadedMesh&& other) noexcept; // move assignment
+
 	~TexturedShadedMesh();
 
 	void Draw();

@@ -117,19 +117,37 @@ void OpenGLVertexBuffer::SetLayout()
 	Bind();
 
 	uint32_t index = 0;
-	for (const auto& element : m_Layout)
+
+	for (int i = 0; i < m_Layout.m_Elements.size(); i++)
 	{
 		glEnableVertexAttribArray(index);
 		glVertexAttribPointer(
 			index,
-			element.GetComponentCount(),
-			ShaderDataTypeToOpenGLBaseType(element.Type),
-			element.Normalized ? GL_TRUE : GL_FALSE,
+			m_Layout.m_Elements[i].GetComponentCount(),
+			ShaderDataTypeToOpenGLBaseType(m_Layout.m_Elements[i].Type),
+			m_Layout.m_Elements[i].Normalized ? GL_TRUE : GL_FALSE,
 			m_Layout.GetStride(),
-			(const void*)element.Offset
+			(const void*)m_Layout.m_Elements[i].Offset
 		);
 		index++;
 	}
+
+	// when I move assigned TexturedShadedMesh in Scene::Scene(const std::string & filename), the Draw() call failed, because the "element" in the below loop became invalid,
+	// maybe the iterators that are needed for the below auto etc. syntax were invalidated on the move assignment, because when I made the m_Elements public in the layout class,
+	// and changed the for loop to the above one, the error disappeared
+//	for (const auto& element : m_Layout)
+//	{
+//		glEnableVertexAttribArray(index);
+//		glVertexAttribPointer(
+//			index,
+//			element.GetComponentCount(),
+//			ShaderDataTypeToOpenGLBaseType(element.Type),
+//			element.Normalized ? GL_TRUE : GL_FALSE,
+//			m_Layout.GetStride(),
+//			(const void*)element.Offset
+//		);
+//		index++;
+//	}
 }
 
 

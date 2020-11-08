@@ -1,63 +1,68 @@
-# SkyboxFiles
-"D:/cpp_codes/26_portals/Portals/assets/up.png"
-"D:/cpp_codes/26_portals/Portals/assets/down.png"
-"D:/cpp_codes/26_portals/Portals/assets/front.png"
-"D:/cpp_codes/26_portals/Portals/assets/back.png"
-"D:/cpp_codes/26_portals/Portals/assets/left.png"
-"D:/cpp_codes/26_portals/Portals/assets/right.png"
+# skybox
+up	D:/cpp_codes/26_portals/Portals/assets/up.png
+down	D:/cpp_codes/26_portals/Portals/assets/down.png
+front	D:/cpp_codes/26_portals/Portals/assets/front.png
+back	D:/cpp_codes/26_portals/Portals/assets/back.png
+left	D:/cpp_codes/26_portals/Portals/assets/left.png
+right	D:/cpp_codes/26_portals/Portals/assets/right.png
 
-# MeshTable
-cube	"D:/cpp_codes/26_portals/Portals/assets/textured_meshes"
-
-4
-
-1.0
--5.0	0.0	2.0
-
-1.0	0.0	0.0
-0.0	1.0	0.0
-0.0	0.0	1.0
-
-0	0	0
-1
-0	0	0
+# bodies
 
 
-1.0
-0.0	0.0	2.0
+{
+	type	saucer
+	position	-5.0	0.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	0.00	0.00	0.00
+	angular_velocity	0.00	0.00	0.10
+	mass	20.0
+}
 
-1.0	0.0	0.0
-0.0	1.0	0.0
-0.0	0.0	1.0
+{
+	type	saucer
+	position	0.00	3.00	0.00
+	rotation	-1.571	1	0	0
+	scale	5.0
+	velocity	0.00	0.00	0.00
+	angular_velocity	0.00	0.00	-0.10
+	mass	20.0
+}
 
-0	0	0
-1
-1	0	0
-
-
-1.0
-5.0	1.0	2.0
-
-1.0	0.0	0.0
-0.0	1.0	0.0
-0.0	0.0	1.0
-
-0	0	0
-1
-0	-1	0
-
-
-2.0
-10.0	1.0	2.0
-
-1.0	0.0	0.0
-0.0	1.0	0.0
-0.0	0.0	1.0
-
-0	0	0
-1
-0	0.6	0.8
+{
+	type	satellite
+	position	4.00	-3.0	0.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	0.00	0.00	0.00
+	angular_velocity	0.00	0.00	0.00
+	mass	10.0
+}
 
 
+{
+	type	cube
+	position	8.00	0.00	0.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	0.00	0.00
+	angular_velocity	0.00	0.05	0.00
+	mass	50.0
+}
+
+
+
+# type_file_lookup
+
+saucer	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Saucer_hq.txt
+satellite	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Satellite.txt
+cube	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Cube_1.txt
+
+# texture_lookup
+
+
+saucer	D:/cpp_codes/26_portals/Portals/assets/saucer_texture.png
+satellite	D:/cpp_codes/26_portals/Portals/assets/saucer_texture.png
+cube	D:/cpp_codes/26_portals/Portals/assets/all_in_one.png
 
 
