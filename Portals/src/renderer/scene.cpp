@@ -158,7 +158,7 @@ void ParseSceneDefinitionFile(ParsedInput& parsed_input, const std::string & fil
 							ss >> body_to_add.velocity.y;
 							ss >> body_to_add.velocity.z;
 						}
-						if (file_in_memory[i].find("angular_velocity") != -1)
+						if (file_in_memory[i].find("angularVelocity") != -1)
 						{
 							std::stringstream ss(file_in_memory[i]);
 							ss >> tmp;
@@ -211,13 +211,15 @@ Scene::Scene(const std::string & filename)
 
 
 	// Initialize objects
-	m_BodyTypes.resize(parsed_input.body_types.size());
+	std::vector<std::string> bodyTypes;
+		bodyTypes.resize(parsed_input.body_types.size());
 	m_Bodies.resize(parsed_input.bodies.size());
 	for (int i = 0; i < parsed_input.body_types.size(); i++)
 	{
-		m_BodyTypes[i] = parsed_input.body_types[i];
+		bodyTypes[i] = parsed_input.body_types[i];
 		m_Bodies[i] = parsed_input.bodies[i];
 	}
+	m_Accelerations.resize(m_Bodies.size());
 
 	// load meshes
 		// get the unique keys from the map
@@ -235,9 +237,9 @@ Scene::Scene(const std::string & filename)
 		mesh_type_id_lookup[mesh_types[i]] = i;
 	}
 
-	m_MeshIndices.resize(m_BodyTypes.size());
-	for (int i = 0; i < m_BodyTypes.size(); i++)
-		m_MeshIndices[i] = mesh_type_id_lookup[m_BodyTypes[i]];
+	m_MeshIndices.resize(bodyTypes.size());
+	for (int i = 0; i < bodyTypes.size(); i++)
+		m_MeshIndices[i] = mesh_type_id_lookup[bodyTypes[i]];
 
 	// Create shader and set its uniforms
 	m_TextureShader = std::move(Shader(ParseShader("src/renderer/shader_sources/vertex_shader_textured_shaded.glsl"), ParseShader("src/renderer/shader_sources/fragment_shader_textured_shaded.glsl")));
@@ -266,9 +268,26 @@ Scene::~Scene()
 
 void Scene::Update(float deltaTime)
 {
-
-
+	for (int i = 0; i < m_Bodies.size(); i++)
+	{
+		m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
+		m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
+	}
 }
+
+void Scene::Update(float deltaTime, AccelerationFunction accelerationFunc)
+{
+//	std::vector<Vec3D> accelerations = accelerationFunc(m_Bodies);
+	accelerationFunc(m_Bodies, m_Accelerations);
+	for (int i = 0; i < m_Bodies.size(); i++)
+	{
+		m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
+		m_Bodies[i].velocity += deltaTime * m_Accelerations[i];
+		m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
+	}
+}
+
+
 
 void Scene::Draw(Observer obs)
 {

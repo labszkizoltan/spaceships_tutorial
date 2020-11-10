@@ -30,8 +30,29 @@
 const int windowWidth = 1280;
 const int windowHeight = 720;
 
+// typedef void(*AccelerationFunction)(const std::vector<Body>& bodies, std::vector<Vec3D> accelerations);
+void SimpleAcceleration(std::vector<Body>& bodies, std::vector<Vec3D>& accelerations)
+{
+	for (int i = 0; i < bodies.size(); i++)
+	{
+//		accelerations[i] = { 0,0,0.5 };
+		accelerations[i] = CrossProduct({ 0,-0.1,0 }, bodies[i].velocity);
+	}
+}
+
 int main()
 {
+	Mat_3D m1({ 0,1,2 }, { 3,4,5 }, { 6,7,8 });
+	Mat_3D m2({ 0,10,20 }, { 30,40,50 }, { 60,70,80 });
+	std::cout << m1;
+	std::cout << m2;
+	std::cout << m1*m2;
+	return 0;
+
+
+
+
+
 	MyWindow appWindow(windowWidth, windowHeight, "Portals");
 //	appWindow.SetKeyCallback(key_callback);
 	
@@ -53,6 +74,10 @@ int main()
 
 		// Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
 		appWindow.HandleUserInputs(observer, timestep);
+
+		// Update the scene
+//		myScene.Update(timestep); // working
+		myScene.Update(timestep, SimpleAcceleration); // working as well
 
 		// Draw the scene into the default framebuffer
 		myScene.Draw(observer);

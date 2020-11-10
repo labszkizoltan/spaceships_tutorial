@@ -3,15 +3,17 @@
 // ----- TODO ----- //
 // ---------------- //
 
-- Debug the scenario definition parser, since it gives bad scale data
 
 - Create a struct in the shader that defines all properties of the observer.
 	This way only one uniform upload is enough to set the observer.
 	The same should be done separately for the bodies.
 
+- Correct the orientation of the skybox.
+
 - Upload all meshes into one buffer with ID's (ID should be part of the vertex layout),
 	and add a uniform array that stores the transforms by ID
 
+// Couldnt figure this out, just removed that member variable from the class
 - Investigate why the destructor of the Shader class throws an exception !!!
 	- So far it looks like the unordered_map in UniformSet causes the problem. The unordered_map
 		is a vector of lists, so no wonder that the read access violation is coming from the <list> header.
@@ -19,11 +21,8 @@
 		shaders destructor is called twice, and this is causing the issue. When I remove the explicit shader destructor call
 		from the Skaybox destructor, the error goes away. However I still dont know why the destructor is called
 		twice on the same object, my best guess is that I have implemented the move semantics incorrectly somewhere.
-		
-
-
-- Revise the matrix library and rewrite to column major
-
+	(is that possible that the iterators or something got invalid upon move assignment?
+	just like it happened to the buffer elements?)
 
 
 
@@ -38,7 +37,6 @@
 	The whole way of mapping directions into the clip space should be reviewed.
 	When I create a huge sphere, and watch the scene inside, I see weird behaviour.
 		Most likely due to the vertices behind the observer.
-
 
 - Move input handling somewhere else, currently it is in the main functions game loop
 
@@ -59,8 +57,10 @@
 
 - Add aspect ratio into the shader as a uniform float
 
+- Debug the scenario definition parser, since it gives bad scale data
 
-
+- Revise the matrix library and rewrite to column major
+	- This will be necessary for the struct uploads
 
 
 

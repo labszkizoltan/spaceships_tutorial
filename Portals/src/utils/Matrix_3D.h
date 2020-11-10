@@ -8,7 +8,7 @@
 
 struct Mat_3D
 {
-	Vec3D f1, f2, f3; // these are rows of the matrix
+	Vec3D f1, f2, f3; // these are columns of the matrix
 	Mat_3D();
 	Mat_3D(Vec3D _x, Vec3D _y, Vec3D _z);
 
