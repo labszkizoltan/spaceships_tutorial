@@ -224,6 +224,21 @@ void Shader::UploadUniformFloat4(const std::string & name, const glm::vec4 & val
 	}
 }
 
+void Shader::UploadUniformFloatArray(const std::string & name, float * values, uint32_t count)
+{
+	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());
+	//	if (m_UniformLocations.find(name) != m_UniformLocations.end())
+	if (loc != -1)
+	{
+		//		glUniform1fv(m_UniformLocations[name], count, values);
+		glUniform1fv(loc, count, values);
+	}
+	else
+	{
+		std::cout << "Shader::UploadUniformFloatArray() : uniform called \"" << name << "\" does not exist in shader , or hasn't been added with Shader::SearchAndAddUniform()\n";
+	}
+}
+
 void Shader::UploadUniformMat3(const std::string & name, const glm::mat3 & value)
 {
 	GLint loc = glGetUniformLocation(m_RendererID, name.c_str());

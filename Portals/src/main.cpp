@@ -42,12 +42,12 @@ void SimpleAcceleration(std::vector<Body>& bodies, std::vector<Vec3D>& accelerat
 
 int main()
 {
-	Mat_3D m1({ 0,1,2 }, { 3,4,5 }, { 6,7,8 });
-	Mat_3D m2({ 0,10,20 }, { 30,40,50 }, { 60,70,80 });
-	std::cout << m1;
-	std::cout << m2;
-	std::cout << m1*m2;
-	return 0;
+//	Mat_3D m1({ 0,1,2 }, { 3,4,5 }, { 6,7,8 });
+//	Mat_3D m2({ 0,10,20 }, { 30,40,50 }, { 60,70,80 });
+//	std::cout << m1;
+//	std::cout << m2;
+//	std::cout << m1*m2;
+//	return 0;
 
 
 

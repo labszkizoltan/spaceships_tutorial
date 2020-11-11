@@ -5,16 +5,22 @@ layout(location = 0) in vec3 aPos;
 layout(location = 1) in vec2 aTexCoord;
 layout(location = 2) in float aTexID;
 
-uniform mat3 observer_orientation;
-uniform float zoom_level;
+// uniform mat3 observer_orientation;
+// uniform float zoom_level;
+uniform float obs_param[13];
 
 uniform float aspect_ratio;
+
 
 out vec2 vTexCoord;
 out float vTexID;
 
 void main()
 {
+//	vec3 observer_translation = vec3(obs_param[0], obs_param[1], obs_param[2]); // in skybox, the translation of the observer is irrelevant
+	mat3 observer_orientation = mat3(obs_param[3], obs_param[4], obs_param[5], obs_param[6], obs_param[7], obs_param[8], obs_param[9], obs_param[10], obs_param[11]);
+	float zoom_level = obs_param[12];
+
 	vec3 position_tmp = vec3(
 		dot(aPos, observer_orientation[0]),
 		dot(aPos, observer_orientation[1]),

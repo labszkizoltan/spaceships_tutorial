@@ -123,12 +123,12 @@ Mat_3D operator*(float c, const Mat_3D& m1)
 // multiplication with a vector, aka applying the matrix on a column vector
 Vec3D operator*(const Mat_3D& m1, const Vec3D v)
 {
-	return Vec3D(m1.f1 * v, m1.f2 * v, m1.f3 * v);
+	return (m1.f1 * v.x + m1.f2 * v.y + m1.f3 * v.z);
 }
 
 Vec3D operator*(const Vec3D v, const Mat_3D& m1)
 {
-	return Vec3D(v * Vec3D(m1.f1.x, m1.f2.x, m1.f3.x), v * Vec3D(m1.f1.y, m1.f2.y, m1.f3.y), v * Vec3D(m1.f1.z, m1.f2.z, m1.f3.z));
+	return Vec3D(v*m1.f1, v*m1.f2, v*m1.f3);
 }
 
 

@@ -14,9 +14,9 @@ enum class BodyType
 
 struct Body
 {
-	float scale;
-	Vec3D location;
-	Mat_3D orientation;
+	float scale;		// 1 float
+	Vec3D location;		// 3 float
+	Mat_3D orientation;	// 9 float
 	Vec3D velocity;
 	float mass;
 	Vec3D angularVelocity; // could use something like this in the future

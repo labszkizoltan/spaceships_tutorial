@@ -14,9 +14,10 @@ Observer::Observer(Vec3D v, Mat_3D m, float zoom) : translation(v), orientation(
 void Observer::SetObserverInShader(Shader& shader)
 {
 	shader.Bind();
-	shader.UploadUniformFloat3("observer_translation", translation.Glm());
-	shader.UploadUniformMat3("observer_orientation", orientation.Glm());
-	shader.UploadUniformFloat("zoom_level", zoom_level);
+//	shader.UploadUniformFloat3("observer_translation", translation.Glm());
+//	shader.UploadUniformMat3("observer_orientation", orientation.Glm());
+//	shader.UploadUniformFloat("zoom_level", zoom_level);
+	shader.UploadUniformFloatArray("obs_param", (float*)this, 13); // hardcoded number: 3 float - translation, 9 float - orientation, 1 float - zoom level; 13 float in total
 }
 
 
@@ -52,32 +53,32 @@ void Observer::MoveDown(float distance)
 
 void Observer::TurnRight(float angle)
 {
-	orientation = Rotation(angle, {0.0f, 1.0f, 0.0f}) * orientation;
+	orientation = Rotation(angle, orientation.f2) * orientation;
 }
 
 void Observer::TurnLeft(float angle)
 {
-	orientation = Rotation(-angle, { 0.0f, 1.0f, 0.0f }) * orientation;
+	orientation = Rotation(-angle, orientation.f2) * orientation;
 }
 
 void Observer::TurnUp(float angle)
 {
-	orientation = Rotation(angle, { 1.0f, 0.0f, 0.0f }) * orientation;
+	orientation = Rotation(angle, orientation.f1) * orientation;
 }
 
 void Observer::TurnDown(float angle)
 {
-	orientation = Rotation(-angle, { 1.0f, 0.0f, 0.0f }) * orientation;
+	orientation = Rotation(-angle, orientation.f1) * orientation;
 }
 
 void Observer::TurnClockwise(float angle)
 {
-	orientation = Rotation(angle, { 0.0f, 0.0f, 1.0f }) * orientation;
+	orientation = Rotation(-angle, orientation.f3) * orientation;
 }
 
 void Observer::TurnAntiClockwise(float angle)
 {
-	orientation = Rotation(-angle, { 0.0f, 0.0f, 1.0f }) * orientation;
+	orientation = Rotation(angle, orientation.f3) * orientation;
 }
 
 void Observer::ZoomIn(float multiplier)

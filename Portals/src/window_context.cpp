@@ -136,10 +136,10 @@ void MyWindow::HandleUserInputs(Observer& obs, Timestep timestep)
 
 	if (IsKeyPressed(GLFW_KEY_E)) { obs.TurnClockwise(timestep * obsTurnRate); }
 	if (IsKeyPressed(GLFW_KEY_Q)) { obs.TurnAntiClockwise(timestep * obsTurnRate); }
-	if (IsKeyPressed(GLFW_KEY_RIGHT)) { obs.TurnLeft(timestep * obsTurnRate); }
-	if (IsKeyPressed(GLFW_KEY_LEFT)) { obs.TurnRight(timestep * obsTurnRate); }
-	if (IsKeyPressed(GLFW_KEY_DOWN)) { obs.TurnUp(timestep * obsTurnRate); }
-	if (IsKeyPressed(GLFW_KEY_UP)) { obs.TurnDown(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_LEFT)) { obs.TurnLeft(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_RIGHT)) { obs.TurnRight(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_UP)) { obs.TurnUp(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_DOWN)) { obs.TurnDown(timestep * obsTurnRate); }
 
 	if (IsKeyPressed(GLFW_KEY_P)) { obs.ZoomIn(1.05f); }
 	if (IsKeyPressed(GLFW_KEY_O)) { obs.ZoomOut(1.05f); }
