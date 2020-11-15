@@ -35,9 +35,12 @@ void SimpleAcceleration(std::vector<Body>& bodies, std::vector<Vec3D>& accelerat
 {
 	for (int i = 0; i < bodies.size(); i++)
 	{
-//		accelerations[i] = { 0,0,0.5 };
 		accelerations[i] = CrossProduct({ 0,-0.1,0 }, bodies[i].velocity);
 	}
+}
+
+void NoAcceleration(std::vector<Body>& bodies, std::vector<Vec3D>& accelerations)
+{
 }
 
 int main()
@@ -56,7 +59,9 @@ int main()
 	MyWindow appWindow(windowWidth, windowHeight, "Portals");
 //	appWindow.SetKeyCallback(key_callback);
 	
-	Scene myScene("assets/01_SceneDefinition.txt");
+//	Scene myScene("assets/01_SceneDefinition.txt");
+	Scene myScene("assets/02_SceneDefinition_collision_test.txt");
+
 	myScene.SetAspectRatio((float)windowWidth / (float)windowHeight);
 
 	Observer observer;
@@ -68,22 +73,28 @@ int main()
 	// Game loop
 	while (!glfwWindowShouldClose(appWindow.GetWindow()))
 	{
-		time = (float)glfwGetTime();
-		timestep = time - lastFrameTime;
-		lastFrameTime = time;
+//		time = (float)glfwGetTime();
+//		timestep = time - lastFrameTime;
+//		lastFrameTime = time;
+		lastFrameTime = (float)glfwGetTime();
 
 		// Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
 		appWindow.HandleUserInputs(observer, timestep);
 
 		// Update the scene
 //		myScene.Update(timestep); // working
-		myScene.Update(timestep, SimpleAcceleration); // working as well
+//		myScene.Update(timestep, SimpleAcceleration); // working as well
+//		myScene.UpdateWithCollision(timestep, SimpleAcceleration); // working as well
+		myScene.UpdateWithCollision(timestep, NoAcceleration); // testing collisions wo forces 
 
 		// Draw the scene into the default framebuffer
 		myScene.Draw(observer);
 
 		// Swap the screen buffers
 		glfwSwapBuffers(appWindow.GetWindow());
+
+
+		timestep = (float)glfwGetTime() - lastFrameTime;
 	}
 
 	// Terminates GLFW, clearing any resources allocated by GLFW.

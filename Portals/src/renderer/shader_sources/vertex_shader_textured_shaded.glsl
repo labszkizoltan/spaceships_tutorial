@@ -9,6 +9,8 @@ uniform vec3 body_translation;
 uniform mat3 body_orientation;
 uniform float body_scale;
 
+uniform vec3 scene_translation;
+
 //uniform vec3 observer_translation;
 //uniform mat3 observer_orientation;
 //uniform float zoom_level;
@@ -34,7 +36,7 @@ void main()
 	mat3 observer_orientation = mat3(obs_param[3], obs_param[4], obs_param[5], obs_param[6], obs_param[7], obs_param[8], obs_param[9], obs_param[10], obs_param[11]);
 	float zoom_level = obs_param[12];
 
-	vec3 position_tmp = body_translation - observer_translation + body_scale * (aPos[0] * body_orientation[0] + aPos[1] * body_orientation[1] + aPos[2] * body_orientation[2]);
+	vec3 position_tmp = scene_translation + body_translation - observer_translation + body_scale * (aPos[0] * body_orientation[0] + aPos[1] * body_orientation[1] + aPos[2] * body_orientation[2]);
 	position_tmp = vec3(
 		dot(position_tmp, observer_orientation[0]),
 		dot(position_tmp, observer_orientation[1]),

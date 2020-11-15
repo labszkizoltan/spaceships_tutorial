@@ -11,27 +11,27 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 
 {
 	type	saucer
-	position	-5.0	-5.00	0.00
+	position	0.00	-5.00	0.00
 	rotation	-1.571	1	0	0
 	scale	1.0
-	velocity	0.00	0.00	0.00
+	velocity	0.00	0.00	50.00
 	angularVelocity	-1.20	0.00	0.00
 	mass	20.0
 }
 
 {
 	type	saucer
-	position	0.00	3.00	0.00
+	position	0.00	-5.00	50.00
 	rotation	1.571	1	0	0
 	scale	2.0
-	velocity	0.00	0.00	5.00
+	velocity	0.00	0.00	0.00
 	angularVelocity	0.00	0.00	0.00
 	mass	20.0
 }
 
 {
 	type	satellite
-	position	4.00	-3.0	0.00
+	position	0.00	-5.00	100.00
 	rotation	0	1	0	0
 	scale	1.0
 	velocity	0.00	0.00	0.00
@@ -42,7 +42,7 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 
 {
 	type	cube
-	position	8.00	5.00	0.00
+	position	0.00	-5.00	150.00
 	rotation	0	1	0	0
 	scale	1.2
 	velocity	0.00	0.00	0.00
@@ -52,17 +52,17 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 
 {
 	type	cube
-	position	8.00	3.00	5.00
+	position	0.00	-5.00	200.00
 	rotation	0	1	0	0
 	scale	2.2
-	velocity	0.00	0.00	-4.0
+	velocity	0.00	0.00	0.00
 	angularVelocity	0.00	1.00	0.00
 	mass	50.0
 }
 
 {
 	type	cube
-	position	12.00	0.00	9.00
+	position	0.00	-5.00	250.00
 	rotation	0	1	0	0
 	scale	1.2
 	velocity	0.00	0.00	0.00
@@ -72,7 +72,7 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 
 {
 	type	cube
-	position	2.00	32.00	0.00
+	position	0.00	-5.00	300.00
 	rotation	0	1	0	0
 	scale	1.2
 	velocity	0.00	0.00	0.00

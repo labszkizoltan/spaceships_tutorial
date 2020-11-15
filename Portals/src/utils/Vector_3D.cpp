@@ -45,6 +45,11 @@ float Vec3D::length()
 	return sqrt(x*x + y * y + z * z);
 }
 
+float Vec3D::lengthSquare()
+{
+	return (x*x + y * y + z * z);
+}
+
 glm::vec3 Vec3D::Glm()
 {
 	return glm::vec3{x, y, z};

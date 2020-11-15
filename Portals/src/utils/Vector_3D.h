@@ -17,6 +17,7 @@ struct Vec3D
 	Vec3D& operator*=(float c);
 	Vec3D& operator/=(float c);
 	float length();
+	float lengthSquare();
 	glm::vec3 Glm();
 
 	// Philip Nowell normalization (to map vectors onto a sphere): http://mathproofs.blogspot.com/2005/07/mapping-cube-to-sphere.html

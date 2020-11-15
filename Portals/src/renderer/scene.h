@@ -25,13 +25,24 @@ public:
 
 	void Update(float deltaTime);
 	void Update(float deltaTime, AccelerationFunction accelerationFunc);
+	void UpdateWithCollision(float deltaTime, AccelerationFunction accelerationFunc);
 	void Draw(Observer obs);
 	void SetAspectRatio(float aspectRatio);
+	void SetSceneTranslation(glm::vec3 scene_translation);
+
+	
+
+private:
+	void CalcMinDistances(float deltaTime, float dvThreshold = 0.001f);
 
 private:
 	std::vector<Body> m_Bodies;
-	std::vector<Vec3D> m_Accelerations; // I just created this vector here, so the program doesnt need to allocate memory each time it calculates accelerations
 	std::vector<int> m_MeshIndices; // this and m_BodyTypes are kind of redundant, since they essentially code the same info, just in different ways
+
+	// Pre-allocated helper memory blocks for state update
+	std::vector<Vec3D> m_Accelerations; // Stores the result of the acceleration calculations
+	std::vector<float> m_Distances; // Stores the result of the distance matrix calculation, which is later used for collision detection
+
 
 //	Shader m_ColourShader; // (ParseShader("src/renderer/shader_sources/vertex_shader.glsl"), ParseShader("src/renderer/shader_sources/fragment_shader.glsl"));
 	Shader m_TextureShader; // (ParseShader("src/renderer/shader_sources/vertex_shader_textured.glsl"), ParseShader("src/renderer/shader_sources/fragment_shader_textured.glsl"));

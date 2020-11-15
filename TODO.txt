@@ -5,7 +5,12 @@
 
 
 - Create a struct in the shader that defines all properties of the observer.
-	This way only one uniform upload is enough to set the observer.
+	This way only one uniform upload is enough to set the observer. -> I tried this for the observer,
+		but it's not possible to get the location of the struct, each component of the struct has to be uploaded separately,
+		so there is no gain in defining a struct (as I read, it is possible to use uniform buffers).
+		So far I created a float array that holds all parameters of the observer (location, orientation and zoom level)
+		and this float array is uploaded with one uploat float array call and it's content is organized into a vec3/mat3/float
+		in the shader.
 	The same should be done separately for the bodies.
 
 - Correct the orientation of the skybox.

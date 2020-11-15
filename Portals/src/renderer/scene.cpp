@@ -220,6 +220,7 @@ Scene::Scene(const std::string & filename)
 		m_Bodies[i] = parsed_input.bodies[i];
 	}
 	m_Accelerations.resize(m_Bodies.size());
+	m_Distances.resize(m_Bodies.size()*m_Bodies.size());
 
 	// load meshes
 		// get the unique keys from the map
@@ -248,6 +249,7 @@ Scene::Scene(const std::string & filename)
 		m_TextureShader.UploadUniformFloat3("body_translation", glm::vec3(0.0f, 0.0f, 0.0f));
 		m_TextureShader.UploadUniformMat3("body_orientation", glm::mat3(1.0f));
 		m_TextureShader.UploadUniformFloat("body_scale", 1.0f);
+		m_TextureShader.UploadUniformFloat3("scene_translation", glm::vec3(0.0f, 0.0f, 0.0f));
 		m_TextureShader.UploadUniformFloat3("observer_translation", glm::vec3(0.0f, 0.0f, 0.0f));
 		m_TextureShader.UploadUniformMat3("observer_orientation", glm::mat3(1.0f));
 		m_TextureShader.UploadUniformFloat("zoom_level", 1.0f);
@@ -277,7 +279,7 @@ void Scene::Update(float deltaTime)
 
 void Scene::Update(float deltaTime, AccelerationFunction accelerationFunc)
 {
-//	std::vector<Vec3D> accelerations = accelerationFunc(m_Bodies);
+	//	std::vector<Vec3D> accelerations = accelerationFunc(m_Bodies);
 	accelerationFunc(m_Bodies, m_Accelerations);
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
@@ -287,19 +289,47 @@ void Scene::Update(float deltaTime, AccelerationFunction accelerationFunc)
 	}
 }
 
+void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerationFunc)
+{
+	//	std::vector<Vec3D> accelerations = accelerationFunc(m_Bodies);
+	accelerationFunc(m_Bodies, m_Accelerations);
+	CalcMinDistances(deltaTime);
+	for (int i = 0; i < m_Bodies.size(); i++)
+	{
+		for (int j = i + 1; j < m_Bodies.size(); j++)
+		{
+			// for now, swap velocities when two bodies collide
+			if (m_Distances[i*m_Bodies.size() + j] < m_Bodies[i].scale + m_Bodies[j].scale)
+			{
+				Vec3D tempV = m_Bodies[i].velocity;
+				m_Bodies[i].velocity = m_Bodies[j].velocity;
+				m_Bodies[j].velocity = tempV;
+			}
+		}
+	}
+
+	static float boundary = 400.0f;
+	for (int i = 0; i < m_Bodies.size(); i++)
+	{
+		m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
+		// implement periodic boudaries
+		{
+			m_Bodies[i].location.x += m_Bodies[i].location.x < (-1.0f*boundary) ? 1000.0f : 0.0f;
+			m_Bodies[i].location.x -= m_Bodies[i].location.x > boundary ? 1000.0f : 0.0f;
+			m_Bodies[i].location.y += m_Bodies[i].location.y < (-1.0f*boundary) ? 1000.0f : 0.0f;
+			m_Bodies[i].location.y -= m_Bodies[i].location.y > boundary ? 1000.0f : 0.0f;
+			m_Bodies[i].location.z += m_Bodies[i].location.z < (-1.0f*boundary) ? 1000.0f : 0.0f;
+			m_Bodies[i].location.z -= m_Bodies[i].location.z > boundary ? 1000.0f : 0.0f;
+		}
+		m_Bodies[i].velocity += deltaTime * m_Accelerations[i];
+		m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
+	}
+}
+
 
 
 void Scene::Draw(Observer obs)
 {
-//	void Observer::SetObserverInShader(Shader& shader)
-//	{
-//		shader.Bind();
-//		shader.UploadUniformFloat3("observer_translation", translation.Glm());
-//		shader.UploadUniformMat3("observer_orientation", orientation.Glm());
-//		shader.UploadUniformFloat("zoom_level", zoom_level);
-//	}
-
-
 	// Render
 	glClearColor(0.0f, 0.05f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -315,7 +345,6 @@ void Scene::Draw(Observer obs)
 		m_TextureShader.UploadUniformFloat("body_scale", m_Bodies[i].scale);
 		m_Meshes[m_MeshIndices[i]].Draw();
 	}
-
 }
 
 void Scene::SetAspectRatio(float aspectRatio)
@@ -324,3 +353,33 @@ void Scene::SetAspectRatio(float aspectRatio)
 	m_TextureShader.UploadUniformFloat("aspect_ratio", aspectRatio);
 	m_Skybox.SetShaderAspectRatio(aspectRatio);
 }
+
+void Scene::SetSceneTranslation(glm::vec3 scene_translation)
+{
+	m_TextureShader.UploadUniformFloat3("scene_translation", scene_translation);
+}
+
+void Scene::CalcMinDistances(float deltaTime, float dvThreshold)
+{
+	int n = m_Bodies.size();
+	float lambda = 0.0f;
+	Vec3D dr = { 0,0,0 }, dv = { 0,0,0 };
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = i+1; j < n; j++)
+		{
+			dr = m_Bodies[i].location - m_Bodies[j].location;
+			dv = m_Bodies[i].velocity - m_Bodies[j].velocity;
+//			lambda = -(dr*dv) / dv.lengthSquare();
+			lambda = dv.lengthSquare() < dvThreshold ? 0 : -(dr*dv) / dv.lengthSquare();
+			m_Distances[i*n + j] = (dr+dv*deltaTime*lambda).length();
+		}
+	}
+}
+
+
+
+
+
+
+
