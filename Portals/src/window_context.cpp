@@ -143,7 +143,37 @@ void MyWindow::HandleUserInputs(Observer& obs, Timestep timestep)
 
 	if (IsKeyPressed(GLFW_KEY_P)) { obs.ZoomIn(1.05f); }
 	if (IsKeyPressed(GLFW_KEY_O)) { obs.ZoomOut(1.05f); }
+}
 
+void MyWindow::HandlePlayerInputs(Player& player, Timestep timestep)
+{
+	glfwPollEvents();
+	static float bodyMoveSpeed = 50.0f, accelerationRate = 50.0f;
+	float obsTurnRate = 2.5f / player.m_Observer.zoom_level;
+
+	if (IsKeyPressed(GLFW_KEY_T)) { player.m_BodyPtr->Accelerate(timestep * accelerationRate); }
+	if (IsKeyPressed(GLFW_KEY_G)) { player.m_BodyPtr->Deccelerate(timestep * accelerationRate); }
+	if (IsKeyPressed(GLFW_KEY_W)) { player.m_BodyPtr->MoveForward(timestep * bodyMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_S)) { player.m_BodyPtr->MoveBackward(timestep * bodyMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_R)) { player.m_BodyPtr->MoveUp(timestep * bodyMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_F)) { player.m_BodyPtr->MoveDown(timestep * bodyMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_D)) { player.m_BodyPtr->MoveRight(timestep * bodyMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_A)) { player.m_BodyPtr->MoveLeft(timestep * bodyMoveSpeed); }
+
+	if (IsKeyPressed(GLFW_KEY_B)) { player.m_BodyPtr->Stop(); }
+
+	if (IsKeyPressed(GLFW_KEY_KP_ADD)) { bodyMoveSpeed *= 1.05; }
+	if (IsKeyPressed(GLFW_KEY_KP_SUBTRACT)) { bodyMoveSpeed /= 1.05; }
+
+	if (IsKeyPressed(GLFW_KEY_E)) { player.m_BodyPtr->TurnClockwise(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_Q)) { player.m_BodyPtr->TurnAntiClockwise(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_LEFT)) { player.m_BodyPtr->TurnLeft(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_RIGHT)) { player.m_BodyPtr->TurnRight(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_UP)) { player.m_BodyPtr->TurnUp(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_DOWN)) { player.m_BodyPtr->TurnDown(timestep * obsTurnRate); }
+
+	if (IsKeyPressed(GLFW_KEY_P)) { player.m_Observer.ZoomIn(1.05f); }
+	if (IsKeyPressed(GLFW_KEY_O)) { player.m_Observer.ZoomOut(1.05f); }
 }
 
 

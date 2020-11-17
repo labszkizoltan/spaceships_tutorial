@@ -9,6 +9,7 @@
 #include <glfw3.h>
 
 #include "controls/observer.h"
+#include "controls/player.h"
 #include "controls/timestep.h"
 
 class MyWindow
@@ -27,6 +28,7 @@ public:
 //	float GetMouseY();
 
 	void HandleUserInputs(Observer& obs, Timestep timestep);
+	void HandlePlayerInputs(Player& player, Timestep timestep);
 
 	GLFWwindow* GetWindow() { return m_Window; }
 

@@ -23,6 +23,26 @@ struct Body
 //	float angularInertia; // to be more realistic, this should be a 3D tensor, but for now, it's just an isotropic scalar
 //	Mat_3D angularInertia;
 //	BodyType type; // this might not even be needed here.
+
+	void Accelerate(float deltav);
+	void Deccelerate(float deltav);
+	void MoveForward(float distance);
+	void MoveBackward(float distance);
+	void MoveLeft(float distance);
+	void MoveRight(float distance);
+	void MoveUp(float distance);
+	void MoveDown(float distance);
+
+	void Stop();
+
+	void TurnRight(float angle);
+	void TurnLeft(float angle);
+	void TurnUp(float angle);
+	void TurnDown(float angle);
+	void TurnClockwise(float angle);
+	void TurnAntiClockwise(float angle);
+
+
 };
 
 

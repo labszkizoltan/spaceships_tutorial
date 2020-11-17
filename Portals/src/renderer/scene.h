@@ -2,6 +2,7 @@
 
 #include <string>
 #include "Portals/src/controls/observer.h"
+#include "Portals/src/controls/player.h"
 #include "Portals/src/objects/body.h"
 
 #include "Portals/src/renderer/shader.h"
@@ -14,7 +15,8 @@ std::string ParseShader(const std::string& filepath);
 // Function signature of the force function. There will be a version of the Update() method, that takes in a customizable force function
 // to calculate the acceleration of the bodies.
 // typedef std::vector<Vec3D>(*AccelerationFunction)(const std::vector<Body>& bodies);
-typedef void(*AccelerationFunction)(std::vector<Body>& bodies, std::vector<Vec3D>& accelerations);
+// typedef void(*AccelerationFunction)(std::vector<Body>& bodies, std::vector<Vec3D>& accelerations);
+typedef void(*AccelerationFunction)(std::vector<Body>& bodies, std::vector<Vec3D>& accelerations, std::vector<Vec3D>& angular_accelerations);
 
 class Scene
 {
@@ -27,9 +29,11 @@ public:
 	void Update(float deltaTime, AccelerationFunction accelerationFunc);
 	void UpdateWithCollision(float deltaTime, AccelerationFunction accelerationFunc);
 	void Draw(Observer obs);
+	void Draw(Player player);
 	void SetAspectRatio(float aspectRatio);
 	void SetSceneTranslation(glm::vec3 scene_translation);
 
+	Body* GetBodyPtr(int i);
 	
 
 private:
@@ -41,6 +45,7 @@ private:
 
 	// Pre-allocated helper memory blocks for state update
 	std::vector<Vec3D> m_Accelerations; // Stores the result of the acceleration calculations
+	std::vector<Vec3D> m_AngularAccelerations; // Stores the result of the angular acceleration calculations
 	std::vector<float> m_Distances; // Stores the result of the distance matrix calculation, which is later used for collision detection
 
 

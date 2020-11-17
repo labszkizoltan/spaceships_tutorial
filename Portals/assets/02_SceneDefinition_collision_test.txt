@@ -11,13 +11,61 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 
 {
 	type	saucer
-	position	0.00	-5.00	0.00
-	rotation	-1.571	1	0	0
+	position	0.00	-5.00	-12000.00
+	rotation	0.00	1	0	0
 	scale	1.0
-	velocity	0.00	0.00	50.00
-	angularVelocity	-1.20	0.00	0.00
-	mass	20.0
+	velocity	0.00	0.00	0.00
+	angularVelocity	0.00	0.00	0.00
+	mass	1000.00
 }
+
+
+{
+	type	earth
+	position	0.00	-5.00	-10000.00
+	rotation	0.00	1	0	0
+	scale	1000.0
+	velocity	0.00	0.00	0.00
+	angularVelocity	0.00	-0.01	0.00
+	mass	4000.00
+}
+
+
+{
+	type	moon
+	position	4000.0	-5.00	-10000.00
+	rotation	0.00	1	0	0
+	scale	250.0
+	velocity	0.00	0.00	20.00
+	angularVelocity	0.00	-0.001	0.00
+	mass	1000.00
+}
+
+
+{
+	type	mars
+	position	-9000	-5.00	-10000.00
+	rotation	0.00	1	0	0
+	scale	800.0
+	velocity	0.00	0.00	-50.0
+	angularVelocity	0.00	-0.001	0.00
+	mass	2500.00
+}
+
+
+{
+	type	jupiter
+	position	-9000	-5.00	-25000.00
+	rotation	0.00	1	0	0
+	scale	8000.0
+	velocity	0.00	0.00	0.00
+	angularVelocity	0.00	-0.01	0.00
+	mass	40000.00
+}
+
+
+
+
 
 {
 	type	saucer
@@ -82,11 +130,976 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 
 
 
+
+
+
+
+
+{
+	type	saucer
+	position	50.00	-5.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	2.00	2.00	5.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	50.00	-5.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	-3.00	0.00	0.00
+	angularVelocity	0.00	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	50.00	-5.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	2.00	0.00	0.00
+	angularVelocity	0.00	0.00	0.00
+	mass	10.0
+}
+
+
+{
+	type	cube
+	position	50.00	-5.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	0.00	-2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	50.00	-5.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	2.00	0.00
+	angularVelocity	0.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	50.00	-5.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	1.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	50.00	-5.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	1.00	0.00	0.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
+
+
+
+{
+	type	saucer
+	position	0.00	-50.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	0.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	0.00	-50.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	0.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	0.00	-50.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	cube
+	position	0.00	-50.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	0.00	-50.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	0.00	-50.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	0.00	-50.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
+
+
+
+
+{
+	type	cube
+	position	100.00	-50.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	100.00	-50.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	100.00	-50.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	100.00	-50.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	100.00	-50.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	100.00	-50.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	100.00	-50.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
+{
+	type	cube
+	position	100.00	50.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	100.00	50.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	100.00	50.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	100.00	50.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	100.00	50.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	100.00	50.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	100.00	50.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
+
+
+
+{
+	type	cube
+	position	100.00	-150.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	100.00	-150.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	100.00	-150.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	100.00	-150.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	100.00	-150.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	100.00	-150.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	100.00	-150.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
+
+
+{
+	type	cube
+	position	100.00	150.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	100.00	150.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	100.00	150.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	100.00	150.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	100.00	150.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	100.00	150.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	100.00	150.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+{
+	type	cube
+	position	150.00	150.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	150.00	150.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	150.00	150.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	150.00	150.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	150.00	150.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	150.00	150.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	150.00	150.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+	type	cube
+	position	200.00	150.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	200.00	150.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	200.00	150.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	200.00	150.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	150.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	200.00	150.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	150.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
+
+
+{
+	type	cube
+	position	200.00	100.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	200.00	100.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	200.00	100.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	200.00	100.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	100.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	200.00	100.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	100.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
+{
+	type	cube
+	position	200.00	50.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	200.00	50.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	200.00	50.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	200.00	50.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	150.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	200.00	50.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	50.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
+
+
+{
+	type	cube
+	position	200.00	-150.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	200.00	-150.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	200.00	-150.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	200.00	-150.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	-150.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	200.00	-150.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	-150.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+{
+	type	cube
+	position	200.00	-50.00	0.00
+	rotation	-1.571	1	0	0
+	scale	1.0
+	velocity	21.00	0.00	-25.00
+	angularVelocity	-1.20	0.00	0.00
+	mass	20.0
+}
+
+{
+	type	saucer
+	position	200.00	-50.00	50.00
+	rotation	1.571	1	0	0
+	scale	2.0
+	velocity	20.00	21.00	0.00
+	angularVelocity	-4.00	2.00	0.00
+	mass	20.0
+}
+
+{
+	type	satellite
+	position	200.00	-50.00	100.00
+	rotation	0	1	0	0
+	scale	1.0
+	velocity	-20.0	23.00	0.00
+	angularVelocity	0.00	2.00	-3.00
+	mass	10.0
+}
+
+
+{
+	type	satellite
+	position	200.00	-50.00	150.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	2.00	2.00
+	angularVelocity	0.00	0.00	0.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	-50.00	200.00
+	rotation	0	1	0	0
+	scale	2.2
+	velocity	0.00	32.00	0.00
+	angularVelocity	3.00	1.00	0.00
+	mass	50.0
+}
+
+{
+	type	satellite
+	position	200.00	-50.00	250.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	33.00	0.00	0.00
+	angularVelocity	0.40	0.40	-3.00
+	mass	50.0
+}
+
+{
+	type	cube
+	position	200.00	-50.00	300.00
+	rotation	0	1	0	0
+	scale	1.2
+	velocity	0.00	11.00	21.00
+	angularVelocity	0.20	0.50	0.08
+	mass	50.0
+}
+
+
+
+
+
+
+
+
 # type_file_lookup
 
 saucer	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Saucer_hq.txt
 satellite	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Satellite.txt
 cube	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Cube_1.txt
+earth	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_16_corrected.txt
+moon	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_16_corrected.txt
+mars	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_16_corrected.txt
+jupiter	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_16_corrected.txt
+
 
 # texture_lookup
 
@@ -94,5 +1107,14 @@ cube	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Cube_1.txt
 saucer	D:/cpp_codes/26_portals/Portals/assets/saucer_texture.png
 satellite	D:/cpp_codes/26_portals/Portals/assets/saucer_texture.png
 cube	D:/cpp_codes/26_portals/Portals/assets/all_in_one.png
+earth	D:/cpp_codes/26_portals/Portals/assets/Earth.png
+moon	D:/cpp_codes/26_portals/Portals/assets/MoonBright.png
+mars	D:/cpp_codes/26_portals/Portals/assets/Mars.png
+jupiter	D:/cpp_codes/26_portals/Portals/assets/Jupiter.png
+
+
+
+
+
 
 

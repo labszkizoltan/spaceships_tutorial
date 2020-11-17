@@ -48,7 +48,7 @@ void main()
 	float rho = length(vec2(position_tmp.x, position_tmp.y));
 
 	float theta_max = 1.0471955; // 60 degrees
-//	float r_max = 200.0f;
+	float r_max = 5000000.0f;
 	float r_min = 0.25;
 
 	float new_r = zoom_level * theta / theta_max;
@@ -56,8 +56,8 @@ void main()
 	gl_Position = vec4(
 		new_r*position_tmp.x / (rho*aspect_ratio),
 		new_r*position_tmp.y / rho,
-		//		2*(sign(position_tmp[2])*r-r_min)/r_max-1, // finite sight range, ending at distance == r_max
-		2.0 * atan(sign(position_tmp[2])*r - r_min) / 1.570787f - 1.0, // infinite sight range
+		2.0 * (sign(position_tmp[2])*r-r_min)/r_max-1, // finite sight range, ending at distance == r_max
+//		2.0 * atan(sign(position_tmp[2])*r - r_min) / 1.570787f - 1.0, // infinite sight range
 		1.0f
 	);
 

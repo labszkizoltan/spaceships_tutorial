@@ -3,8 +3,11 @@ vendor/*
 Portals/x64/*
 x64/*
 Skybox_factory/*
+Portals/assets/MeshFactory/*
 Meshes/*
+
 
 # Files
 .vs/*
 previous_main.cpp
+*.jpg

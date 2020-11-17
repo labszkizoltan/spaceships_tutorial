@@ -220,6 +220,7 @@ Scene::Scene(const std::string & filename)
 		m_Bodies[i] = parsed_input.bodies[i];
 	}
 	m_Accelerations.resize(m_Bodies.size());
+	m_AngularAccelerations.resize(m_Bodies.size());
 	m_Distances.resize(m_Bodies.size()*m_Bodies.size());
 
 	// load meshes
@@ -280,19 +281,20 @@ void Scene::Update(float deltaTime)
 void Scene::Update(float deltaTime, AccelerationFunction accelerationFunc)
 {
 	//	std::vector<Vec3D> accelerations = accelerationFunc(m_Bodies);
-	accelerationFunc(m_Bodies, m_Accelerations);
+	accelerationFunc(m_Bodies, m_Accelerations, m_AngularAccelerations);
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
 		m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
 		m_Bodies[i].velocity += deltaTime * m_Accelerations[i];
 		m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
+		m_Bodies[i].angularVelocity += deltaTime * m_AngularAccelerations[i];
 	}
 }
 
 void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerationFunc)
 {
 	//	std::vector<Vec3D> accelerations = accelerationFunc(m_Bodies);
-	accelerationFunc(m_Bodies, m_Accelerations);
+	accelerationFunc(m_Bodies, m_Accelerations, m_AngularAccelerations);
 	CalcMinDistances(deltaTime);
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
@@ -308,21 +310,22 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 		}
 	}
 
-	static float boundary = 400.0f;
+	static float boundary = 5000000.0f;
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
 		m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
 		// implement periodic boudaries
-		{
-			m_Bodies[i].location.x += m_Bodies[i].location.x < (-1.0f*boundary) ? 1000.0f : 0.0f;
-			m_Bodies[i].location.x -= m_Bodies[i].location.x > boundary ? 1000.0f : 0.0f;
-			m_Bodies[i].location.y += m_Bodies[i].location.y < (-1.0f*boundary) ? 1000.0f : 0.0f;
-			m_Bodies[i].location.y -= m_Bodies[i].location.y > boundary ? 1000.0f : 0.0f;
-			m_Bodies[i].location.z += m_Bodies[i].location.z < (-1.0f*boundary) ? 1000.0f : 0.0f;
-			m_Bodies[i].location.z -= m_Bodies[i].location.z > boundary ? 1000.0f : 0.0f;
-		}
+//		{
+//			m_Bodies[i].location.x += m_Bodies[i].location.x < (-1.0f*boundary) ? boundary : 0.0f;
+//			m_Bodies[i].location.x -= m_Bodies[i].location.x > boundary ? boundary : 0.0f;
+//			m_Bodies[i].location.y += m_Bodies[i].location.y < (-1.0f*boundary) ? boundary : 0.0f;
+//			m_Bodies[i].location.y -= m_Bodies[i].location.y > boundary ? boundary : 0.0f;
+//			m_Bodies[i].location.z += m_Bodies[i].location.z < (-1.0f*boundary) ? boundary : 0.0f;
+//			m_Bodies[i].location.z -= m_Bodies[i].location.z > boundary ? boundary : 0.0f;
+//		}
 		m_Bodies[i].velocity += deltaTime * m_Accelerations[i];
 		m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
+		m_Bodies[i].angularVelocity += deltaTime * m_AngularAccelerations[i];
 	}
 }
 
@@ -347,6 +350,28 @@ void Scene::Draw(Observer obs)
 	}
 }
 
+void Scene::Draw(Player player)
+{
+	// Render
+	glClearColor(0.0f, 0.05f, 0.3f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	m_Skybox.Draw(player.m_Observer);
+
+	m_TextureShader.Bind();
+	player.m_Observer.SetObserverInShader(m_TextureShader);
+	for (int i = 0; i < m_Bodies.size(); i++)
+	{
+		m_TextureShader.UploadUniformFloat3("body_translation", m_Bodies[i].location.Glm());
+		m_TextureShader.UploadUniformMat3("body_orientation", m_Bodies[i].orientation.Glm());
+		m_TextureShader.UploadUniformFloat("body_scale", m_Bodies[i].scale);
+		if (player.m_BodyPtr != &m_Bodies[i])
+		{
+			m_Meshes[m_MeshIndices[i]].Draw();
+		}
+	}
+}
+
 void Scene::SetAspectRatio(float aspectRatio)
 {
 	m_TextureShader.Bind();
@@ -357,6 +382,23 @@ void Scene::SetAspectRatio(float aspectRatio)
 void Scene::SetSceneTranslation(glm::vec3 scene_translation)
 {
 	m_TextureShader.UploadUniformFloat3("scene_translation", scene_translation);
+}
+
+Body* Scene::GetBodyPtr(int i)
+{
+	if (i < 0)
+	{
+		while (i < 0)
+		{
+			i += m_Bodies.size();
+		}
+	}
+	while (i >= m_Bodies.size())
+	{
+		i -= m_Bodies.size();
+	}
+
+	return &m_Bodies[i];
 }
 
 void Scene::CalcMinDistances(float deltaTime, float dvThreshold)
@@ -372,7 +414,8 @@ void Scene::CalcMinDistances(float deltaTime, float dvThreshold)
 			dv = m_Bodies[i].velocity - m_Bodies[j].velocity;
 //			lambda = -(dr*dv) / dv.lengthSquare();
 			lambda = dv.lengthSquare() < dvThreshold ? 0 : -(dr*dv) / dv.lengthSquare();
-			m_Distances[i*n + j] = (dr+dv*deltaTime*lambda).length();
+			m_Distances[i*n + j] = (dr + dv * deltaTime*lambda).length();
+			m_Distances[j*n + i] = lambda; // store the lambda values in the unused half of the distance matrix
 		}
 	}
 }
