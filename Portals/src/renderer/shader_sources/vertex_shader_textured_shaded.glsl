@@ -63,7 +63,7 @@ void main()
 
 	vTexCoord = aTexCoord;
 
-	vec3 lightDirection = vec3(1, 1, 0);
+	vec3 lightDirection = vec3(1, 0, 1);
 	lightDirection = lightDirection / length(lightDirection);
 	vec3 surfaceDirection = aSurfaceNormal[0] * body_orientation[0] + aSurfaceNormal[1] * body_orientation[1] + aSurfaceNormal[2] * body_orientation[2];
 

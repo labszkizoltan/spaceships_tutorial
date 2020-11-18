@@ -128,6 +128,7 @@
     <ClCompile Include="src\controls\timestep.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\objects\body.cpp" />
+    <ClCompile Include="src\objects\projectile.cpp" />
     <ClCompile Include="src\renderer\framebuffer.cpp" />
     <ClCompile Include="src\renderer\portal.cpp" />
     <ClCompile Include="src\renderer\scene.cpp" />
@@ -148,10 +149,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\acceleration_functions.h" />
     <ClInclude Include="src\controls\observer.h" />
     <ClInclude Include="src\controls\player.h" />
     <ClInclude Include="src\controls\timestep.h" />
     <ClInclude Include="src\objects\body.h" />
+    <ClInclude Include="src\objects\projectile.h" />
     <ClInclude Include="src\renderer\framebuffer.h" />
     <ClInclude Include="src\renderer\portal.h" />
     <ClInclude Include="src\renderer\scene.h" />

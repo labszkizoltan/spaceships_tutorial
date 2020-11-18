@@ -209,19 +209,22 @@ Scene::Scene(const std::string & filename)
 	m_Skybox = std::move(Skybox(skybox_texture_files, 10));
 
 
-
 	// Initialize objects
 	std::vector<std::string> bodyTypes;
 		bodyTypes.resize(parsed_input.body_types.size());
 	m_Bodies.resize(parsed_input.bodies.size());
+	m_Integrities.resize(parsed_input.bodies.size());
 	for (int i = 0; i < parsed_input.body_types.size(); i++)
 	{
 		bodyTypes[i] = parsed_input.body_types[i];
-		m_Bodies[i] = parsed_input.bodies[i];
+		m_Bodies[i] = parsed_input.bodies[i]; 
+		m_Integrities[i] = parsed_input.bodies[i].mass;
 	}
 	m_Accelerations.resize(m_Bodies.size());
 	m_AngularAccelerations.resize(m_Bodies.size());
 	m_Distances.resize(m_Bodies.size()*m_Bodies.size());
+
+//	m_ProjectilePool.resize(20 * m_Bodies.size()); // 20 shots are allowed per object at maximum
 
 	// load meshes
 		// get the unique keys from the map
@@ -265,8 +268,12 @@ Scene::Scene(const std::string & filename)
 
 Scene::~Scene()
 {
+	m_ProjectilePool.~ProjectilePool();
+	m_TextureShader.~Shader();
+	m_Skybox.~Skybox();
 
-
+	for (int i = 0; i < m_Meshes.size(); i++)
+		m_Meshes[i].~TexturedShadedMesh();
 }
 
 void Scene::Update(float deltaTime)
@@ -276,6 +283,8 @@ void Scene::Update(float deltaTime)
 		m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
 		m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
 	}
+
+	m_ProjectilePool.Update(deltaTime);
 }
 
 void Scene::Update(float deltaTime, AccelerationFunction accelerationFunc)
@@ -289,6 +298,8 @@ void Scene::Update(float deltaTime, AccelerationFunction accelerationFunc)
 		m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
 		m_Bodies[i].angularVelocity += deltaTime * m_AngularAccelerations[i];
 	}
+
+	m_ProjectilePool.Update(deltaTime);
 }
 
 void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerationFunc)
@@ -296,21 +307,26 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 	//	std::vector<Vec3D> accelerations = accelerationFunc(m_Bodies);
 	accelerationFunc(m_Bodies, m_Accelerations, m_AngularAccelerations);
 	CalcMinDistances(deltaTime);
+
+	static Vec3D v_eff;
+	static Vec3D tempV;
+
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
 		for (int j = i + 1; j < m_Bodies.size(); j++)
 		{
-			// for now, swap velocities when two bodies collide
+			// swap momentums in the center off mass inertial frame at collision
 			if (m_Distances[i*m_Bodies.size() + j] < m_Bodies[i].scale + m_Bodies[j].scale)
 			{
-				Vec3D tempV = m_Bodies[i].velocity;
-				m_Bodies[i].velocity = m_Bodies[j].velocity;
-				m_Bodies[j].velocity = tempV;
+				v_eff = (m_Bodies[i].mass*m_Bodies[i].velocity + m_Bodies[j].mass*m_Bodies[j].velocity) / (m_Bodies[i].mass + m_Bodies[j].mass);
+				tempV = m_Bodies[i].velocity-v_eff;
+				m_Bodies[i].velocity = v_eff + (m_Bodies[j].mass / m_Bodies[i].mass) * (m_Bodies[j].velocity-v_eff);
+				m_Bodies[j].velocity = v_eff + (m_Bodies[i].mass / m_Bodies[j].mass) * tempV;
 			}
 		}
 	}
 
-	static float boundary = 5000000.0f;
+//	static float boundary = 5000000.0f;
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
 		m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
@@ -326,6 +342,19 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 		m_Bodies[i].velocity += deltaTime * m_Accelerations[i];
 		m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
 		m_Bodies[i].angularVelocity += deltaTime * m_AngularAccelerations[i];
+	}
+
+	m_ProjectilePool.Update(deltaTime);
+}
+
+void Scene::OnShoot(Body* ownerBodyPtr)
+{
+	int bodyIndex = (ownerBodyPtr - &m_Bodies[0])/sizeof(Body);
+	int hitTarget = m_ProjectilePool.Emit(bodyIndex, m_Bodies);
+
+	if (hitTarget >= 0)
+	{
+		OnHit(hitTarget, 1.0f);
 	}
 }
 
@@ -348,9 +377,10 @@ void Scene::Draw(Observer obs)
 		m_TextureShader.UploadUniformFloat("body_scale", m_Bodies[i].scale);
 		m_Meshes[m_MeshIndices[i]].Draw();
 	}
+
 }
 
-void Scene::Draw(Player player)
+void Scene::Draw(Player& player)
 {
 	// Render
 	glClearColor(0.0f, 0.05f, 0.3f, 1.0f);
@@ -370,6 +400,8 @@ void Scene::Draw(Player player)
 			m_Meshes[m_MeshIndices[i]].Draw();
 		}
 	}
+
+	m_ProjectilePool.Draw(player);
 }
 
 void Scene::SetAspectRatio(float aspectRatio)
@@ -377,6 +409,7 @@ void Scene::SetAspectRatio(float aspectRatio)
 	m_TextureShader.Bind();
 	m_TextureShader.UploadUniformFloat("aspect_ratio", aspectRatio);
 	m_Skybox.SetShaderAspectRatio(aspectRatio);
+	m_ProjectilePool.SetAspectRatio(aspectRatio);
 }
 
 void Scene::SetSceneTranslation(glm::vec3 scene_translation)
@@ -418,6 +451,14 @@ void Scene::CalcMinDistances(float deltaTime, float dvThreshold)
 			m_Distances[j*n + i] = lambda; // store the lambda values in the unused half of the distance matrix
 		}
 	}
+}
+
+//void Scene::OnHit(int bodyIndex, Projectile& projectile, float hitStrength)
+void Scene::OnHit(int bodyIndex, float hitStrength)
+{
+	m_Integrities[bodyIndex] -= hitStrength;
+//	m_Bodies[bodyIndex].angularVelocity += Vec3D(0.0f, 0.01f, 0.0f);
+	m_Bodies[bodyIndex].angularVelocity += Vec3D((float)rand()/RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX);
 }
 
 

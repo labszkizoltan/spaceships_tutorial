@@ -4,6 +4,7 @@
 #include "Portals/src/controls/observer.h"
 #include "Portals/src/controls/player.h"
 #include "Portals/src/objects/body.h"
+#include "Portals/src/objects/projectile.h"
 
 #include "Portals/src/renderer/shader.h"
 #include "Portals/src/renderer/skybox.h"
@@ -28,8 +29,10 @@ public:
 	void Update(float deltaTime);
 	void Update(float deltaTime, AccelerationFunction accelerationFunc);
 	void UpdateWithCollision(float deltaTime, AccelerationFunction accelerationFunc);
+	void OnShoot(Body* ownerBodyPtr);
+
 	void Draw(Observer obs);
-	void Draw(Player player);
+	void Draw(Player& player);
 	void SetAspectRatio(float aspectRatio);
 	void SetSceneTranslation(glm::vec3 scene_translation);
 
@@ -38,9 +41,13 @@ public:
 
 private:
 	void CalcMinDistances(float deltaTime, float dvThreshold = 0.001f);
+//	void OnHit(int bodyIndex, Projectile& projectile, float hitStrength);
+	void OnHit(int bodyIndex, float hitStrength = 1.0f);
 
 private:
 	std::vector<Body> m_Bodies;
+	std::vector<float> m_Integrities; // Stores the structural integrity of the bodies, if it reaches below 0, the body is destroyed, initially set to be equal to the mass
+	ProjectilePool m_ProjectilePool;
 	std::vector<int> m_MeshIndices; // this and m_BodyTypes are kind of redundant, since they essentially code the same info, just in different ways
 
 	// Pre-allocated helper memory blocks for state update

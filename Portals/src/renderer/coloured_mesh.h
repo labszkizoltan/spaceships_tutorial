@@ -17,6 +17,11 @@ public:
 	ColouredMesh(const std::string& filename);
 	~ColouredMesh();
 
+	ColouredMesh(const ColouredMesh& other) = delete; // copy constructor
+	ColouredMesh& operator=(const ColouredMesh& other) = delete; // copy assignment
+	ColouredMesh(ColouredMesh&& other) noexcept; // move constructor
+	ColouredMesh& operator=(ColouredMesh&& other) noexcept; // move assignment
+
 	void Draw();
 
 private:

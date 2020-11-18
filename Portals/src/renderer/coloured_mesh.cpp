@@ -83,6 +83,39 @@ ColouredMesh::~ColouredMesh()
 // 	shader.UploadUniformFloat("zoom_level", m_Observer.zoom_level);
 // }
 
+// move constructor
+ColouredMesh::ColouredMesh(ColouredMesh && other) noexcept
+{
+	glDeleteVertexArrays(1, &m_VertexArray);
+	m_VertexBuffer.~OpenGLVertexBuffer();
+	m_IndexBuffer.~OpenGLIndexBuffer();
+
+	m_VertexArray = other.m_VertexArray;
+	m_VertexBuffer = std::move(other.m_VertexBuffer);
+	m_IndexBuffer = std::move(other.m_IndexBuffer);
+
+	other.m_VertexArray = 0;
+}
+
+// move assignment
+ColouredMesh & ColouredMesh::operator=(ColouredMesh && other) noexcept
+{
+	if (this != &other)
+	{
+		glDeleteVertexArrays(1, &m_VertexArray);
+		m_VertexBuffer.~OpenGLVertexBuffer();
+		m_IndexBuffer.~OpenGLIndexBuffer();
+
+		m_VertexArray = other.m_VertexArray;
+		m_VertexBuffer = std::move(other.m_VertexBuffer);
+		m_IndexBuffer = std::move(other.m_IndexBuffer);
+
+		other.m_VertexArray = 0;
+	}
+
+	return *this;
+}
+
 void ColouredMesh::Draw()
 {
 	glBindVertexArray(m_VertexArray);
