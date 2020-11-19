@@ -3,6 +3,23 @@
 // ----- TODO ----- //
 // ---------------- //
 
+- Add mouse controls
+
+- Add helper visuals:
+	- targeting cross
+	- display the direction of velocity (forward and backward) to help with maneuvering
+		(especially with breaking)
+
+- Create a menu
+
+- Revise and add new models
+	- Oneill cylinder,
+	- Warships,
+	- space stations,
+	- asteroids,
+	- Stellar engine
+
+
 
 - Create a struct in the shader that defines all properties of the observer.
 	This way only one uniform upload is enough to set the observer. -> I tried this for the observer,
@@ -24,7 +41,7 @@
 		is a vector of lists, so no wonder that the read access violation is coming from the <list> header.
 	- Update: I have changed the unordered map to just map, but still got an error. For some reason a 
 		shaders destructor is called twice, and this is causing the issue. When I remove the explicit shader destructor call
-		from the Skaybox destructor, the error goes away. However I still dont know why the destructor is called
+		from the Skybox destructor, the error goes away. However I still dont know why the destructor is called
 		twice on the same object, my best guess is that I have implemented the move semantics incorrectly somewhere.
 	(is that possible that the iterators or something got invalid upon move assignment?
 	just like it happened to the buffer elements?)

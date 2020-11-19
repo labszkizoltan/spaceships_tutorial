@@ -1,6 +1,11 @@
 
 #include "body.h"
 
+void Body::AccelerateDir(Vec3D deltav)
+{
+	velocity += deltav;
+}
+
 void Body::Accelerate(float deltav)
 {
 	velocity += deltav * orientation.f3;
@@ -47,6 +52,10 @@ void Body::Stop()
 	angularVelocity = { 0,0,0 };
 }
 
+void Body::Turn(Vec3D axis, float angle)
+{
+	orientation = Rotation(angle, axis) * orientation;
+}
 void Body::TurnRight(float angle)
 {
 	orientation = Rotation(angle, orientation.f2) * orientation;

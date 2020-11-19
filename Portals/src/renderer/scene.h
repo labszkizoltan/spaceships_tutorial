@@ -42,7 +42,7 @@ public:
 private:
 	void CalcMinDistances(float deltaTime, float dvThreshold = 0.001f);
 //	void OnHit(int bodyIndex, Projectile& projectile, float hitStrength);
-	void OnHit(int bodyIndex, float hitStrength = 1.0f);
+	void OnHit(int bodyIndex, float hitStrength, Body* shooterBody);
 
 private:
 	std::vector<Body> m_Bodies;

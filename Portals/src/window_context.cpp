@@ -1,6 +1,7 @@
 
 
 #include <iostream>
+#include <algorithm> // needed for std::max
 
 // GLAD
 #include <glad/glad.h>
@@ -13,11 +14,14 @@
 
 MyWindow::MyWindow(int width, int height, std::string name)
 {
+	m_Width = (float)width;
+	m_Height = (float)height;
 
 	std::cout << "Starting GLFW context, OpenGL 4.5" << std::endl;
 	// Init GLFW
 	glfwInit();
 	// Set all the required options for GLFW
+	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -50,6 +54,8 @@ MyWindow::MyWindow(int width, int height, std::string name)
 	glFrontFace(GL_CW);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	glEnable(GL_MULTISAMPLE);
 }
 
 
@@ -86,6 +92,13 @@ void MyWindow::SetCursorPositionCallback(GLFWcursorposfun callback)
 	glfwSetCursorPosCallback(m_Window, callback);
 }
 
+// GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* window, GLFWscrollfun callback);
+// void function_name(GLFWwindow* window, double xoffset, double yoffset)
+void MyWindow::SetMouseScrollCallback(GLFWcursorposfun callback)
+{
+	glfwSetScrollCallback(m_Window, callback);
+}
+
 bool MyWindow::IsKeyPressed(int keycode)
 {
 	int state = glfwGetKey(m_Window, keycode);
@@ -103,6 +116,13 @@ std::pair<float, float> MyWindow::GetMousePosition()
 	double xpos, ypos;
 	glfwGetCursorPos(m_Window, &xpos, &ypos);
 	return std::pair<float, float>((float)xpos, (float)ypos);
+}
+
+std::pair<float, float> MyWindow::GetMousePositionFromCenter()
+{
+	double xpos, ypos;
+	glfwGetCursorPos(m_Window, &xpos, &ypos);
+	return std::pair<float, float>((float)xpos-m_Width/2.0f, (float)ypos-m_Height/2.0f);
 }
 
 // 
@@ -143,6 +163,7 @@ void MyWindow::HandleUserInputs(Observer& obs, Timestep timestep)
 
 	if (IsKeyPressed(GLFW_KEY_P)) { obs.ZoomIn(1.05f); }
 	if (IsKeyPressed(GLFW_KEY_O)) { obs.ZoomOut(1.05f); }
+
 }
 
 void MyWindow::HandlePlayerInputs(Player& player, Timestep timestep)
@@ -174,6 +195,26 @@ void MyWindow::HandlePlayerInputs(Player& player, Timestep timestep)
 
 	if (IsKeyPressed(GLFW_KEY_P)) { player.m_Observer.ZoomIn(1.05f); }
 	if (IsKeyPressed(GLFW_KEY_O)) { player.m_Observer.ZoomOut(1.05f); }
+
+	static std::pair<float, float> mousePos;
+	static float radiusFromCenter, r_min = 200.0f;
+
+	mousePos = GetMousePositionFromCenter();
+	radiusFromCenter = sqrt(mousePos.first*mousePos.first + mousePos.second*mousePos.second);
+//	player.m_BodyPtr->Turn(Vec3D(-mousePos.second, mousePos.first, 0.0f), 0.0001f * std::max(0.0f, radiusFromCenter - r_min) / player.m_Observer.zoom_level);
+	player.m_BodyPtr->Turn(mousePos.first*player.m_BodyPtr->orientation.f2+mousePos.second*player.m_BodyPtr->orientation.f1, 0.0001f * std::max(0.0f, radiusFromCenter - r_min) / player.m_Observer.zoom_level);
+
+	std::cout << "mouse position:\t" << mousePos.first << "\t" << mousePos.second << "\n";
+}
+
+void MyWindow::SetUserPointer(void * userPtr)
+{
+	glfwSetWindowUserPointer(m_Window, userPtr);
+}
+
+void * MyWindow::GetUserPointer(void * userPtr)
+{
+	return glfwGetWindowUserPointer(m_Window);
 }
 
 

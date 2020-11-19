@@ -43,10 +43,22 @@ const int windowHeight = 1000;
 // 	}
 // }
 
+
+// GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* window, GLFWscrollfun callback);
+// void function_name(GLFWwindow* window, double xoffset, double yoffset)
+void mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+	Player* playerPtr = (Player*)glfwGetWindowUserPointer(window);
+//	playerPtr->m_Observer.zoom_level *= playerPtr->m_Observer.zoom_level > 500.0f ? 1.0f : (1.0f+0.1*(float)yoffset);
+	if (yoffset > 0) { playerPtr->m_Observer.ZoomIn(1.1f); }
+	else if (yoffset < 0) { playerPtr->m_Observer.ZoomOut(1.1f); }
+}
+
+
 int main()
 {
 	MyWindow appWindow(windowWidth, windowHeight, "Portals");
-//	appWindow.SetKeyCallback(key_callback);
+	appWindow.SetMouseScrollCallback(mouse_scroll_callback);
 
 	Scene myScene("assets/scene_definitions/03_SceneDefinition_test_orbits.txt");
 	myScene.SetAspectRatio((float)windowWidth / (float)windowHeight);
@@ -60,6 +72,8 @@ int main()
 	Player player;
 	player.SetBodyPtr(myScene.GetBodyPtr(0));
 	player.Synchronize();
+
+	appWindow.SetUserPointer(&player);
 
 	float time = (float)glfwGetTime();
 	Timestep timestep = 0.0f; // timestep can be initialized like this, because its constructor takes in only one float, implicit cast is possible
@@ -78,7 +92,8 @@ int main()
 		if (appWindow.IsKeyPressed(GLFW_KEY_N) && body_switch_timer > 1.0f) { body_index--; player.SetBodyPtr(myScene.GetBodyPtr(body_index)); body_switch_timer = 0.0f; }
 		body_switch_timer += timestep;
 
-		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); myScene.OnShoot(player.m_BodyPtr+8*sizeof(Body)); shoot_timer = 0.0f; }
+		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); myScene.OnShoot(player.m_BodyPtr + 8 * sizeof(Body)); shoot_timer = 0.0f; }
+		if (appWindow.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); shoot_timer = 0.0f; }
 //		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); shoot_timer = 0.0f; }
 		shoot_timer += timestep;
 

@@ -20,21 +20,27 @@ public:
 	void SetKeyCallback(GLFWkeyfun callback);
 	void SetMouseButtonCallback(GLFWmousebuttonfun callback);
 	void SetCursorPositionCallback(GLFWcursorposfun callback);
+	void SetMouseScrollCallback(GLFWcursorposfun callback);
 
 	bool IsKeyPressed(int keycode);
 	bool IsMouseButtonPressed(int button);
 	std::pair<float, float> GetMousePosition();
+	std::pair<float, float> GetMousePositionFromCenter();
+	
 //	float GetMouseX();
 //	float GetMouseY();
 
 	void HandleUserInputs(Observer& obs, Timestep timestep);
 	void HandlePlayerInputs(Player& player, Timestep timestep);
 
+	void SetUserPointer(void* userPtr);
+	void* GetUserPointer(void* userPtr);
+
 	GLFWwindow* GetWindow() { return m_Window; }
 
 private:
 	GLFWwindow* m_Window;
-
+	float m_Width, m_Height;
 };
 
 

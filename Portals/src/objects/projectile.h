@@ -32,13 +32,13 @@ public:
 	void SetAspectRatio(float aspectRatio);
 
 	// owner should point to an element in bodies!
-	int Emit(int ownerIndex, std::vector<Body>& bodies); // Collision with the bodies will be checked on emission, thats why the argument is needed. Returns the index of the body that suffers the hit.
+	int Emit(int ownerIndex, std::vector<Body>& bodies, std::vector<float> integrities); // Collision with the bodies will be checked on emission, thats why the argument is needed. Returns the index of the body that suffers the hit.
 	void Update(float deltaTime);
 	void Draw(Player player);
 
 private:
 	uint32_t m_Size = 1000;
-	uint32_t m_CurrentIndex = m_Size-1;
+	int m_CurrentIndex = m_Size-1;
 	float m_MaxLength = 5000.0f;
 
 	std::vector<Projectile> m_Projectiles;

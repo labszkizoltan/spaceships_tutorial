@@ -39,14 +39,15 @@ ProjectilePool::ProjectilePool()
 	std::vector<uint32_t> indexData;
 	{
 		int quadCount = 500;
-		float dx = 0.5f, dz = 1.0f/quadCount;
+		float dx = 0.5f, dz = 1.0f/quadCount, gapSize = 0.01f; // gapSize will create a visual gap at the origin of teh beam, so at firing it wont cover the view as much
+		float windingNumber = 100.0f; // this determines how curved the spiral will be
 
 		vertexAndColorData.resize(2*(2 * quadCount + 2)); // vertex count = 2*quadCount+2
 		indexData.resize(6 * quadCount);
 		for (int i = 0; i < (2*quadCount + 2); i++)
 		{
-			vertexAndColorData[2 * i + 0] = Vec3D((i%2*2-1)*dx*cos((float)(i/2)*dz/5.0f), (i%2*2-1)*dx*sin((float)(i/2)*dz/5.0f), (float)(i/2)*dz);
-			vertexAndColorData[2 * i + 1] = Vec3D(0.9f, 0.9f, 0.5f);
+			vertexAndColorData[2 * i + 0] = ( Vec3D(0,0, gapSize) + Vec3D((i%2*2-1)*dx*cos((float)(i/2)*dz*windingNumber), (i%2*2-1)*dx*sin((float)(i/2)*dz*windingNumber), (float)(i/2)*dz) ) / (1.0f+ gapSize);
+			vertexAndColorData[2 * i + 1] = Vec3D(0.1f, 0.99f, 0.3f); // projectile colour
 		}
 		for (int i = 0; i < quadCount; i++)
 		{
@@ -80,7 +81,7 @@ void ProjectilePool::SetAspectRatio(float aspectRatio)
 }
 
 // Collision with the bodies will be checked on emission, thats why the argument is needed. Returns the index of the body that suffers the hit.
-int ProjectilePool::Emit(int ownerIndex, std::vector<Body>& bodies)
+int ProjectilePool::Emit(int ownerIndex, std::vector<Body>& bodies, std::vector<float> integrities)
 {
 	m_CurrentIndex--;
 	m_CurrentIndex = m_CurrentIndex < 0 ? (m_Size - 1) : (m_CurrentIndex);
@@ -102,7 +103,7 @@ int ProjectilePool::Emit(int ownerIndex, std::vector<Body>& bodies)
 	collisionIndex = -1;
 	for (int i = 0; i < bodies.size(); i++)
 	{
-		if (ownerIndex != i)
+		if (ownerIndex != i && integrities[i] > 0.0f) // check collision only with active bodies
 		{
 			v = (bodies[i].location - bodies[ownerIndex].location);
 

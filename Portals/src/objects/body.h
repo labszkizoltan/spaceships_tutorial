@@ -24,6 +24,7 @@ struct Body
 //	Mat_3D angularInertia;
 //	BodyType type; // this might not even be needed here.
 
+	void AccelerateDir(Vec3D deltav);
 	void Accelerate(float deltav);
 	void Deccelerate(float deltav);
 	void MoveForward(float distance);
@@ -35,6 +36,7 @@ struct Body
 
 	void Stop();
 
+	void Turn(Vec3D axis, float angle);
 	void TurnRight(float angle);
 	void TurnLeft(float angle);
 	void TurnUp(float angle);

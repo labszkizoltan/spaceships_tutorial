@@ -315,13 +315,17 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 	{
 		for (int j = i + 1; j < m_Bodies.size(); j++)
 		{
-			// swap momentums in the center off mass inertial frame at collision
-			if (m_Distances[i*m_Bodies.size() + j] < m_Bodies[i].scale + m_Bodies[j].scale)
+			// do this only for active bodies
+			if (m_Integrities[i] > 0.0f && m_Integrities[j] > 0.0f)
 			{
-				v_eff = (m_Bodies[i].mass*m_Bodies[i].velocity + m_Bodies[j].mass*m_Bodies[j].velocity) / (m_Bodies[i].mass + m_Bodies[j].mass);
-				tempV = m_Bodies[i].velocity-v_eff;
-				m_Bodies[i].velocity = v_eff + (m_Bodies[j].mass / m_Bodies[i].mass) * (m_Bodies[j].velocity-v_eff);
-				m_Bodies[j].velocity = v_eff + (m_Bodies[i].mass / m_Bodies[j].mass) * tempV;
+				// swap momentums in the center off mass inertial frame at collision
+				if (m_Distances[i*m_Bodies.size() + j] < m_Bodies[i].scale + m_Bodies[j].scale)
+				{
+					v_eff = (m_Bodies[i].mass*m_Bodies[i].velocity + m_Bodies[j].mass*m_Bodies[j].velocity) / (m_Bodies[i].mass + m_Bodies[j].mass);
+					tempV = m_Bodies[i].velocity - v_eff;
+					m_Bodies[i].velocity = v_eff + (m_Bodies[j].mass / m_Bodies[i].mass) * (m_Bodies[j].velocity - v_eff);
+					m_Bodies[j].velocity = v_eff + (m_Bodies[i].mass / m_Bodies[j].mass) * tempV;
+				}
 			}
 		}
 	}
@@ -329,19 +333,23 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 //	static float boundary = 5000000.0f;
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
-		m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
-		// implement periodic boudaries
-//		{
-//			m_Bodies[i].location.x += m_Bodies[i].location.x < (-1.0f*boundary) ? boundary : 0.0f;
-//			m_Bodies[i].location.x -= m_Bodies[i].location.x > boundary ? boundary : 0.0f;
-//			m_Bodies[i].location.y += m_Bodies[i].location.y < (-1.0f*boundary) ? boundary : 0.0f;
-//			m_Bodies[i].location.y -= m_Bodies[i].location.y > boundary ? boundary : 0.0f;
-//			m_Bodies[i].location.z += m_Bodies[i].location.z < (-1.0f*boundary) ? boundary : 0.0f;
-//			m_Bodies[i].location.z -= m_Bodies[i].location.z > boundary ? boundary : 0.0f;
-//		}
-		m_Bodies[i].velocity += deltaTime * m_Accelerations[i];
-		m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
-		m_Bodies[i].angularVelocity += deltaTime * m_AngularAccelerations[i];
+		// update only active bodies
+		if (m_Integrities[i] > 0.0f)
+		{
+			m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
+			// implement periodic boudaries
+	//		{
+	//			m_Bodies[i].location.x += m_Bodies[i].location.x < (-1.0f*boundary) ? boundary : 0.0f;
+	//			m_Bodies[i].location.x -= m_Bodies[i].location.x > boundary ? boundary : 0.0f;
+	//			m_Bodies[i].location.y += m_Bodies[i].location.y < (-1.0f*boundary) ? boundary : 0.0f;
+	//			m_Bodies[i].location.y -= m_Bodies[i].location.y > boundary ? boundary : 0.0f;
+	//			m_Bodies[i].location.z += m_Bodies[i].location.z < (-1.0f*boundary) ? boundary : 0.0f;
+	//			m_Bodies[i].location.z -= m_Bodies[i].location.z > boundary ? boundary : 0.0f;
+	//		}
+			m_Bodies[i].velocity += deltaTime * m_Accelerations[i];
+			m_Bodies[i].orientation = Rotation(deltaTime*m_Bodies[i].angularVelocity.length(), m_Bodies[i].angularVelocity) * m_Bodies[i].orientation;
+			m_Bodies[i].angularVelocity += deltaTime * m_AngularAccelerations[i];
+		}
 	}
 
 	m_ProjectilePool.Update(deltaTime);
@@ -350,11 +358,11 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 void Scene::OnShoot(Body* ownerBodyPtr)
 {
 	int bodyIndex = (ownerBodyPtr - &m_Bodies[0])/sizeof(Body);
-	int hitTarget = m_ProjectilePool.Emit(bodyIndex, m_Bodies);
+	int hitTarget = m_ProjectilePool.Emit(bodyIndex, m_Bodies, m_Integrities);
 
 	if (hitTarget >= 0)
 	{
-		OnHit(hitTarget, 1.0f);
+		OnHit(hitTarget, 1.0f, ownerBodyPtr);
 	}
 }
 
@@ -372,10 +380,14 @@ void Scene::Draw(Observer obs)
 	obs.SetObserverInShader(m_TextureShader);
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
-		m_TextureShader.UploadUniformFloat3("body_translation", m_Bodies[i].location.Glm());
-		m_TextureShader.UploadUniformMat3("body_orientation", m_Bodies[i].orientation.Glm());
-		m_TextureShader.UploadUniformFloat("body_scale", m_Bodies[i].scale);
-		m_Meshes[m_MeshIndices[i]].Draw();
+		// Draw only active bodies
+		if (m_Integrities[i] > 0.0f)
+		{
+			m_TextureShader.UploadUniformFloat3("body_translation", m_Bodies[i].location.Glm());
+			m_TextureShader.UploadUniformMat3("body_orientation", m_Bodies[i].orientation.Glm());
+			m_TextureShader.UploadUniformFloat("body_scale", m_Bodies[i].scale);
+			m_Meshes[m_MeshIndices[i]].Draw();
+		}
 	}
 
 }
@@ -392,12 +404,13 @@ void Scene::Draw(Player& player)
 	player.m_Observer.SetObserverInShader(m_TextureShader);
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
-		m_TextureShader.UploadUniformFloat3("body_translation", m_Bodies[i].location.Glm());
-		m_TextureShader.UploadUniformMat3("body_orientation", m_Bodies[i].orientation.Glm());
-		m_TextureShader.UploadUniformFloat("body_scale", m_Bodies[i].scale);
-		if (player.m_BodyPtr != &m_Bodies[i])
+		// Draw only active bodies
+		if (m_Integrities[i] > 0.0f)
 		{
-			m_Meshes[m_MeshIndices[i]].Draw();
+			m_TextureShader.UploadUniformFloat3("body_translation", m_Bodies[i].location.Glm());
+			m_TextureShader.UploadUniformMat3("body_orientation", m_Bodies[i].orientation.Glm());
+			m_TextureShader.UploadUniformFloat("body_scale", m_Bodies[i].scale);
+			if (player.m_BodyPtr != &m_Bodies[i]) { m_Meshes[m_MeshIndices[i]].Draw(); }
 		}
 	}
 
@@ -454,11 +467,13 @@ void Scene::CalcMinDistances(float deltaTime, float dvThreshold)
 }
 
 //void Scene::OnHit(int bodyIndex, Projectile& projectile, float hitStrength)
-void Scene::OnHit(int bodyIndex, float hitStrength)
+void Scene::OnHit(int bodyIndex, float hitStrength, Body* shooterBody)
 {
 	m_Integrities[bodyIndex] -= hitStrength;
 //	m_Bodies[bodyIndex].angularVelocity += Vec3D(0.0f, 0.01f, 0.0f);
-	m_Bodies[bodyIndex].angularVelocity += Vec3D((float)rand()/RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX);
+//	m_Bodies[bodyIndex].angularVelocity = Vec3D((float)rand()/RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX);
+	m_Bodies[bodyIndex].angularVelocity += 0.5f * (hitStrength / m_Bodies[bodyIndex].mass) * shooterBody->orientation.f1;
+	m_Bodies[bodyIndex].velocity += (hitStrength / m_Bodies[bodyIndex].mass) * shooterBody->orientation.f3;
 }
 
 
