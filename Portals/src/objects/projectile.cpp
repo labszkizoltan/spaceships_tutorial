@@ -98,6 +98,7 @@ int ProjectilePool::Emit(int ownerIndex, std::vector<Body>& bodies, std::vector<
 	static float d;
 	static float collisionCandidate;
 	static int collisionIndex;
+	static float beam_width = 1.0f; // make the beam wider, so it is easier to hit a target
 
 	collisionCandidate = m_MaxLength;
 	collisionIndex = -1;
@@ -113,7 +114,7 @@ int ProjectilePool::Emit(int ownerIndex, std::vector<Body>& bodies, std::vector<
 				v_parallel = (v*bodies[ownerIndex].orientation.f3) * bodies[ownerIndex].orientation.f3;
 				d = (v - v_parallel).length();
 
-				if (d < bodies[i].scale && v_parallel.length() < collisionCandidate)
+				if (d < bodies[i].scale + beam_width && v_parallel.length() < collisionCandidate)
 				{
 					m_Projectiles[m_CurrentIndex].length = collisionCandidate = v_parallel.length();
 					collisionIndex = i;

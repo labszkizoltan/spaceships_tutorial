@@ -3,12 +3,13 @@
 // ----- TODO ----- //
 // ---------------- //
 
-- Add mouse controls
 
 - Add helper visuals:
 	- targeting cross
 	- display the direction of velocity (forward and backward) to help with maneuvering
 		(especially with breaking)
+	- put small circles or markers (triangles maybe) around faraway objects (create a 
+		dedicated shader with a uniform buffer, that stores all body positions)
 
 - Create a menu
 
@@ -19,7 +20,10 @@
 	- asteroids,
 	- Stellar engine
 
-
+- Create a function that saves the state of the game into a file
+	
+- Create a level where the Earth must be protected from infalling asteroids.
+	This can be done since I have added damage on collision.
 
 - Create a struct in the shader that defines all properties of the observer.
 	This way only one uniform upload is enough to set the observer. -> I tried this for the observer,
@@ -83,6 +87,32 @@
 
 - Revise the matrix library and rewrite to column major
 	- This will be necessary for the struct uploads
+
+
+- Add mouse controls:
+	- turning based on mouse position
+	- shoot on mouse button press
+	- zooming with mouse scrolling
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

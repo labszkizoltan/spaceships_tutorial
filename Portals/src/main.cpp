@@ -20,6 +20,7 @@
 #include "renderer/skybox.h"
 #include "renderer/framebuffer.h"
 #include "renderer/scene.h"
+#include "renderer/helper_visuals.h"
 
 #include "controls/timestep.h"
 #include "controls/player.h"
@@ -58,16 +59,18 @@ void mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 int main()
 {
 	MyWindow appWindow(windowWidth, windowHeight, "Portals");
+	glfwSetWindowPos(appWindow.GetWindow(), 50, 100);
 	appWindow.SetMouseScrollCallback(mouse_scroll_callback);
 
 	Scene myScene("assets/scene_definitions/03_SceneDefinition_test_orbits.txt");
 	myScene.SetAspectRatio((float)windowWidth / (float)windowHeight);
-
-	Observer observer;
-
+	
 	static int body_index = 0;
 	float body_switch_timer = 0.0f;
 	float shoot_timer = 0.0f;
+
+	Highlighter highlighter(ParseShader("src/renderer/shader_sources/vertex_shader_highlighter.glsl"), ParseShader("src/renderer/shader_sources/fragment_shader_highlighter.glsl"));
+	highlighter.SetAspectRatio((float)windowWidth / (float)windowHeight);
 
 	Player player;
 	player.SetBodyPtr(myScene.GetBodyPtr(0));
@@ -92,7 +95,7 @@ int main()
 		if (appWindow.IsKeyPressed(GLFW_KEY_N) && body_switch_timer > 1.0f) { body_index--; player.SetBodyPtr(myScene.GetBodyPtr(body_index)); body_switch_timer = 0.0f; }
 		body_switch_timer += timestep;
 
-		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); myScene.OnShoot(player.m_BodyPtr + 8 * sizeof(Body)); shoot_timer = 0.0f; }
+		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); myScene.OnShoot(player.m_BodyPtr + 2); shoot_timer = 0.0f; }
 		if (appWindow.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); shoot_timer = 0.0f; }
 //		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); shoot_timer = 0.0f; }
 		shoot_timer += timestep;
@@ -106,6 +109,10 @@ int main()
 //		myScene.Draw(player.m_Observer);
 		myScene.Draw(player);
 
+		highlighter.DrawAllMarkers(myScene, player);
+//		for(int i=0; i<10; i++)
+//			highlighter.DrawMarker(myScene.GetBodyPtr(i)->location, Vec3D(1, 0, 0));
+		
 		// Swap the screen buffers
 		glfwSwapBuffers(appWindow.GetWindow());
 

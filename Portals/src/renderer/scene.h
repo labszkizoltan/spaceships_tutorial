@@ -62,6 +62,8 @@ private:
 	Skybox m_Skybox;
 
 	std::vector<TexturedShadedMesh> m_Meshes;
+
+	friend class Highlighter;
 };
 
 

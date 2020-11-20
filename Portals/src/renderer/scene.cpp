@@ -321,10 +321,17 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 				// swap momentums in the center off mass inertial frame at collision
 				if (m_Distances[i*m_Bodies.size() + j] < m_Bodies[i].scale + m_Bodies[j].scale)
 				{
+					Vec3D v_i0 = m_Bodies[i].velocity;
+					Vec3D v_j0 = m_Bodies[j].velocity;
+
 					v_eff = (m_Bodies[i].mass*m_Bodies[i].velocity + m_Bodies[j].mass*m_Bodies[j].velocity) / (m_Bodies[i].mass + m_Bodies[j].mass);
 					tempV = m_Bodies[i].velocity - v_eff;
 					m_Bodies[i].velocity = v_eff + (m_Bodies[j].mass / m_Bodies[i].mass) * (m_Bodies[j].velocity - v_eff);
 					m_Bodies[j].velocity = v_eff + (m_Bodies[i].mass / m_Bodies[j].mass) * tempV;
+
+					// Make the change in integrity proportional to the transferred momentum
+					m_Integrities[i] -= 0.001f * m_Bodies[i].mass * (v_i0- m_Bodies[i].velocity).length();
+					m_Integrities[j] -= 0.001f * m_Bodies[j].mass * (v_j0 - m_Bodies[j].velocity).length();
 				}
 			}
 		}
@@ -357,7 +364,10 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 
 void Scene::OnShoot(Body* ownerBodyPtr)
 {
-	int bodyIndex = (ownerBodyPtr - &m_Bodies[0])/sizeof(Body);
+	// Apparently these addresses have to be converted to integers
+	int bodyIndex = ((int)ownerBodyPtr - (int)&m_Bodies[0])/sizeof(Body);
+	// Or just take the plain difference of the addresses
+//	int bodyIndex = (ownerBodyPtr - &m_Bodies[0]);
 	int hitTarget = m_ProjectilePool.Emit(bodyIndex, m_Bodies, m_Integrities);
 
 	if (hitTarget >= 0)

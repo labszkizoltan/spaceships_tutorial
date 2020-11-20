@@ -56,6 +56,8 @@ MyWindow::MyWindow(int width, int height, std::string name)
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	glEnable(GL_MULTISAMPLE);
+
+	glEnable(GL_PROGRAM_POINT_SIZE); // needed for the marker points
 }
 
 
@@ -163,23 +165,29 @@ void MyWindow::HandleUserInputs(Observer& obs, Timestep timestep)
 
 	if (IsKeyPressed(GLFW_KEY_P)) { obs.ZoomIn(1.05f); }
 	if (IsKeyPressed(GLFW_KEY_O)) { obs.ZoomOut(1.05f); }
-
 }
 
 void MyWindow::HandlePlayerInputs(Player& player, Timestep timestep)
 {
 	glfwPollEvents();
-	static float bodyMoveSpeed = 50.0f, accelerationRate = 50.0f;
+	static float bodyMoveSpeed = 50.0f, accelerationRate = 10.0f;
 	float obsTurnRate = 2.5f / player.m_Observer.zoom_level;
 
-	if (IsKeyPressed(GLFW_KEY_T)) { player.m_BodyPtr->Accelerate(timestep * accelerationRate); }
-	if (IsKeyPressed(GLFW_KEY_G)) { player.m_BodyPtr->Deccelerate(timestep * accelerationRate); }
-	if (IsKeyPressed(GLFW_KEY_W)) { player.m_BodyPtr->MoveForward(timestep * bodyMoveSpeed); }
-	if (IsKeyPressed(GLFW_KEY_S)) { player.m_BodyPtr->MoveBackward(timestep * bodyMoveSpeed); }
-	if (IsKeyPressed(GLFW_KEY_R)) { player.m_BodyPtr->MoveUp(timestep * bodyMoveSpeed); }
-	if (IsKeyPressed(GLFW_KEY_F)) { player.m_BodyPtr->MoveDown(timestep * bodyMoveSpeed); }
-	if (IsKeyPressed(GLFW_KEY_D)) { player.m_BodyPtr->MoveRight(timestep * bodyMoveSpeed); }
-	if (IsKeyPressed(GLFW_KEY_A)) { player.m_BodyPtr->MoveLeft(timestep * bodyMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_I)) { player.m_BodyPtr->MoveForward(timestep * bodyMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_K)) { player.m_BodyPtr->MoveBackward(timestep * bodyMoveSpeed); }
+//	if (IsKeyPressed(GLFW_KEY_R)) { player.m_BodyPtr->MoveUp(timestep * bodyMoveSpeed); }
+//	if (IsKeyPressed(GLFW_KEY_F)) { player.m_BodyPtr->MoveDown(timestep * bodyMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_L)) { player.m_BodyPtr->MoveRight(timestep * bodyMoveSpeed); }
+	if (IsKeyPressed(GLFW_KEY_J)) { player.m_BodyPtr->MoveLeft(timestep * bodyMoveSpeed); }
+
+	if (IsKeyPressed(GLFW_KEY_W)) { player.m_BodyPtr->AccelerateDir( timestep * player.m_BodyPtr->orientation.f3); }
+	if (IsKeyPressed(GLFW_KEY_S)) { player.m_BodyPtr->AccelerateDir(-timestep * player.m_BodyPtr->orientation.f3); }
+	if (IsKeyPressed(GLFW_KEY_A)) { player.m_BodyPtr->AccelerateDir(-timestep * player.m_BodyPtr->orientation.f1); }
+	if (IsKeyPressed(GLFW_KEY_D)) { player.m_BodyPtr->AccelerateDir( timestep * player.m_BodyPtr->orientation.f1); }
+	if (IsKeyPressed(GLFW_KEY_R)) { player.m_BodyPtr->AccelerateDir( timestep * player.m_BodyPtr->orientation.f2); }
+	if (IsKeyPressed(GLFW_KEY_F)) { player.m_BodyPtr->AccelerateDir(-timestep * player.m_BodyPtr->orientation.f2); }
+
+	
 
 	if (IsKeyPressed(GLFW_KEY_B)) { player.m_BodyPtr->Stop(); }
 
@@ -203,8 +211,6 @@ void MyWindow::HandlePlayerInputs(Player& player, Timestep timestep)
 	radiusFromCenter = sqrt(mousePos.first*mousePos.first + mousePos.second*mousePos.second);
 //	player.m_BodyPtr->Turn(Vec3D(-mousePos.second, mousePos.first, 0.0f), 0.0001f * std::max(0.0f, radiusFromCenter - r_min) / player.m_Observer.zoom_level);
 	player.m_BodyPtr->Turn(mousePos.first*player.m_BodyPtr->orientation.f2+mousePos.second*player.m_BodyPtr->orientation.f1, 0.0001f * std::max(0.0f, radiusFromCenter - r_min) / player.m_Observer.zoom_level);
-
-	std::cout << "mouse position:\t" << mousePos.first << "\t" << mousePos.second << "\n";
 }
 
 void MyWindow::SetUserPointer(void * userPtr)

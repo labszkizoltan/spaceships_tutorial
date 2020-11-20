@@ -78,6 +78,9 @@
     <ClCompile Include="src\objects\projectile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\renderer\helper_visuals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\window_context.h">
@@ -155,6 +158,9 @@
     <ClInclude Include="src\objects\projectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\renderer\helper_visuals.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\renderer\shader_sources\fragment_shader.glsl" />
@@ -163,5 +169,7 @@
     <None Include="src\renderer\shader_sources\vertex_shader.glsl" />
     <None Include="src\renderer\shader_sources\fragment_shader_skybox.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader_skybox.glsl" />
+    <None Include="src\renderer\shader_sources\vertex_shader_highlighter.glsl" />
+    <None Include="src\renderer\shader_sources\fragment_shader_highlighter.glsl" />
   </ItemGroup>
 </Project>

@@ -130,6 +130,7 @@
     <ClCompile Include="src\objects\body.cpp" />
     <ClCompile Include="src\objects\projectile.cpp" />
     <ClCompile Include="src\renderer\framebuffer.cpp" />
+    <ClCompile Include="src\renderer\helper_visuals.cpp" />
     <ClCompile Include="src\renderer\portal.cpp" />
     <ClCompile Include="src\renderer\scene.cpp" />
     <ClCompile Include="src\renderer\textured_mesh.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="src\objects\body.h" />
     <ClInclude Include="src\objects\projectile.h" />
     <ClInclude Include="src\renderer\framebuffer.h" />
+    <ClInclude Include="src\renderer\helper_visuals.h" />
     <ClInclude Include="src\renderer\portal.h" />
     <ClInclude Include="src\renderer\scene.h" />
     <ClInclude Include="src\renderer\shader_sources\fragment_shader_textured_shaded.glsl" />
@@ -177,9 +179,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\renderer\shader_sources\fragment_shader.glsl" />
+    <None Include="src\renderer\shader_sources\fragment_shader_highlighter.glsl" />
     <None Include="src\renderer\shader_sources\fragment_shader_skybox.glsl" />
     <None Include="src\renderer\shader_sources\fragment_shader_textured.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader.glsl" />
+    <None Include="src\renderer\shader_sources\vertex_shader_highlighter.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader_skybox.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader_textured.glsl" />
   </ItemGroup>
