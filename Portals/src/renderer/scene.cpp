@@ -330,8 +330,8 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 					m_Bodies[j].velocity = v_eff + (m_Bodies[i].mass / m_Bodies[j].mass) * tempV;
 
 					// Make the change in integrity proportional to the transferred momentum
-					m_Integrities[i] -= 0.001f * m_Bodies[i].mass * (v_i0- m_Bodies[i].velocity).length();
-					m_Integrities[j] -= 0.001f * m_Bodies[j].mass * (v_j0 - m_Bodies[j].velocity).length();
+					m_Integrities[i] -= 0.01f * m_Bodies[i].mass * (v_i0- m_Bodies[i].velocity).length(); // 0.01f should be a PARAMETER called something like collision sensitivity
+					m_Integrities[j] -= 0.01f * m_Bodies[j].mass * (v_j0 - m_Bodies[j].velocity).length();
 				}
 			}
 		}
@@ -372,7 +372,7 @@ void Scene::OnShoot(Body* ownerBodyPtr)
 
 	if (hitTarget >= 0)
 	{
-		OnHit(hitTarget, 1.0f, ownerBodyPtr);
+		OnHit(hitTarget, 50.0f, ownerBodyPtr); // hitStrength PARAMETER
 	}
 }
 

@@ -40,6 +40,7 @@ Vec3D operator*(const Mat_3D& m1, const Vec3D v);
 Vec3D operator*(const Vec3D v, const Mat_3D& m1);
 // some special initializers:
 Mat_3D Identity(float x);
+Mat_3D Diagonal(Vec3D v);
 Mat_3D CrossProduct(Vec3D v);
 Mat_3D DiadicProduct(Vec3D v1, Vec3D v2);
 

@@ -32,6 +32,7 @@ ProjectilePool::ProjectilePool()
 		m_ProjectileShader.UploadUniformMat3("observer_orientation", glm::mat3(1.0f));
 		m_ProjectileShader.UploadUniformFloat("zoom_level", 1.0f);
 		m_ProjectileShader.UploadUniformFloat("aspect_ratio", 1.0f); // if needed, the aspect ratio will be changeable somewhere else
+		m_ProjectileShader.UploadUniformFloat("alpha", 1.0f); // uniform in the vertex shader
 	}
 
 	// initialize the data of the beam and create the mesh
@@ -46,7 +47,8 @@ ProjectilePool::ProjectilePool()
 		indexData.resize(6 * quadCount);
 		for (int i = 0; i < (2*quadCount + 2); i++)
 		{
-			vertexAndColorData[2 * i + 0] = ( Vec3D(0,0, gapSize) + Vec3D((i%2*2-1)*dx*cos((float)(i/2)*dz*windingNumber), (i%2*2-1)*dx*sin((float)(i/2)*dz*windingNumber), (float)(i/2)*dz) ) / (1.0f+ gapSize);
+			float z = (float)(i / 2)*dz;
+			vertexAndColorData[2 * i + 0] = (Vec3D(0, 0, gapSize) + Diagonal({1,1,z}) * Vec3D((i % 2 * 2 - 1)*dx*cos((float)(i / 2)*dz*windingNumber), (i % 2 * 2 - 1)*dx*sin((float)(i / 2)*dz*windingNumber), (float)(i / 2)*dz)) / (1.0f + gapSize); // vertex position
 			vertexAndColorData[2 * i + 1] = Vec3D(0.1f, 0.99f, 0.3f); // projectile colour
 		}
 		for (int i = 0; i < quadCount; i++)
@@ -89,7 +91,7 @@ int ProjectilePool::Emit(int ownerIndex, std::vector<Body>& bodies, std::vector<
 	m_Projectiles[m_CurrentIndex].startingPoint = bodies[ownerIndex].location - bodies[ownerIndex].orientation.f2;
 	m_Projectiles[m_CurrentIndex].orientation = bodies[ownerIndex].orientation;
 	m_Projectiles[m_CurrentIndex].length = m_MaxLength;
-	m_Projectiles[m_CurrentIndex].timeToLive = 10.0f;
+	m_Projectiles[m_CurrentIndex].timeToLive = g_TimeToLive;
 	m_Projectiles[m_CurrentIndex].owner = &bodies[ownerIndex];
 	m_IsActive[m_CurrentIndex] = true;
 
@@ -149,6 +151,7 @@ void ProjectilePool::Draw(Player player)
 		m_ProjectileShader.UploadUniformFloat3("projectile_starting_loc", m_Projectiles[i].startingPoint.Glm());
 		m_ProjectileShader.UploadUniformMat3("projectile_orientation", m_Projectiles[i].orientation.Glm());
 		m_ProjectileShader.UploadUniformFloat("projectile_length", m_Projectiles[i].length);
+		m_ProjectileShader.UploadUniformFloat("alpha", m_Projectiles[i].timeToLive/g_TimeToLive);
 		m_ProjectileMesh.Draw();
 
 		i = (i + 1) % m_Size;

@@ -3,13 +3,12 @@
 // ----- TODO ----- //
 // ---------------- //
 
+- Add some sort of AI that controls ships and shoots
 
 - Add helper visuals:
-	- targeting cross
-	- display the direction of velocity (forward and backward) to help with maneuvering
-		(especially with breaking)
-	- put small circles or markers (triangles maybe) around faraway objects (create a 
-		dedicated shader with a uniform buffer, that stores all body positions)
+	- most of this is done, the middle of the screen marker needs to be fixed,
+	or created in a different way
+
 
 - Create a menu
 
@@ -94,6 +93,12 @@
 	- shoot on mouse button press
 	- zooming with mouse scrolling
 
+- Add helper visuals:
+	- targeting cross
+	- display the direction of velocity (forward and backward) to help with maneuvering
+		(especially with breaking)
+	- put small circles or markers (triangles maybe) around faraway objects (create a 
+		dedicated shader with a uniform buffer, that stores all body positions)
 
 
 

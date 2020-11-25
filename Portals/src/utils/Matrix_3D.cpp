@@ -138,6 +138,11 @@ Mat_3D Identity(float x)
 	return Mat_3D({ x,0,0 }, { 0,x,0 }, { 0,0,x });
 }
 
+Mat_3D Diagonal(Vec3D v)
+{
+	return Mat_3D(Vec3D(v.x, 0, 0), Vec3D(0, v.y, 0), Vec3D(0, 0,v.z));
+}
+
 Mat_3D CrossProduct(Vec3D v)
 {
 	return Mat_3D({ 0,v.z,-v.y }, { -v.z,0,v.x }, { v.y,-v.x,0 });

@@ -81,7 +81,7 @@ void Highlighter::DrawAllMarkers(Scene& scene, Player& player)
 	m_Shader.UploadUniformFloat3("body_translation", player.m_BodyPtr->location.Glm() - player.m_BodyPtr->velocity.Glm());
 	m_BackwardDirectionMarker.Draw();
 	// this  doesnt work for some reason, the triangle shows up in incorrect places
-	m_Shader.UploadUniformFloat3("body_translation", player.m_BodyPtr->location.Glm() + player.m_BodyPtr->orientation.f3.Glm());
+	m_Shader.UploadUniformFloat3("body_translation", player.m_BodyPtr->location.Glm() + 100.0f*player.m_BodyPtr->orientation.f3.Glm());
 	m_ScreenCenterMarker.Draw();
 }
 

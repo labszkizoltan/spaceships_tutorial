@@ -7,6 +7,7 @@
 #include "Portals/src/controls/player.h"
 #include "Portals/src/renderer/coloured_mesh.h"
 
+const float g_TimeToLive = 3.0f; // PARAMETER
 
 struct Projectile
 {
@@ -18,7 +19,7 @@ struct Projectile
 //	Vec3D direction;
 	Mat_3D orientation;
 	float length;
-	float timeToLive;
+	float timeToLive = g_TimeToLive;
 	Body* owner; // pointer to the body that shot the projectile, this will be used to avoid detecting collisions with the owner
 };
 
@@ -39,7 +40,7 @@ public:
 private:
 	uint32_t m_Size = 1000;
 	int m_CurrentIndex = m_Size-1;
-	float m_MaxLength = 5000.0f;
+	float m_MaxLength = 10000.0f; // ShootRange PARAMETER
 
 	std::vector<Projectile> m_Projectiles;
 	std::vector<bool> m_IsActive;
