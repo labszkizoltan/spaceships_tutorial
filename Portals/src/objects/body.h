@@ -35,6 +35,7 @@ struct Body
 	void MoveDown(float distance);
 
 	void Stop();
+	void MitigateRotation(float mitigationFactor);
 
 	void Turn(Vec3D axis, float angle);
 	void TurnRight(float angle);

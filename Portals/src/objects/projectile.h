@@ -7,7 +7,7 @@
 #include "Portals/src/controls/player.h"
 #include "Portals/src/renderer/coloured_mesh.h"
 
-const float g_TimeToLive = 3.0f; // PARAMETER
+#include "Portals/src/global_constants.h"
 
 struct Projectile
 {
@@ -33,14 +33,14 @@ public:
 	void SetAspectRatio(float aspectRatio);
 
 	// owner should point to an element in bodies!
-	int Emit(int ownerIndex, std::vector<Body>& bodies, std::vector<float> integrities); // Collision with the bodies will be checked on emission, thats why the argument is needed. Returns the index of the body that suffers the hit.
+	int Emit(int ownerIndex, float ownerRange, std::vector<Body>& bodies, std::vector<float> integrities); // Collision with the bodies will be checked on emission, thats why the argument is needed. Returns the index of the body that suffers the hit.
 	void Update(float deltaTime);
 	void Draw(Player player);
 
 private:
 	uint32_t m_Size = 1000;
 	int m_CurrentIndex = m_Size-1;
-	float m_MaxLength = 10000.0f; // ShootRange PARAMETER
+	float m_MaxLength = g_MaxLength; // ShootRange PARAMETER
 
 	std::vector<Projectile> m_Projectiles;
 	std::vector<bool> m_IsActive;

@@ -171,6 +171,9 @@ Mat_3D Rotation(float angle, float theta, float phi)
 Mat_3D Rotation(float angle, Vec3D axis)
 {
 	if (angle == 0.0f) { return Identity(1.0f); }
+	if (axis.length() == 0.0f) {
+		return Identity(1.0f);
+	}
 	Vec3D n = axis / axis.length();
 	Mat_3D id = Identity(cos(angle)), diad = (1 - cos(angle))*DiadicProduct(n, n), crossprod = sin(angle)*CrossProduct(n);
 

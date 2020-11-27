@@ -52,10 +52,27 @@ void Body::Stop()
 	angularVelocity = { 0,0,0 };
 }
 
+void Body::MitigateRotation(float mitigationFactor)
+{
+	angularVelocity /= mitigationFactor;
+}
+
 void Body::Turn(Vec3D axis, float angle)
 {
+//	This was put in for debugging
+//	Mat_3D rotation = Rotation(angle, axis);
+//	float* blah = &rotation.f1.x;
+//	for (int i = 0; i < 9; i++)
+//	{
+//		if (!std::isfinite(blah[i]))
+//		{
+//			std::cout << "non finite value found! \n";
+//		}
+//	}
+//	orientation = rotation * orientation;
 	orientation = Rotation(angle, axis) * orientation;
 }
+
 void Body::TurnRight(float angle)
 {
 	orientation = Rotation(angle, orientation.f2) * orientation;

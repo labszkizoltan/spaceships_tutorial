@@ -2,6 +2,8 @@
 #include "projectile.h"
 #include "glad/glad.h"
 
+#include "Portals/src/global_constants.h"
+
 // Projectile::Projectile()
 // 	: startingPoint(Vec3D()), direction(Vec3D(0,0,1)), length(1.0f), timeToLive(1.0f), owner(nullptr) {}
 // 
@@ -83,14 +85,14 @@ void ProjectilePool::SetAspectRatio(float aspectRatio)
 }
 
 // Collision with the bodies will be checked on emission, thats why the argument is needed. Returns the index of the body that suffers the hit.
-int ProjectilePool::Emit(int ownerIndex, std::vector<Body>& bodies, std::vector<float> integrities)
+int ProjectilePool::Emit(int ownerIndex, float ownerRange, std::vector<Body>& bodies, std::vector<float> integrities)
 {
 	m_CurrentIndex--;
 	m_CurrentIndex = m_CurrentIndex < 0 ? (m_Size - 1) : (m_CurrentIndex);
 
 	m_Projectiles[m_CurrentIndex].startingPoint = bodies[ownerIndex].location - bodies[ownerIndex].orientation.f2;
 	m_Projectiles[m_CurrentIndex].orientation = bodies[ownerIndex].orientation;
-	m_Projectiles[m_CurrentIndex].length = m_MaxLength;
+	m_Projectiles[m_CurrentIndex].length = ownerRange;
 	m_Projectiles[m_CurrentIndex].timeToLive = g_TimeToLive;
 	m_Projectiles[m_CurrentIndex].owner = &bodies[ownerIndex];
 	m_IsActive[m_CurrentIndex] = true;
@@ -151,7 +153,7 @@ void ProjectilePool::Draw(Player player)
 		m_ProjectileShader.UploadUniformFloat3("projectile_starting_loc", m_Projectiles[i].startingPoint.Glm());
 		m_ProjectileShader.UploadUniformMat3("projectile_orientation", m_Projectiles[i].orientation.Glm());
 		m_ProjectileShader.UploadUniformFloat("projectile_length", m_Projectiles[i].length);
-		m_ProjectileShader.UploadUniformFloat("alpha", m_Projectiles[i].timeToLive/g_TimeToLive);
+		m_ProjectileShader.UploadUniformFloat("alpha", 0.25f + 0.5f * m_Projectiles[i].timeToLive/g_TimeToLive);
 		m_ProjectileMesh.Draw();
 
 		i = (i + 1) % m_Size;

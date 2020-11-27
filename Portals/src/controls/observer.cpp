@@ -83,7 +83,7 @@ void Observer::TurnAntiClockwise(float angle)
 
 void Observer::ZoomIn(float multiplier)
 {
-	zoom_level *= zoom_level > 500.0f ? 1.0f : multiplier;
+	zoom_level *= zoom_level > 1000.0f ? 1.0f : multiplier; // PARAMETER maxZoomLevel
 }
 
 void Observer::ZoomOut(float multiplier)

@@ -123,10 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\controls\ai.cpp" />
     <ClCompile Include="src\controls\observer.cpp" />
     <ClCompile Include="src\controls\player.cpp" />
     <ClCompile Include="src\controls\timestep.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\objects\body.cpp" />
     <ClCompile Include="src\objects\projectile.cpp" />
     <ClCompile Include="src\renderer\framebuffer.cpp" />
@@ -151,9 +153,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\acceleration_functions.h" />
+    <ClInclude Include="src\controls\ai.h" />
     <ClInclude Include="src\controls\observer.h" />
     <ClInclude Include="src\controls\player.h" />
     <ClInclude Include="src\controls\timestep.h" />
+    <ClInclude Include="src\global_constants.h" />
+    <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\objects\body.h" />
     <ClInclude Include="src\objects\projectile.h" />
     <ClInclude Include="src\renderer\framebuffer.h" />

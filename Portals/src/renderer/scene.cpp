@@ -31,6 +31,7 @@ struct ParsedInput
 	std::map<std::string, std::string> skybox_files;
 	std::vector<std::string> body_types;
 	std::vector<Body> bodies;
+	std::vector<float> integrities;
 	std::map<std::string, std::string> mesh_files;
 	std::map<std::string, std::string> mesh_textures;
 };
@@ -49,7 +50,7 @@ void ParseSceneDefinitionFile(ParsedInput& parsed_input, const std::string & fil
 
 	while (getline(myfile, line))
 	{
-		if (!line.empty()) { file_in_memory.push_back(line); } // leave out empty lines
+		if (!line.empty() && line.find("//")) { file_in_memory.push_back(line); } // leave out empty lines and the ones that begin with "//"
 	}
 	myfile.close();
 
@@ -166,6 +167,13 @@ void ParseSceneDefinitionFile(ParsedInput& parsed_input, const std::string & fil
 							ss >> body_to_add.angularVelocity.y;
 							ss >> body_to_add.angularVelocity.z;
 						}
+						if (file_in_memory[i].find("integrity") != -1)
+						{
+							std::stringstream ss(file_in_memory[i]);
+							ss >> tmp;
+							ss >> tmp;
+							parsed_input.integrities.push_back(std::atof(tmp.c_str()));
+						}
 						if (file_in_memory[i].find("mass") != -1)
 						{
 							std::stringstream ss(file_in_memory[i]);
@@ -218,7 +226,7 @@ Scene::Scene(const std::string & filename)
 	{
 		bodyTypes[i] = parsed_input.body_types[i];
 		m_Bodies[i] = parsed_input.bodies[i]; 
-		m_Integrities[i] = parsed_input.bodies[i].mass;
+		m_Integrities[i] = parsed_input.integrities[i];
 	}
 	m_Accelerations.resize(m_Bodies.size());
 	m_AngularAccelerations.resize(m_Bodies.size());
@@ -330,8 +338,8 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 					m_Bodies[j].velocity = v_eff + (m_Bodies[i].mass / m_Bodies[j].mass) * tempV;
 
 					// Make the change in integrity proportional to the transferred momentum
-					m_Integrities[i] -= 0.01f * m_Bodies[i].mass * (v_i0- m_Bodies[i].velocity).length(); // 0.01f should be a PARAMETER called something like collision sensitivity
-					m_Integrities[j] -= 0.01f * m_Bodies[j].mass * (v_j0 - m_Bodies[j].velocity).length();
+					m_Integrities[i] -= 0.1f * m_Bodies[i].mass * (v_i0- m_Bodies[i].velocity).length(); // 0.1f should be a PARAMETER called something like collision sensitivity
+					m_Integrities[j] -= 0.1f * m_Bodies[j].mass * (v_j0 - m_Bodies[j].velocity).length();
 				}
 			}
 		}
@@ -362,17 +370,17 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 	m_ProjectilePool.Update(deltaTime);
 }
 
-void Scene::OnShoot(Body* ownerBodyPtr)
+void Scene::OnShoot(Body* ownerBodyPtr, float ownerRange)
 {
 	// Apparently these addresses have to be converted to integers
 	int bodyIndex = ((int)ownerBodyPtr - (int)&m_Bodies[0])/sizeof(Body);
 	// Or just take the plain difference of the addresses
 //	int bodyIndex = (ownerBodyPtr - &m_Bodies[0]);
-	int hitTarget = m_ProjectilePool.Emit(bodyIndex, m_Bodies, m_Integrities);
+	int hitTarget = m_ProjectilePool.Emit(bodyIndex, ownerRange, m_Bodies, m_Integrities);
 
 	if (hitTarget >= 0)
 	{
-		OnHit(hitTarget, 50.0f, ownerBodyPtr); // hitStrength PARAMETER
+		OnHit(hitTarget, 1.0f, ownerBodyPtr); // hitStrength PARAMETER
 	}
 }
 
@@ -480,9 +488,7 @@ void Scene::CalcMinDistances(float deltaTime, float dvThreshold)
 void Scene::OnHit(int bodyIndex, float hitStrength, Body* shooterBody)
 {
 	m_Integrities[bodyIndex] -= hitStrength;
-//	m_Bodies[bodyIndex].angularVelocity += Vec3D(0.0f, 0.01f, 0.0f);
-//	m_Bodies[bodyIndex].angularVelocity = Vec3D((float)rand()/RAND_MAX, (float)rand() / RAND_MAX, (float)rand() / RAND_MAX);
-	m_Bodies[bodyIndex].angularVelocity += 0.5f * (hitStrength / m_Bodies[bodyIndex].mass) * shooterBody->orientation.f1;
+	m_Bodies[bodyIndex].angularVelocity += 0.1f * (hitStrength / m_Bodies[bodyIndex].mass) * shooterBody->orientation.f1; // PARAMETER angular momentum transfer OnHit
 	m_Bodies[bodyIndex].velocity += (hitStrength / m_Bodies[bodyIndex].mass) * shooterBody->orientation.f3;
 }
 

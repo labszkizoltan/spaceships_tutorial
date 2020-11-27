@@ -94,6 +94,7 @@ void MyWindow::SetCursorPositionCallback(GLFWcursorposfun callback)
 	glfwSetCursorPosCallback(m_Window, callback);
 }
 
+
 // GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* window, GLFWscrollfun callback);
 // void function_name(GLFWwindow* window, double xoffset, double yoffset)
 void MyWindow::SetMouseScrollCallback(GLFWcursorposfun callback)
@@ -188,14 +189,15 @@ void MyWindow::HandlePlayerInputs(Player& player, Timestep timestep)
 	if (IsKeyPressed(GLFW_KEY_F)) { player.m_BodyPtr->AccelerateDir(-timestep * player.m_BodyPtr->orientation.f2); }
 
 	
-
+	
+	if (IsKeyPressed(GLFW_KEY_V)) { player.m_BodyPtr->MitigateRotation(pow(4.0f, timestep)); }
 	if (IsKeyPressed(GLFW_KEY_B)) { player.m_BodyPtr->Stop(); }
 
 	if (IsKeyPressed(GLFW_KEY_KP_ADD)) { bodyMoveSpeed *= 1.05; }
 	if (IsKeyPressed(GLFW_KEY_KP_SUBTRACT)) { bodyMoveSpeed /= 1.05; }
 
-	if (IsKeyPressed(GLFW_KEY_E)) { player.m_BodyPtr->TurnClockwise(timestep * obsTurnRate); }
-	if (IsKeyPressed(GLFW_KEY_Q)) { player.m_BodyPtr->TurnAntiClockwise(timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_E)) { player.m_BodyPtr->TurnClockwise(0.5f * timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_Q)) { player.m_BodyPtr->TurnAntiClockwise(0.5f * timestep * obsTurnRate); }
 	if (IsKeyPressed(GLFW_KEY_LEFT)) { player.m_BodyPtr->TurnLeft(timestep * obsTurnRate); }
 	if (IsKeyPressed(GLFW_KEY_RIGHT)) { player.m_BodyPtr->TurnRight(timestep * obsTurnRate); }
 	if (IsKeyPressed(GLFW_KEY_UP)) { player.m_BodyPtr->TurnUp(timestep * obsTurnRate); }
@@ -211,7 +213,7 @@ void MyWindow::HandlePlayerInputs(Player& player, Timestep timestep)
 	radiusFromCenter = sqrt(mousePos.first*mousePos.first + mousePos.second*mousePos.second);
 //	player.m_BodyPtr->Turn(Vec3D(-mousePos.second, mousePos.first, 0.0f), 0.0001f * std::max(0.0f, radiusFromCenter - r_min) / player.m_Observer.zoom_level);
 	// Right now this is independent of the timestep
-	player.m_BodyPtr->Turn(mousePos.first*player.m_BodyPtr->orientation.f2+mousePos.second*player.m_BodyPtr->orientation.f1, 0.00005f * std::max(0.0f, radiusFromCenter - r_min) / player.m_Observer.zoom_level);
+	player.m_BodyPtr->Turn(mousePos.first*player.m_BodyPtr->orientation.f2+mousePos.second*player.m_BodyPtr->orientation.f1, 0.00015f * std::max(0.0f, radiusFromCenter - r_min) / player.m_Observer.zoom_level);
 }
 
 void MyWindow::SetUserPointer(void * userPtr)
