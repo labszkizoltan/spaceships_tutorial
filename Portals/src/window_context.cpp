@@ -207,7 +207,7 @@ void MyWindow::HandlePlayerInputs(Player& player, Timestep timestep)
 	if (IsKeyPressed(GLFW_KEY_O)) { player.m_Observer.ZoomOut(1.05f); }
 
 	static std::pair<float, float> mousePos;
-	static float radiusFromCenter, r_min = 100.0f;
+	static float radiusFromCenter, r_min = 50.0f;
 
 	mousePos = GetMousePositionFromCenter();
 	radiusFromCenter = sqrt(mousePos.first*mousePos.first + mousePos.second*mousePos.second);

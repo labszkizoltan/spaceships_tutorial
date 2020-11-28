@@ -35,23 +35,11 @@ const int windowHeight = 1000;
 
 #include "acceleration_functions.h"
 
-// Is called whenever a key is pressed/released via GLFW
-// void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
-// {
-// 	std::cout << key << std::endl;
-// 	if (key == GLFW_KEY_N && action == GLFW_PRESS)
-// 	{
-// 		glfwGetWindowUserPointer();
-// 	}
-// }
-
-
 // GLFWAPI GLFWscrollfun glfwSetScrollCallback(GLFWwindow* window, GLFWscrollfun callback);
 // void function_name(GLFWwindow* window, double xoffset, double yoffset)
 void mouse_scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
 	Player* playerPtr = (Player*)glfwGetWindowUserPointer(window);
-//	playerPtr->m_Observer.zoom_level *= playerPtr->m_Observer.zoom_level > 500.0f ? 1.0f : (1.0f+0.1*(float)yoffset);
 	if (yoffset > 0) { playerPtr->m_Observer.ZoomIn(1.1f); } // PARAMETER zoom multiplier
 	else if (yoffset < 0) { playerPtr->m_Observer.ZoomOut(1.1f); }
 }
@@ -77,15 +65,20 @@ int main()
 //	Scene myScene("assets/scene_definitions/05_SceneDefinition_AI_test.txt");
 	myScene.SetAspectRatio((float)windowWidth / (float)windowHeight);
 
+//	These are compatible with 04_SceneDefinition_meteors.txt
 //// AI::AI(Body* bodyPtr, Body* targetPtr, float cooldown, float accel, float turnRate, float attrRange, float repRange)
-//	AI testAI1(myScene.GetBodyPtr(1), myScene.GetBodyPtr(4), 1.1f,  1, 1, 1000, 100);
-//	AI testAI2(myScene.GetBodyPtr(2), myScene.GetBodyPtr(4), 0.9f,  1, 2, 5000, 500);
-//	AI testAI3(myScene.GetBodyPtr(3), myScene.GetBodyPtr(4), 0.81f, 2, 1, 3000, 200);
+	AIProperties props = { 2.0f, 2.0f, 0.2f, 10000.0f, 2000.0f };
+	AI testAI1(myScene.GetBodyPtr(22), myScene.GetBodyPtr(0), props);
+	AI testAI2(myScene.GetBodyPtr(23), myScene.GetBodyPtr(0), props);
+	AI testAI3(myScene.GetBodyPtr(24), myScene.GetBodyPtr(0), props);
+	AI testAI4(myScene.GetBodyPtr(25), myScene.GetBodyPtr(0), props);
+	AI testAI5(myScene.GetBodyPtr(26), myScene.GetBodyPtr(0), props);
 
-	AI testAI1(myScene.GetBodyPtr(22), myScene.GetBodyPtr(0), 2.8f, 1.01f, 0.50f, 10000, 2000);
-	AI testAI2(myScene.GetBodyPtr(23), myScene.GetBodyPtr(0), 3.1f, 1.01f, 0.50f, 10000, 2000);
-	AI testAI3(myScene.GetBodyPtr(24), myScene.GetBodyPtr(0), 1.5f, 1.01f, 0.25f, 10000, 2000);
-
+//	These are compatible with 05_SceneDefinition_AI_test.txt
+//	AIProperties props = { 2.5f, 1.0f, 1.2f, 4000.0f, 1000.0f };
+//	AI testAI1(myScene.GetBodyPtr(1), myScene.GetBodyPtr(2), props);
+//	AI testAI2(myScene.GetBodyPtr(2), myScene.GetBodyPtr(3), props); props.m_ShotCooldown = 0.5f;
+//	AI testAI3(myScene.GetBodyPtr(3), myScene.GetBodyPtr(1), props);
 
 
 	static int body_index = 0;
@@ -128,13 +121,14 @@ int main()
 
 
 		// Update the scene and AI
-//		myScene.UpdateWithCollision(timeSpeed*timestep, SimpleAcceleration); // working as well
-//		myScene.UpdateWithCollision(timeSpeed*timestep, GravityAcceleration); // working as well
 		myScene.UpdateWithCollision(timeSpeed*timestep, SimplifiedGravity); // working as well
 
-		testAI1.Update(myScene, timeSpeed*timestep);
-		testAI2.Update(myScene, timeSpeed*timestep);
-		testAI3.Update(myScene, timeSpeed*timestep);
+//		testAI1.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_basic);
+		testAI1.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
+		testAI2.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
+		testAI3.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
+		testAI4.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
+		testAI5.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
 
 		// Draw the scene into the default framebuffer
 //		myScene.Draw(player.m_Observer);
@@ -147,6 +141,7 @@ int main()
 
 
 		timestep = (float)glfwGetTime() - lastFrameTime;
+//		timestep = 0.017f;
 	}
 
 	// Terminates GLFW, clearing any resources allocated by GLFW.

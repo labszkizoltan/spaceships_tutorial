@@ -302,12 +302,38 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 	type	saucer
 	position	-100.0	-800.0	150200
 	rotation	3.10	0.15	-0.55	-0.5
-	scale	20.0
+	scale	10.0
 	velocity	0.00	0.00	-100.00
 	angularVelocity	0.00	0.00	0.00
-	integrity	10.0
+	integrity	5.0
 	mass	10.0
 }
+
+// body index 25-29
+// AI controlled
+{
+	type	saucer
+	position	-300.0	100.0	151000
+	rotation	3.10	0.15	-0.55	-0.5
+	scale	10.0
+	velocity	0.00	0.00	-100.00
+	angularVelocity	0.00	0.00	0.00
+	integrity	5.0
+	mass	10.0
+}
+
+// AI controlled
+{
+	type	saucer
+	position	100.0	-300.0	151200
+	rotation	3.10	0.15	-0.55	-0.5
+	scale	10.0
+	velocity	0.00	0.00	-100.00
+	angularVelocity	0.00	0.00	0.00
+	integrity	5.0
+	mass	10.0
+}
+
 
 
 
