@@ -25,6 +25,7 @@
 #include "controls/timestep.h"
 #include "controls/player.h"
 #include "controls/ai.h"
+#include "controls/ai_pool.h"
 #include "utils/shape_creator.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "vendor/stb_image/stb_image.h"
@@ -60,26 +61,10 @@ int main()
 	glfwSetWindowPos(appWindow.GetWindow(), 50, 100);
 	appWindow.SetMouseScrollCallback(mouse_scroll_callback);
 
-//	Scene myScene("assets/scene_definitions/03_SceneDefinition_test_orbits.txt");
 	Scene myScene("assets/scene_definitions/04_SceneDefinition_meteors.txt");
-//	Scene myScene("assets/scene_definitions/05_SceneDefinition_AI_test.txt");
 	myScene.SetAspectRatio((float)windowWidth / (float)windowHeight);
 
-//	These are compatible with 04_SceneDefinition_meteors.txt
-//// AI::AI(Body* bodyPtr, Body* targetPtr, float cooldown, float accel, float turnRate, float attrRange, float repRange)
-	AIProperties props = { 2.0f, 2.0f, 0.2f, 10000.0f, 2000.0f };
-	AI testAI1(myScene.GetBodyPtr(22), myScene.GetBodyPtr(0), props);
-	AI testAI2(myScene.GetBodyPtr(23), myScene.GetBodyPtr(0), props);
-	AI testAI3(myScene.GetBodyPtr(24), myScene.GetBodyPtr(0), props);
-	AI testAI4(myScene.GetBodyPtr(25), myScene.GetBodyPtr(0), props);
-	AI testAI5(myScene.GetBodyPtr(26), myScene.GetBodyPtr(0), props);
-
-//	These are compatible with 05_SceneDefinition_AI_test.txt
-//	AIProperties props = { 2.5f, 1.0f, 1.2f, 4000.0f, 1000.0f };
-//	AI testAI1(myScene.GetBodyPtr(1), myScene.GetBodyPtr(2), props);
-//	AI testAI2(myScene.GetBodyPtr(2), myScene.GetBodyPtr(3), props); props.m_ShotCooldown = 0.5f;
-//	AI testAI3(myScene.GetBodyPtr(3), myScene.GetBodyPtr(1), props);
-
+	AIPool myAiPool("assets/scene_definitions/04_SceneDefinition_meteors_AISet.txt", myScene);
 
 	static int body_index = 0;
 	float body_switch_timer = 0.0f;
@@ -119,26 +104,17 @@ int main()
 //		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); shoot_timer = 0.0f; }
 		shoot_timer += timeSpeed*timestep;
 
-
 		// Update the scene and AI
 		myScene.UpdateWithCollision(timeSpeed*timestep, SimplifiedGravity); // working as well
-
-//		testAI1.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_basic);
-		testAI1.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
-		testAI2.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
-		testAI3.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
-		testAI4.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
-		testAI5.Update(myScene, timeSpeed*timestep, AIAccelerationFunction_advanced);
+		myAiPool.Update(myScene, timeSpeed*timestep);
 
 		// Draw the scene into the default framebuffer
-//		myScene.Draw(player.m_Observer);
 		myScene.Draw(player);
 
 		highlighter.DrawAllMarkers(myScene, player);
 		
 		// Swap the screen buffers
 		glfwSwapBuffers(appWindow.GetWindow());
-
 
 		timestep = (float)glfwGetTime() - lastFrameTime;
 //		timestep = 0.017f;

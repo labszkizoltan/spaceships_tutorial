@@ -49,6 +49,17 @@ struct Body
 };
 
 
+// a set of body indices, belonging to a team
+struct Team
+{
+//	int ID;
+//	std::vector<Body*> members;
+	std::vector<int> members; // maybe just store the index of bodies
+
+	void AddMember(int newMemberIndex) { members.push_back(newMemberIndex); }
+
+
+};
 
 
 

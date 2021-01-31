@@ -29,12 +29,23 @@ Vec3D AIAccelerationFunction_basic(std::vector<Body>& bodies, float timestep, AI
 Vec3D AIAccelerationFunction_advanced(std::vector<Body>& bodies, float timestep, AI& ai)
 {
 	Vec3D dr = ai.m_TargetBody->location - ai.m_BodyPtr->location;
-	Vec3D ve = dr-dr*(ai.m_Props.m_RepulsionRange / dr.length()); // an extra velocity addon, to close the distance from the target
+//	Vec3D ve = dr - dr * (ai.m_Props.m_RepulsionRange / dr.length()); // an extra velocity addon, to close the distance from the target
+	Vec3D ve = dr*(1 - ai.m_Props.m_RepulsionRange / dr.length()); // an extra velocity addon, to close the distance from the target
 
 	Vec3D dv = dr.length() > 3.0f*ai.m_Props.m_AttractionRange ? Vec3D() : ai.m_TargetBody->velocity + ve - ai.m_BodyPtr->velocity;
 
-	return dv.length()==0.0f ? Vec3D() : (ai.m_Props.m_Acceleration * timestep / dv.length() )*dv;
+	return dv.lengthSquare()==0.0f ? Vec3D() : (ai.m_Props.m_Acceleration * timestep / dv.length() )*dv;
 }
+
+Vec3D AIAccelerationFunction_stationaryPlatform(std::vector<Body>& bodies, float timestep, AI& ai)
+{
+	return Vec3D();
+}
+
+
+// TODO
+// create an accel function that drives the object into its target, causing collision damage
+
 
 // ****************************** //
 // ***** AI class functions ***** //
@@ -42,7 +53,7 @@ Vec3D AIAccelerationFunction_advanced(std::vector<Body>& bodies, float timestep,
 
 AI::AI() : m_BodyPtr(nullptr), m_TargetBody(nullptr), m_ShotTimer(0.0f), m_Props(AIProperties()) {}
 
-AI::AI(Body* bodyPtr, Body* targetPtr, AIProperties props) : m_BodyPtr(bodyPtr), m_TargetBody(targetPtr), m_ShotTimer(0.0f), m_Props(props) {}
+AI::AI(Body* bodyPtr, Body* targetPtr, AIProperties props, uint32_t team) : m_BodyPtr(bodyPtr), m_TargetBody(targetPtr), m_ShotTimer(0.0f), m_Props(props), m_TeamID(team) {}
 
 
 AI::~AI()
@@ -110,16 +121,5 @@ void AI::Retarget(Scene& scene)
 
 	m_TargetBody = &scene.m_Bodies[corresponding_index];
 }
-
-
-
-
-
-
-// ********************************** //
-// ***** AIPool class functions ***** //
-// ********************************** //
-
-
 
 

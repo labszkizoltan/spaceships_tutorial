@@ -1,0 +1,95 @@
+
+// AI index 0-4
+{
+	bodyIndex	22
+	targetIndex	0
+	team	2
+	scriptName	AIAccelerationFunction_advanced
+	
+	// AIProperties
+	ShotCooldown	2.0
+	Acceleration	2.0
+	TurnRate	0.2
+	AttractionRange	10000.0
+	RepulsionRange	2000.0
+}
+
+{
+	bodyIndex	23
+	targetIndex	0
+	team	2
+	scriptName	AIAccelerationFunction_advanced
+	
+	ShotCooldown	2.0
+	Acceleration	2.0
+	TurnRate	0.2
+	AttractionRange	10000.0
+	RepulsionRange	2000.0
+}
+
+
+{
+	bodyIndex	24
+	targetIndex	0
+	team	2
+	scriptName	AIAccelerationFunction_advanced
+	
+	ShotCooldown	2.0
+	Acceleration	2.0
+	TurnRate	0.2
+	AttractionRange	10000.0
+	RepulsionRange	2000.0
+}
+
+{
+	bodyIndex	25
+	targetIndex	0
+	team	2
+	scriptName	AIAccelerationFunction_advanced
+	
+	ShotCooldown	2.0
+	Acceleration	2.0
+	TurnRate	0.2
+	AttractionRange	10000.0
+	RepulsionRange	2000.0
+}
+
+
+// AI index 5-9
+{
+	bodyIndex	6
+	targetIndex	7
+	team	1
+	scriptName	AIAccelerationFunction_stationaryPlatform
+}
+
+{
+	bodyIndex	7
+	targetIndex	8
+	team	1
+	scriptName	AIAccelerationFunction_stationaryPlatform
+}
+
+{
+	bodyIndex	8
+	targetIndex	9
+	team	1
+	scriptName	AIAccelerationFunction_stationaryPlatform
+}
+
+
+{
+	bodyIndex	9
+	targetIndex	10
+	team	1
+	scriptName	AIAccelerationFunction_stationaryPlatform
+}
+
+{
+	bodyIndex	10
+	targetIndex	6
+	team	1
+	scriptName	AIAccelerationFunction_stationaryPlatform
+}
+
+

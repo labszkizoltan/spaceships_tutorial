@@ -10,7 +10,9 @@ typedef Vec3D(*AIAccelerationScript) (std::vector<Body>& bodies, float timestep,
 // forward declaration, so the functions can be used in places where this header is included
 Vec3D AIAccelerationFunction_basic(std::vector<Body>& bodies, float timestep, AI& ai);
 Vec3D AIAccelerationFunction_advanced(std::vector<Body>& bodies, float timestep, AI& ai);
+Vec3D AIAccelerationFunction_stationaryPlatform(std::vector<Body>& bodies, float timestep, AI& ai);
 
+// these quantities should be tied to the object (as they are mostly the properties of the ships), not the controlling ai
 struct AIProperties
 {
 	float m_ShotCooldown = g_AIDefaultCooldownTime;
@@ -25,7 +27,7 @@ class AI
 {
 public:
 	AI();
-	AI(Body* bodyPtr, Body* targetPtr, AIProperties props);
+	AI(Body* bodyPtr, Body* targetPtr, AIProperties props, uint32_t team);
 	~AI();
 
 	void Update(Scene& scene, float timestep, AIAccelerationScript accelFunc); // this may be the function where the shoot/accelerate command are issued
@@ -38,6 +40,7 @@ private:
 	Body* m_BodyPtr = nullptr;
 	Body* m_TargetBody = nullptr;
 	float m_ShotTimer = 0.0f;
+	uint32_t m_TeamID = 0; // bodies not controlled by an ai, should still belong to a team (if nothing else, a neutral default team) so probably this should be somewhere else
 
 	AIProperties m_Props;
 
@@ -49,22 +52,6 @@ private:
 	
 };
 
-
-class AIPool
-{
-public:
-	AIPool();
-	AIPool(std::vector<AI> AISet);
-	~AIPool();
-
-	void Update(Scene& scene, float timestep); // this may be the function where the shoot/accelerate command are issued
-	void Retarget(Scene& scene);
-
-private:
-	std::vector<AI> m_AISet;
-
-
-};
 
 
 

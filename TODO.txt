@@ -3,27 +3,38 @@
 // ----- TODO ----- //
 // ---------------- //
 
-- Add some sort of AI that controls ships and shoots
+
+- Further AI work:
+	- The AI that controls ships and shoots, should be defined in the SceneDefinition files.
+	- Probably the AI pool should be implemented,
+	- There could be teams defined, so at retargeting, the new target could be picked from
+		an enemy team.
+	
+
+- Create a menu:
+	- should have a shader that renders the options, probably textured quads
+	- the menu class probably should have a pointer to a window, because that
+		is where the inputs will be coming from, (mouse movements/clicks, keyboard inputs)
+	- create the buttons (paint or something), and highlight the one that is hovered by the mouse,
 
 - Add helper visuals:
 	- most of this is done, the middle of the screen marker needs to be fixed,
 	or created in a different way
 
-
-- Create a menu
+- After a gravitating object is destroyed, its gravity doesn't disappear.
+	The force function should be updated to consume the integrity data, and exclude
+	grav calculation for destroyed objects.
 
 - Revise and add new models
 	- Oneill cylinder,
 	- Warships,
 	- space stations,
+	- weapons platform,
 	- asteroids,
 	- Stellar engine
 
 - Create a function that saves the state of the game into a file
 	
-- Create a level where the Earth must be protected from infalling asteroids.
-	This can be done since I have added damage on collision.
-
 - Create a struct in the shader that defines all properties of the observer.
 	This way only one uniform upload is enough to set the observer. -> I tried this for the observer,
 		but it's not possible to get the location of the struct, each component of the struct has to be uploaded separately,
@@ -94,18 +105,22 @@
 	- zooming with mouse scrolling
 
 - Add helper visuals:
-	- targeting cross
+	- targeting cross - this is not working so far
 	- display the direction of velocity (forward and backward) to help with maneuvering
 		(especially with breaking)
 	- put small circles or markers (triangles maybe) around faraway objects (create a 
 		dedicated shader with a uniform buffer, that stores all body positions)
 
+- Comments in SceneDefinition file.
+
+- Create a level where the Earth must be protected from infalling asteroids.
+	This can be done since I have added damage on collision.
+
+- In the vertex shaders I have changed the way theta is being calculated, so now the numerical
+	precision doesn't affect that badly the center of the screen when zoomed in.
 
 
-
-
-
-
+- Add some sort of AI that controls ships and shoots
 
 
 

@@ -31,7 +31,7 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 	scale	1.0
 	velocity	0.00	0.00	0.00
 	angularVelocity	0.00	0.00	0.00
-	integrity	50.0
+	integrity	500.0
 	mass	10.0
 }
 
@@ -43,7 +43,7 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 	scale	1.0
 	velocity	0.00	0.00	0.00
 	angularVelocity	0.00	0.00	0.00
-	integrity	50.0
+	integrity	500.0
 	mass	10.0
 }
 
@@ -55,7 +55,7 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 	scale	1.0
 	velocity	0.00	0.00	0.00
 	angularVelocity	0.00	0.00	0.00
-	integrity	70.0
+	integrity	700.0
 	mass	10.0
 }
 

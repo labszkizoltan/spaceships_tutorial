@@ -124,6 +124,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\controls\ai.cpp" />
+    <ClCompile Include="src\controls\ai_pool.cpp" />
     <ClCompile Include="src\controls\observer.cpp" />
     <ClCompile Include="src\controls\player.cpp" />
     <ClCompile Include="src\controls\timestep.cpp" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="src\acceleration_functions.h" />
     <ClInclude Include="src\controls\ai.h" />
+    <ClInclude Include="src\controls\ai_pool.h" />
     <ClInclude Include="src\controls\observer.h" />
     <ClInclude Include="src\controls\player.h" />
     <ClInclude Include="src\controls\timestep.h" />
