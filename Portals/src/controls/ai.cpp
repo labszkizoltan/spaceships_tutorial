@@ -85,7 +85,7 @@ void AI::Update(Scene& scene, float timestep, AIAccelerationScript accelFunc)
 	// Shoot
 	if (dr.length() < g_AIDefaultWeaponRange && m_ShotTimer > m_Props.m_ShotCooldown && phi < 0.05f) // PARAMETER AIShootPrecision
 	{
-		scene.OnShoot(m_BodyPtr, g_AIDefaultWeaponRange); m_ShotTimer = 0.0f;
+		scene.OnShoot(m_BodyPtr, g_AIDefaultWeaponRange, g_TimeToLive); m_ShotTimer = 0.0f;
 	}
 
 	m_ShotTimer += timestep;

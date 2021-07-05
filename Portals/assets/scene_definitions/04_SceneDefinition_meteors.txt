@@ -334,11 +334,34 @@ right	D:/cpp_codes/26_portals/Portals/assets/right.png
 	mass	10.0
 }
 
+// new units, for testing
+{
+	type	platform
+	position	2900	470.00	50.00
+	rotation	0	0	0	0
+	scale	1.0
+	velocity	0.00	0.00	10.00
+	angularVelocity	0.00	0.00	0.00
+	integrity	5000.0
+	mass	499.0
+}
 
+{
+	type	cruiser
+	position	2950	470.00	50.00
+	rotation	0	0	0	0
+	scale	1.0
+	velocity	0.00	0.00	10.00
+	angularVelocity	0.00	0.00	0.00
+	integrity	5000.0
+	mass	499.0
+}
 
 
 # type_file_lookup
 
+platform	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Platform.txt
+cruiser	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Cruiser.txt
 saucer	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Saucer_hq.txt
 satellite	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Satellite.txt
 earth	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_16_corrected.txt
@@ -348,7 +371,8 @@ asteroid	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_8_def
 
 # texture_lookup
 
-
+platform	D:/cpp_codes/26_portals/Portals/assets/textures/Platform_texture.png
+cruiser D:/cpp_codes/26_portals/Portals/assets/saucer_texture.png
 saucer	D:/cpp_codes/26_portals/Portals/assets/saucer_texture.png
 satellite	D:/cpp_codes/26_portals/Portals/assets/saucer_texture.png
 earth	D:/cpp_codes/26_portals/Portals/assets/Earth_Realistic.png

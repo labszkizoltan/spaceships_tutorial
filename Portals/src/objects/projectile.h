@@ -13,10 +13,10 @@ struct Projectile
 {
 	Projectile();
 //	Projectile(Vec3D sp, Vec3D dir, float len, float ttl, Body* b_ptr);
-	Projectile(Vec3D sp, Mat_3D orient, float len, float ttl, Body* b_ptr);
+	Projectile(Vec3D sp, Vec3D velocity, Mat_3D orient, float len, float ttl, Body* b_ptr);
 
 	Vec3D startingPoint;
-//	Vec3D direction;
+	Vec3D velocity;
 	Mat_3D orientation;
 	float length;
 	float timeToLive = g_TimeToLive;
@@ -33,7 +33,7 @@ public:
 	void SetAspectRatio(float aspectRatio);
 
 	// owner should point to an element in bodies!
-	int Emit(int ownerIndex, float ownerRange, std::vector<Body>& bodies, std::vector<float> integrities); // Collision with the bodies will be checked on emission, thats why the argument is needed. Returns the index of the body that suffers the hit.
+	int Emit(int ownerIndex, float ownerRange, float timeToLive, std::vector<Body>& bodies, std::vector<float> integrities); // Collision with the bodies will be checked on emission, thats why the argument is needed. Returns the index of the body that suffers the hit.
 	void Update(float deltaTime);
 	void Draw(Player player);
 

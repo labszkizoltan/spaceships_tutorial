@@ -13,10 +13,10 @@
 
 
 Projectile::Projectile()
-	: startingPoint(Vec3D()), orientation(Mat_3D()), length(1.0f), timeToLive(0.0f), owner(nullptr) {}
+	: startingPoint(Vec3D()), velocity(Vec3D()), orientation(Mat_3D()), length(1.0f), timeToLive(0.0f), owner(nullptr) {}
 
-Projectile::Projectile(Vec3D sp, Mat_3D orient, float len, float ttl, Body* b_ptr)
-	: startingPoint(sp), orientation(orient), length(len), timeToLive(ttl), owner(b_ptr) {}
+Projectile::Projectile(Vec3D sp, Vec3D velocity, Mat_3D orient, float len, float ttl, Body* b_ptr)
+	: startingPoint(sp), velocity(velocity), orientation(orient), length(len), timeToLive(ttl), owner(b_ptr) {}
 
 
 
@@ -42,7 +42,7 @@ ProjectilePool::ProjectilePool()
 	std::vector<uint32_t> indexData;
 	{
 		int quadCount = 500;
-		float dx = 0.5f, dz = 1.0f/quadCount, gapSize = 0.01f; // gapSize will create a visual gap at the origin of teh beam, so at firing it wont cover the view as much
+		float dx = 0.5f, dz = 1.0f/quadCount, gapSize = 0.01f; // gapSize will create a visual gap at the origin of the beam, so at firing it wont cover the view as much
 		float windingNumber = 100.0f; // this determines how curved the spiral will be
 
 		vertexAndColorData.resize(2*(2 * quadCount + 2)); // vertex count = 2*quadCount+2
@@ -52,6 +52,7 @@ ProjectilePool::ProjectilePool()
 			float z = (float)(i / 2)*dz;
 			vertexAndColorData[2 * i + 0] = (Vec3D(0, 0, gapSize) + Diagonal({1,1,z}) * Vec3D((i % 2 * 2 - 1)*dx*cos((float)(i / 2)*dz*windingNumber), (i % 2 * 2 - 1)*dx*sin((float)(i / 2)*dz*windingNumber), (float)(i / 2)*dz)) / (1.0f + gapSize); // vertex position
 			vertexAndColorData[2 * i + 1] = Vec3D(0.1f, 0.99f, 0.3f); // projectile colour
+//			vertexAndColorData[2 * i + 1] = Vec3D(0.3f, 0.5f, 0.8f); // projectile colour
 		}
 		for (int i = 0; i < quadCount; i++)
 		{
@@ -85,15 +86,16 @@ void ProjectilePool::SetAspectRatio(float aspectRatio)
 }
 
 // Collision with the bodies will be checked on emission, thats why the argument is needed. Returns the index of the body that suffers the hit.
-int ProjectilePool::Emit(int ownerIndex, float ownerRange, std::vector<Body>& bodies, std::vector<float> integrities)
+int ProjectilePool::Emit(int ownerIndex, float ownerRange, float timeToLive, std::vector<Body>& bodies, std::vector<float> integrities)
 {
 	m_CurrentIndex--;
 	m_CurrentIndex = m_CurrentIndex < 0 ? (m_Size - 1) : (m_CurrentIndex);
 
 	m_Projectiles[m_CurrentIndex].startingPoint = bodies[ownerIndex].location - bodies[ownerIndex].orientation.f2;
+	m_Projectiles[m_CurrentIndex].velocity = bodies[ownerIndex].velocity;
 	m_Projectiles[m_CurrentIndex].orientation = bodies[ownerIndex].orientation;
 	m_Projectiles[m_CurrentIndex].length = ownerRange;
-	m_Projectiles[m_CurrentIndex].timeToLive = g_TimeToLive;
+	m_Projectiles[m_CurrentIndex].timeToLive = timeToLive; // g_TimeToLive;
 	m_Projectiles[m_CurrentIndex].owner = &bodies[ownerIndex];
 	m_IsActive[m_CurrentIndex] = true;
 
@@ -134,6 +136,7 @@ void ProjectilePool::Update(float deltaTime)
 	for (int i = 0; i < m_Projectiles.size(); i++)
 	{
 		m_Projectiles[i].timeToLive -= deltaTime;
+		m_Projectiles[i].startingPoint += deltaTime* m_Projectiles[i].velocity;
 		m_IsActive[i] = m_Projectiles[i].timeToLive > 0.0f;
 	}
 }

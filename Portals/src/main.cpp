@@ -100,7 +100,7 @@ int main()
 		if (appWindow.IsKeyPressed(GLFW_KEY_N) && body_switch_timer > 1.0f) { body_index--; player.SetBodyPtr(myScene.GetBodyPtr(body_index)); body_switch_timer = 0.0f; }
 		body_switch_timer += timeSpeed*timestep;
 
-		if (appWindow.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr, g_PlayerDefaultWeaponRange); shoot_timer = 0.0f; } // PARAMETER shot cooldown
+		if (appWindow.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr, g_PlayerDefaultWeaponRange, g_PlayerDefaultTTL); shoot_timer = 0.0f; } // PARAMETER shot cooldown
 //		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); shoot_timer = 0.0f; }
 		shoot_timer += timeSpeed*timestep;
 

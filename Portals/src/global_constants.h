@@ -12,6 +12,7 @@ const float g_AIDefaultAttractionRange = 5000.0f; // PARAMETER if an IA controll
 const float g_AIDefaultRepulsionRange = 1000.0f; // AI turning rate PARAMETER
 const float g_AIDefaultWeaponRange = 5000.0f; // PARAMETER
 const float g_PlayerDefaultWeaponRange = 10000.0f; // PARAMETER
+const float g_PlayerDefaultTTL = 2.0f; // PARAMETER
 
 
 

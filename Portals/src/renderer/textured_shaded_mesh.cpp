@@ -50,7 +50,7 @@ TexturedShadedMesh::TexturedShadedMesh(const std::string& vertexFilepath, const 
 	{
 		int width, height, channels;
 		stbi_set_flip_vertically_on_load(1);
-		stbi_uc* data = nullptr;
+		stbi_uc* data = nullptr; // random note here, uc stands for unsigned char
 		{
 			data = stbi_load(textureFilepath.c_str(), &width, &height, &channels, 0);
 		}

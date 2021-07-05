@@ -370,21 +370,19 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 	m_ProjectilePool.Update(deltaTime);
 }
 
-void Scene::OnShoot(Body* ownerBodyPtr, float ownerRange)
+void Scene::OnShoot(Body* ownerBodyPtr, float ownerRange, float timeToLive)
 {
 	// Apparently these addresses have to be converted to integers
 	int bodyIndex = ((int)ownerBodyPtr - (int)&m_Bodies[0])/sizeof(Body);
 	// Or just take the plain difference of the addresses
 //	int bodyIndex = (ownerBodyPtr - &m_Bodies[0]);
-	int hitTarget = m_ProjectilePool.Emit(bodyIndex, ownerRange, m_Bodies, m_Integrities);
+	int hitTarget = m_ProjectilePool.Emit(bodyIndex, ownerRange, timeToLive, m_Bodies, m_Integrities);
 
 	if (hitTarget >= 0)
 	{
 		OnHit(hitTarget, 1.0f, ownerBodyPtr); // hitStrength PARAMETER
 	}
 }
-
-
 
 void Scene::Draw(Observer obs)
 {

@@ -29,7 +29,7 @@ public:
 	void Update(float deltaTime);
 	void Update(float deltaTime, AccelerationFunction accelerationFunc);
 	void UpdateWithCollision(float deltaTime, AccelerationFunction accelerationFunc);
-	void OnShoot(Body* ownerBodyPtr, float ownerRange);
+	void OnShoot(Body* ownerBodyPtr, float ownerRange, float timeToLive);
 
 	void Draw(Observer obs);
 	void Draw(Player& player);

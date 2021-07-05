@@ -1,4 +1,5 @@
 
+
 // ---------------- //
 // ----- TODO ----- //
 // ---------------- //
@@ -126,6 +127,13 @@
 
 
 
+
+// ---------------------- //
+// ----- Other Info ----- //
+// ---------------------- //
+
+- This is a website, with high resolution planet surface textures:
+	https://www.solarsystemscope.com/textures/
 
 
 
