@@ -9,6 +9,12 @@
 
 #include "Portals/src/global_constants.h"
 
+struct ProjectileHitResult
+{
+	int hitBodyIndex;
+	float distanceFromTargetCenter;
+};
+
 struct Projectile
 {
 	Projectile();

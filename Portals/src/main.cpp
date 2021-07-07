@@ -92,6 +92,8 @@ int main()
 		// Set the speed of the simulation, note that the quality of the update will be worse, as the timestep will be bigger
 		SetTimeSpeed(appWindow, timeSpeed);
 
+		myScene.SetInitialIntegrities();
+
 		// Check if any events have been activated (key pressed, mouse moved etc.) and call corresponding response functions
 		appWindow.HandlePlayerInputs(player, timeSpeed*timestep);
 		player.Synchronize();
@@ -107,6 +109,8 @@ int main()
 		// Update the scene and AI
 		myScene.UpdateWithCollision(timeSpeed*timestep, SimplifiedGravity); // working as well
 		myAiPool.Update(myScene, timeSpeed*timestep);
+
+		myScene.SetExplosions();
 
 		// Draw the scene into the default framebuffer
 		myScene.Draw(player);

@@ -5,6 +5,7 @@
 #include "Portals/src/controls/player.h"
 #include "Portals/src/objects/body.h"
 #include "Portals/src/objects/projectile.h"
+#include "Portals/src/objects/explosion.h"
 
 #include "Portals/src/renderer/shader.h"
 #include "Portals/src/renderer/skybox.h"
@@ -30,6 +31,7 @@ public:
 	void Update(float deltaTime, AccelerationFunction accelerationFunc);
 	void UpdateWithCollision(float deltaTime, AccelerationFunction accelerationFunc);
 	void OnShoot(Body* ownerBodyPtr, float ownerRange, float timeToLive);
+	void SetExplosions();
 
 	void Draw(Observer obs);
 	void Draw(Player& player);
@@ -37,6 +39,8 @@ public:
 	void SetSceneTranslation(glm::vec3 scene_translation);
 
 	Body* GetBodyPtr(int i);
+
+	void SetInitialIntegrities();
 	
 
 private:
@@ -47,7 +51,9 @@ private:
 private:
 	std::vector<Body> m_Bodies;
 	std::vector<float> m_Integrities; // Stores the structural integrity of the bodies, if it reaches below 0, the body is destroyed, initially set to be equal to the mass
+	std::vector<float> m_InitialIntegrities; // Stores the integrities when the update function begins, and checks for integrities going below 0, to initiate an explosion
 	ProjectilePool m_ProjectilePool;
+	ExplosionPool m_ExplosionPool;
 	std::vector<int> m_MeshIndices; // this and m_BodyTypes are kind of redundant, since they essentially code the same info, just in different ways
 
 	// Pre-allocated helper memory blocks for state update

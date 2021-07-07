@@ -55,6 +55,11 @@ glm::vec3 Vec3D::Glm()
 	return glm::vec3{x, y, z};
 }
 
+float Vec3D::angle(Vec3D & v1, Vec3D & v2)
+{
+	return acos(v1*v2/(v1.length()*v2.length()));
+}
+
 void Vec3D::PN_normalization()
 {
 	float x_new = x * sqrt(1.0f - y * y / 2.0f - z * z / 2.0f + y * y*z*z / 3.0f);

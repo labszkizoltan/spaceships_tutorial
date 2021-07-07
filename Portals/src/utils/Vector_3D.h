@@ -20,6 +20,8 @@ struct Vec3D
 	float lengthSquare();
 	glm::vec3 Glm();
 
+	static float angle(Vec3D& v1, Vec3D& v2);
+
 	// Philip Nowell normalization (to map vectors onto a sphere): http://mathproofs.blogspot.com/2005/07/mapping-cube-to-sphere.html
 	void PN_normalization();
 

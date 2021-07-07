@@ -131,6 +131,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\objects\body.cpp" />
+    <ClCompile Include="src\objects\explosion.cpp" />
     <ClCompile Include="src\objects\projectile.cpp" />
     <ClCompile Include="src\renderer\framebuffer.cpp" />
     <ClCompile Include="src\renderer\helper_visuals.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="src\global_constants.h" />
     <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\objects\body.h" />
+    <ClInclude Include="src\objects\explosion.h" />
     <ClInclude Include="src\objects\projectile.h" />
     <ClInclude Include="src\renderer\framebuffer.h" />
     <ClInclude Include="src\renderer\helper_visuals.h" />
@@ -186,10 +188,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\renderer\shader_sources\fragment_shader.glsl" />
+    <None Include="src\renderer\shader_sources\fragment_shader_explosion.glsl" />
     <None Include="src\renderer\shader_sources\fragment_shader_highlighter.glsl" />
     <None Include="src\renderer\shader_sources\fragment_shader_skybox.glsl" />
     <None Include="src\renderer\shader_sources\fragment_shader_textured.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader.glsl" />
+    <None Include="src\renderer\shader_sources\vertex_shader_explosion.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader_highlighter.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader_skybox.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader_textured.glsl" />

@@ -212,7 +212,7 @@ Scene::Scene(const std::string & filename)
 	skybox_texture_files[4] = parsed_input.skybox_files["left"];
 	skybox_texture_files[5] = parsed_input.skybox_files["right"];
 
-	// Skybox class has a default constructor that creates a valid skybox, so at this point that already valid skybox is deleted and replaced be the ont that is defined in the config file
+	// Skybox class has a default constructor that creates a valid skybox, so at this point that already valid skybox is deleted and replaced by the one that is defined in the config file
 	// so dont be surptised when vertex/index buffers are destroyed with non 0 id-s
 	m_Skybox = std::move(Skybox(skybox_texture_files, 10));
 
@@ -222,11 +222,13 @@ Scene::Scene(const std::string & filename)
 		bodyTypes.resize(parsed_input.body_types.size());
 	m_Bodies.resize(parsed_input.bodies.size());
 	m_Integrities.resize(parsed_input.bodies.size());
+	m_InitialIntegrities.resize(parsed_input.bodies.size());
 	for (int i = 0; i < parsed_input.body_types.size(); i++)
 	{
 		bodyTypes[i] = parsed_input.body_types[i];
-		m_Bodies[i] = parsed_input.bodies[i]; 
+		m_Bodies[i] = parsed_input.bodies[i];
 		m_Integrities[i] = parsed_input.integrities[i];
+		m_InitialIntegrities[i] = parsed_input.integrities[i];
 	}
 	m_Accelerations.resize(m_Bodies.size());
 	m_AngularAccelerations.resize(m_Bodies.size());
@@ -286,6 +288,7 @@ Scene::~Scene()
 
 void Scene::Update(float deltaTime)
 {
+	m_InitialIntegrities = m_Integrities; // i hope this is doing copy assignment
 	for (int i = 0; i < m_Bodies.size(); i++)
 	{
 		m_Bodies[i].location += deltaTime * m_Bodies[i].velocity;
@@ -293,6 +296,7 @@ void Scene::Update(float deltaTime)
 	}
 
 	m_ProjectilePool.Update(deltaTime);
+	m_ExplosionPool.Update(deltaTime);
 }
 
 void Scene::Update(float deltaTime, AccelerationFunction accelerationFunc)
@@ -308,6 +312,7 @@ void Scene::Update(float deltaTime, AccelerationFunction accelerationFunc)
 	}
 
 	m_ProjectilePool.Update(deltaTime);
+	m_ExplosionPool.Update(deltaTime);
 }
 
 void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerationFunc)
@@ -368,6 +373,7 @@ void Scene::UpdateWithCollision(float deltaTime, AccelerationFunction accelerati
 	}
 
 	m_ProjectilePool.Update(deltaTime);
+	m_ExplosionPool.Update(deltaTime);
 }
 
 void Scene::OnShoot(Body* ownerBodyPtr, float ownerRange, float timeToLive)
@@ -381,6 +387,30 @@ void Scene::OnShoot(Body* ownerBodyPtr, float ownerRange, float timeToLive)
 	if (hitTarget >= 0)
 	{
 		OnHit(hitTarget, 1.0f, ownerBodyPtr); // hitStrength PARAMETER
+
+		Vec3D dr = m_Bodies[bodyIndex].location - m_Bodies[hitTarget].location;
+		Vec3D dr_para = m_Bodies[bodyIndex].orientation.f3*(m_Bodies[bodyIndex].orientation.f3*dr);
+		float d_sq = (dr - dr_para).lengthSquare();
+		float length = dr.length() - sqrt(m_Bodies[hitTarget].scale*m_Bodies[hitTarget].scale-d_sq);
+		m_ExplosionPool.Emit(Explosion(
+			m_Bodies[bodyIndex].location+m_Bodies[bodyIndex].orientation.f3*length,
+			m_Bodies[hitTarget].velocity,
+			1.0f, // hitStrength PARAMETER
+			g_ExplosionTimeToLive / 2)
+		);
+	}
+}
+
+void Scene::SetExplosions()
+{
+	for (int i = 0; i < m_Integrities.size(); i++)
+	{
+		if (m_Integrities[i]<0.5f && m_InitialIntegrities[i] > 0.5f)
+//		if (m_Integrities[i] != m_InitialIntegrities[i])
+		{
+			Explosion explosion(m_Bodies[i].location, m_Bodies[i].velocity, m_Bodies[i].scale, g_ExplosionTimeToLive);
+			m_ExplosionPool.Emit(explosion);
+		}
 	}
 }
 
@@ -431,6 +461,7 @@ void Scene::Draw(Player& player)
 	}
 
 	m_ProjectilePool.Draw(player);
+	m_ExplosionPool.Draw(player);
 }
 
 void Scene::SetAspectRatio(float aspectRatio)
@@ -439,6 +470,7 @@ void Scene::SetAspectRatio(float aspectRatio)
 	m_TextureShader.UploadUniformFloat("aspect_ratio", aspectRatio);
 	m_Skybox.SetShaderAspectRatio(aspectRatio);
 	m_ProjectilePool.SetAspectRatio(aspectRatio);
+	m_ExplosionPool.SetAspectRatio(aspectRatio);
 }
 
 void Scene::SetSceneTranslation(glm::vec3 scene_translation)
@@ -461,6 +493,11 @@ Body* Scene::GetBodyPtr(int i)
 	}
 
 	return &m_Bodies[i];
+}
+
+void Scene::SetInitialIntegrities()
+{
+	memcpy(&m_InitialIntegrities[0], &m_Integrities[0], m_InitialIntegrities.size() * sizeof(float));
 }
 
 void Scene::CalcMinDistances(float deltaTime, float dvThreshold)

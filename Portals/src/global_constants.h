@@ -4,6 +4,9 @@
 const float g_MaxLength = 10000.0f; // ShootRange PARAMETER
 const float g_TimeToLive = 3.0f; // PARAMETER
 
+const float g_ExplosionTimeToLive = 10.0f;
+const float g_ExplosionFinalSizeMultiplier = 15.0f;
+
 // AI parameters
 const float g_AIDefaultTurnRate = 1.0f; // AI turning rate PARAMETER
 const float g_AIDefaultCooldownTime = 3.0f; // AI turning rate PARAMETER

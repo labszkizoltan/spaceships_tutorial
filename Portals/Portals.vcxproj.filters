@@ -90,6 +90,9 @@
     <ClCompile Include="src\controls\ai_pool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\objects\explosion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\window_context.h">
@@ -182,6 +185,9 @@
     <ClInclude Include="src\controls\ai_pool.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\objects\explosion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="src\renderer\shader_sources\fragment_shader.glsl" />
@@ -192,5 +198,7 @@
     <None Include="src\renderer\shader_sources\vertex_shader_skybox.glsl" />
     <None Include="src\renderer\shader_sources\vertex_shader_highlighter.glsl" />
     <None Include="src\renderer\shader_sources\fragment_shader_highlighter.glsl" />
+    <None Include="src\renderer\shader_sources\fragment_shader_explosion.glsl" />
+    <None Include="src\renderer\shader_sources\vertex_shader_explosion.glsl" />
   </ItemGroup>
 </Project>
