@@ -84,11 +84,12 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\cpp_codes\26_portals\vendor\glm;D:\cpp_codes\26_portals;D:\cpp_codes\26_portals\vendor\GLAD\include;D:\cpp_codes\26_portals\vendor\GLFW\include\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\cpp_codes\26_portals\vendor\SFML\include;D:\cpp_codes\26_portals\vendor\glm;D:\cpp_codes\26_portals;D:\cpp_codes\26_portals\vendor\GLAD\include;D:\cpp_codes\26_portals\vendor\GLFW\include\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SFML_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>D:\cpp_codes\26_portals\vendor\GLAD\bin\Release-windows-x86_64\GLAD;D:\cpp_codes\26_portals\vendor\GLFW\bin\Release-windows-x86_64\GLFW;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GLFW.lib;GLAD.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\cpp_codes\26_portals\vendor\SFML\lib;D:\cpp_codes\26_portals\vendor\GLAD\bin\Release-windows-x86_64\GLAD;D:\cpp_codes\26_portals\vendor\GLFW\bin\Release-windows-x86_64\GLFW;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GLFW.lib;GLAD.lib;opengl32.lib;sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib;freetype.lib;winmm.lib;gdi32.lib;sfml-audio-s-d.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;sfml-network-s-d.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,16 +114,18 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>D:\cpp_codes\26_portals\vendor\glm;D:\cpp_codes\26_portals;D:\cpp_codes\26_portals\vendor\GLAD\include;D:\cpp_codes\26_portals\vendor\GLFW\include\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\cpp_codes\26_portals\vendor\SFML\include;D:\cpp_codes\26_portals\vendor\glm;D:\cpp_codes\26_portals;D:\cpp_codes\26_portals\vendor\GLAD\include;D:\cpp_codes\26_portals\vendor\GLFW\include\GLFW;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>SFML_STATIC;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>D:\cpp_codes\26_portals\vendor\GLAD\bin\Release-windows-x86_64\GLAD;D:\cpp_codes\26_portals\vendor\GLFW\bin\Release-windows-x86_64\GLFW;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>GLFW.lib;GLAD.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\cpp_codes\26_portals\vendor\SFML\lib;D:\cpp_codes\26_portals\vendor\GLAD\bin\Release-windows-x86_64\GLAD;D:\cpp_codes\26_portals\vendor\GLFW\bin\Release-windows-x86_64\GLFW;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>GLFW.lib;GLAD.lib;opengl32.lib;sfml-graphics-s.lib;sfml-window-s.lib;sfml-system-s.lib;freetype.lib;sfml-window-s.lib	;winmm.lib;gdi32.lib;sfml-audio-s.lib	;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;sfml-network-s.lib	;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\audio\Sound_Manager.cpp" />
     <ClCompile Include="src\controls\ai.cpp" />
     <ClCompile Include="src\controls\ai_pool.cpp" />
     <ClCompile Include="src\controls\observer.cpp" />
@@ -155,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\acceleration_functions.h" />
+    <ClInclude Include="src\audio\Sound_Manager.h" />
     <ClInclude Include="src\controls\ai.h" />
     <ClInclude Include="src\controls\ai_pool.h" />
     <ClInclude Include="src\controls\observer.h" />

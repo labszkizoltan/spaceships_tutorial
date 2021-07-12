@@ -22,6 +22,8 @@
 #include "renderer/scene.h"
 #include "renderer/helper_visuals.h"
 
+#include "audio/Sound_Manager.h"
+
 #include "controls/timestep.h"
 #include "controls/player.h"
 #include "controls/ai.h"
@@ -57,6 +59,8 @@ void SetTimeSpeed(MyWindow& appWindow, float& timeSpeed)
 
 int main()
 {
+
+
 	MyWindow appWindow(windowWidth, windowHeight, "Portals");
 	glfwSetWindowPos(appWindow.GetWindow(), 50, 100);
 	appWindow.SetMouseScrollCallback(mouse_scroll_callback);
@@ -79,6 +83,23 @@ int main()
 
 	appWindow.SetUserPointer(&player);
 
+
+
+	// load background music
+	sf::Music music;
+	if (!music.openFromFile("assets/audio/Adrift_by_Hayden_Folker.ogg"))
+		return EXIT_FAILURE;
+	music.play();
+
+	// Load a sound to play
+	sf::SoundBuffer buffer;
+	if (!buffer.loadFromFile("assets/audio/SciFi_weapon_OneShot_1.wav"))
+		return EXIT_FAILURE;
+	sf::Sound shot_sound;
+	shot_sound.setBuffer(buffer);
+
+
+
 	float time = (float)glfwGetTime();
 	float timeSpeed = 1.0f; // PARAMETER initial time speed
 	Timestep timestep = 0.0f; // timestep can be initialized like this, because its constructor takes in only one float, implicit cast is possible
@@ -88,6 +109,12 @@ int main()
 	while (!glfwWindowShouldClose(appWindow.GetWindow()))
 	{
 		lastFrameTime = (float)glfwGetTime();
+
+		// if music finished, start again
+		if (music.getStatus() == sf::SoundSource::Stopped)
+		{
+			music.play();
+		}
 
 		// Set the speed of the simulation, note that the quality of the update will be worse, as the timestep will be bigger
 		SetTimeSpeed(appWindow, timeSpeed);
@@ -102,7 +129,12 @@ int main()
 		if (appWindow.IsKeyPressed(GLFW_KEY_N) && body_switch_timer > 1.0f) { body_index--; player.SetBodyPtr(myScene.GetBodyPtr(body_index)); body_switch_timer = 0.0f; }
 		body_switch_timer += timeSpeed*timestep;
 
-		if (appWindow.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr, g_PlayerDefaultWeaponRange, g_PlayerDefaultTTL); shoot_timer = 0.0f; } // PARAMETER shot cooldown
+		if (appWindow.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && shoot_timer > 0.5f)
+		{
+			shot_sound.play();
+			myScene.OnShoot(player.m_BodyPtr, g_PlayerDefaultWeaponRange, g_PlayerDefaultTTL);
+			shoot_timer = 0.0f;
+		} // PARAMETER shot cooldown
 //		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); shoot_timer = 0.0f; }
 		shoot_timer += timeSpeed*timestep;
 

@@ -11,3 +11,5 @@ Meshes/*
 .vs/*
 previous_main.cpp
 *.jpg
+*.ogg
+*.wav

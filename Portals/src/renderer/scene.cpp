@@ -391,7 +391,7 @@ void Scene::OnShoot(Body* ownerBodyPtr, float ownerRange, float timeToLive)
 		Vec3D dr = m_Bodies[bodyIndex].location - m_Bodies[hitTarget].location;
 		Vec3D dr_para = m_Bodies[bodyIndex].orientation.f3*(m_Bodies[bodyIndex].orientation.f3*dr);
 		float d_sq = (dr - dr_para).lengthSquare();
-		float length = dr.length() - sqrt(m_Bodies[hitTarget].scale*m_Bodies[hitTarget].scale-d_sq);
+		float length = dr_para.length() - sqrt(m_Bodies[hitTarget].scale*m_Bodies[hitTarget].scale-d_sq);
 		m_ExplosionPool.Emit(Explosion(
 			m_Bodies[bodyIndex].location+m_Bodies[bodyIndex].orientation.f3*length,
 			m_Bodies[hitTarget].velocity,
