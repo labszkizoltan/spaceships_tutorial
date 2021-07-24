@@ -19,7 +19,8 @@ public:
 
 
 public:
-	std::vector<sf::Music> m_Musics;
+	sf::Music m_CurrentMusic;
+	std::vector<std::string> m_SoundTrackPaths;
 	std::vector<sf::Sound> m_Sounds;
 
 };

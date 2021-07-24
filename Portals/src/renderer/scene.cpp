@@ -197,6 +197,10 @@ void ParseSceneDefinitionFile(ParsedInput& parsed_input, const std::string & fil
 
 Scene::Scene(const std::string & filename)
 {
+	if (!m_ExplosionBuffer.loadFromFile("D:/cpp_codes/26_portals/Portals/assets/audio/Explosion_big.wav"))
+		std::cout << "couldnt open sound file\n";
+	m_ExplosionSound.setBuffer(m_ExplosionBuffer);
+
 	ParsedInput parsed_input;
 	ParseSceneDefinitionFile(parsed_input, filename);
 	std::cout << "Scene::Scene(): input file parsed\n";
@@ -392,9 +396,10 @@ void Scene::OnShoot(Body* ownerBodyPtr, float ownerRange, float timeToLive)
 		Vec3D dr_para = m_Bodies[bodyIndex].orientation.f3*(m_Bodies[bodyIndex].orientation.f3*dr);
 		float d_sq = (dr - dr_para).lengthSquare();
 		float length = dr_para.length() - sqrt(m_Bodies[hitTarget].scale*m_Bodies[hitTarget].scale-d_sq);
+		Vec3D starting_loc = m_Bodies[bodyIndex].location + m_Bodies[bodyIndex].orientation.f3*length;
 		m_ExplosionPool.Emit(Explosion(
-			m_Bodies[bodyIndex].location+m_Bodies[bodyIndex].orientation.f3*length,
-			m_Bodies[hitTarget].velocity,
+			starting_loc,
+			m_Bodies[hitTarget].velocity+CrossProduct(m_Bodies[hitTarget].angularVelocity)*(starting_loc-m_Bodies[hitTarget].location),
 			1.0f, // hitStrength PARAMETER
 			g_ExplosionTimeToLive / 2)
 		);
@@ -410,6 +415,7 @@ void Scene::SetExplosions()
 		{
 			Explosion explosion(m_Bodies[i].location, m_Bodies[i].velocity, m_Bodies[i].scale, g_ExplosionTimeToLive);
 			m_ExplosionPool.Emit(explosion);
+			m_ExplosionSound.play();
 		}
 	}
 }

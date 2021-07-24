@@ -364,7 +364,9 @@ platform	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Platform.txt
 cruiser	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Cruiser.txt
 saucer	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Saucer_hq.txt
 satellite	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Satellite.txt
-earth	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_16_corrected.txt
+# earth	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_16_corrected.txt
+# earth	D:/cpp_codes/26_portals/Portals/assets/blender_files/transformed.txt
+earth	D:/cpp_codes/26_portals/Portals/assets/blender_files/monkey_head.txt
 moon	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_16_corrected.txt
 asteroid	D:/cpp_codes/26_portals/Portals/assets/meshes_with_normals/Sphere_8_deformed.txt
 

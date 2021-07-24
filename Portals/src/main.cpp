@@ -93,11 +93,11 @@ int main()
 
 	// Load a sound to play
 	sf::SoundBuffer buffer;
-	if (!buffer.loadFromFile("assets/audio/SciFi_weapon_OneShot_1.wav"))
+	if (!buffer.loadFromFile("assets/audio/SciFi_weapon_MultiShot_1.wav"))
 		return EXIT_FAILURE;
 	sf::Sound shot_sound;
 	shot_sound.setBuffer(buffer);
-
+	shot_sound.setVolume(60.0f);
 
 
 	float time = (float)glfwGetTime();
@@ -111,8 +111,9 @@ int main()
 		lastFrameTime = (float)glfwGetTime();
 
 		// if music finished, start again
-		if (music.getStatus() == sf::SoundSource::Stopped)
+		if (music.getStatus() == sf::SoundSource::Status::Stopped)
 		{
+			music.openFromFile("assets/audio/Adrift_by_Hayden_Folker.ogg");
 			music.play();
 		}
 
@@ -129,12 +130,20 @@ int main()
 		if (appWindow.IsKeyPressed(GLFW_KEY_N) && body_switch_timer > 1.0f) { body_index--; player.SetBodyPtr(myScene.GetBodyPtr(body_index)); body_switch_timer = 0.0f; }
 		body_switch_timer += timeSpeed*timestep;
 
-		if (appWindow.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1) && shoot_timer > 0.5f)
+		if (appWindow.IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
 		{
-			shot_sound.play();
-			myScene.OnShoot(player.m_BodyPtr, g_PlayerDefaultWeaponRange, g_PlayerDefaultTTL);
-			shoot_timer = 0.0f;
-		} // PARAMETER shot cooldown
+			if(shot_sound.getStatus() != sf::SoundSource::Status::Playing){ shot_sound.play(); }
+			
+			if (shoot_timer > 0.5f)
+			{
+				myScene.OnShoot(player.m_BodyPtr, g_PlayerDefaultWeaponRange, g_PlayerDefaultTTL);
+				shoot_timer = 0.0f;
+			}
+		}
+		else
+		{
+			shot_sound.stop();
+		}
 //		if (appWindow.IsKeyPressed(GLFW_KEY_SPACE) && shoot_timer > 0.5f) { myScene.OnShoot(player.m_BodyPtr); shoot_timer = 0.0f; }
 		shoot_timer += timeSpeed*timestep;
 

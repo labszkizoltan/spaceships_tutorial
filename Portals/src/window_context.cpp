@@ -196,8 +196,8 @@ void MyWindow::HandlePlayerInputs(Player& player, Timestep timestep)
 	if (IsKeyPressed(GLFW_KEY_KP_ADD)) { bodyMoveSpeed *= 1.05; }
 	if (IsKeyPressed(GLFW_KEY_KP_SUBTRACT)) { bodyMoveSpeed /= 1.05; }
 
-	if (IsKeyPressed(GLFW_KEY_E)) { player.m_BodyPtr->TurnClockwise(0.5f * timestep * obsTurnRate); }
-	if (IsKeyPressed(GLFW_KEY_Q)) { player.m_BodyPtr->TurnAntiClockwise(0.5f * timestep * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_E)) { player.m_BodyPtr->TurnClockwise(0.5f * 0.025f * obsTurnRate); }
+	if (IsKeyPressed(GLFW_KEY_Q)) { player.m_BodyPtr->TurnAntiClockwise(0.5f * 0.025f * obsTurnRate); }
 	if (IsKeyPressed(GLFW_KEY_LEFT)) { player.m_BodyPtr->TurnLeft(timestep * obsTurnRate); }
 	if (IsKeyPressed(GLFW_KEY_RIGHT)) { player.m_BodyPtr->TurnRight(timestep * obsTurnRate); }
 	if (IsKeyPressed(GLFW_KEY_UP)) { player.m_BodyPtr->TurnUp(timestep * obsTurnRate); }

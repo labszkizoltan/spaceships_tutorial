@@ -11,6 +11,8 @@
 #include "Portals/src/renderer/skybox.h"
 #include "Portals/src/renderer/textured_shaded_mesh.h"
 
+#include "Portals/src/audio/Sound_Manager.h"
+
 std::string ParseShader(const std::string& filepath);
 
 
@@ -68,6 +70,9 @@ private:
 	Skybox m_Skybox;
 
 	std::vector<TexturedShadedMesh> m_Meshes;
+
+	sf::SoundBuffer m_ExplosionBuffer;
+	sf::Sound m_ExplosionSound;
 
 	friend class Highlighter;
 	friend class AI;

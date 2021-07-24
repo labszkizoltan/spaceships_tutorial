@@ -85,7 +85,8 @@ void ExplosionPool::Draw(Player player)
 	{
 		m_ExplosionShader.UploadUniformFloat3("starting_loc", m_Explosions[i].startingPoint.Glm());
 		m_ExplosionShader.UploadUniformFloat("alpha", m_Explosions[i].timeToLive / g_ExplosionTimeToLive);
-		float explosion_size = m_Explosions[i].initial_size * (1 + g_ExplosionFinalSizeMultiplier * (1 - m_Explosions[i].timeToLive / g_ExplosionTimeToLive)); // 5 controls the final size
+		float lambda = m_Explosions[i].timeToLive / g_ExplosionTimeToLive;
+		float explosion_size = m_Explosions[i].initial_size * (lambda + g_ExplosionFinalSizeMultiplier * (1-lambda)); // 5 controls the final size
 		m_ExplosionShader.UploadUniformFloat("scale", explosion_size);
 		m_ExplosionMesh.Draw();
 
